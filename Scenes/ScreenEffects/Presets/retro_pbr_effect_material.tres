@@ -1,0 +1,11 @@
+[gd_resource type="ShaderMaterial" load_steps=3 format=3 uid="uid://b7jxwoqo8j7yh"]
+
+[ext_resource type="Shader" path="res://Scenes/ScreenEffects/Presets/retro_pbr_effect_stack.gdshader" id="1_xieaw"]
+[ext_resource type="Texture2D" uid="uid://cov12sjwcr715" path="res://Scenes/ScreenEffects/Presets/blue_noise_textures/bluenoise_128_128.png" id="2_l7tbd"]
+
+[resource]
+shader = ExtResource("1_xieaw")
+shader_parameter/colour_depth = 8.0
+shader_parameter/dither_uv_scale = 1.5
+shader_parameter/dither_range = 1.0
+shader_parameter/dither_texture = ExtResource("2_l7tbd")
