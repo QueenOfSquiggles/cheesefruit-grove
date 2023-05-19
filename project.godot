@@ -35,6 +35,7 @@ DynamicContentManager="*res://addons/dynamic-web-content/autoload/dynamic_conten
 BGM="*res://Scenes/Utility/Autoload/bgm.tscn"
 Scenes="*res://Scenes/Utility/Autoload/scenes.tscn"
 ModLoadingStep="*res://Scenes/Modification/mod_loading_step.tscn"
+RegistrationManager="*res://Scenes/RegistrationManager/RegistrationManager.cs"
 
 [display]
 

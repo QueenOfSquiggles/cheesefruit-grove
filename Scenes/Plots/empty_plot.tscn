@@ -1,9 +1,7 @@
-[gd_scene load_steps=10 format=3 uid="uid://cp3kv6xawxnnr"]
+[gd_scene load_steps=8 format=3 uid="uid://cp3kv6xawxnnr"]
 
 [ext_resource type="Script" path="res://Scenes/Plots/EmptyPlot.cs" id="1_2uik0"]
 [ext_resource type="PackedScene" path="res://Scenes/Interactables/interactive_trigger.tscn" id="1_3fluk"]
-[ext_resource type="Resource" uid="uid://b4mm0mbn1oshb" path="res://Scenes/Plots/TestPlot.tres" id="2_la836"]
-[ext_resource type="Script" path="res://Scenes/Plots/PlotInterface.cs" id="3_p38qg"]
 
 [sub_resource type="BoxMesh" id="BoxMesh_3dojm"]
 size = Vector3(10, 0.1, 10)
@@ -25,9 +23,9 @@ radius = 0.348671
 
 [node name="EmptyPlot" type="Node3D"]
 script = ExtResource("1_2uik0")
-PlotType = ExtResource("2_la836")
+PathPromptNewPlot = NodePath("PopupMenu")
 PathPlotRoot = NodePath("PlotRoot")
-PlotInterfaceScript = ExtResource("3_p38qg")
+PathInteractionTrigger = NodePath("InteractiveTrigger")
 
 [node name="Bottom" type="MeshInstance3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.05, 0)
@@ -56,4 +54,14 @@ shape = SubResource("CylinderShape3D_8qg6m")
 
 [node name="PlotRoot" type="Node3D" parent="."]
 
+[node name="PopupMenu" type="PopupMenu" parent="."]
+title = "Make New Plot"
+size = Vector2i(460, 239)
+visible = true
+unresizable = false
+borderless = false
+always_on_top = true
+allow_search = false
+
 [connection signal="OnInteracted" from="InteractiveTrigger" to="." method="OnInteract"]
+[connection signal="index_pressed" from="PopupMenu" to="." method="OnMenuIndexPressed"]

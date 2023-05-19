@@ -10,6 +10,6 @@ public partial class PlotInterface : Node3D
 
     public void CreateModifyPrompt()
     {
-        Print.Debug($"Create Modify Prompt for {PlotType?.ID} - Not yet implemented");
+        Print.Debug($"Create Modify Prompt for '{PlotType?.ID}' - Not yet implemented");
     }
 }
