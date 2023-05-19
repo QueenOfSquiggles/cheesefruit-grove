@@ -1,0 +1,21 @@
+[remap]
+
+importer="wavefront_obj"
+importer_version=1
+type="Mesh"
+uid="uid://b02w73jodncal"
+path="res://.godot/imported/Hilly_Terrain_Hill_Side_Overlap_Side.obj-4b78308b0cd7e2fcc9ceccd166a3b27d.mesh"
+
+[deps]
+
+files=["res://.godot/imported/Hilly_Terrain_Hill_Side_Overlap_Side.obj-4b78308b0cd7e2fcc9ceccd166a3b27d.mesh"]
+
+source_file="res://Assets/Packs/modular_terrain_collection/Hilly_Terrain_Hill_Side_Overlap_Side.obj"
+dest_files=["res://.godot/imported/Hilly_Terrain_Hill_Side_Overlap_Side.obj-4b78308b0cd7e2fcc9ceccd166a3b27d.mesh", "res://.godot/imported/Hilly_Terrain_Hill_Side_Overlap_Side.obj-4b78308b0cd7e2fcc9ceccd166a3b27d.mesh"]
+
+[params]
+
+generate_tangents=true
+scale_mesh=Vector3(1, 1, 1)
+offset_mesh=Vector3(0, 0, 0)
+optimize_mesh=true

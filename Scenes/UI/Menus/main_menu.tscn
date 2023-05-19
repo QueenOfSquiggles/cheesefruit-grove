@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=3]
+[gd_scene load_steps=9 format=3 uid="uid://b4l37id685tw"]
 
 [ext_resource type="Script" path="res://Scenes/UI/Menus/MainMenu.cs" id="1_ef7d4"]
 [ext_resource type="Script" path="res://addons/dynamic-web-content/elements/dynamic_image_button.gd" id="2_somet"]
@@ -83,7 +83,7 @@ layout_mode = 2
 [node name="BtnPlay" type="Button" parent="ControlButtons/VBoxContainer"]
 layout_mode = 2
 size_flags_vertical = 3
-text = "Play"
+text = "main_menu.play"
 
 [node name="RequestFocusOnParent" parent="ControlButtons/VBoxContainer/BtnPlay" instance=ExtResource("3_k7orp")]
 layout_mode = 1
@@ -93,22 +93,21 @@ layout_mode = 1
 [node name="BtnOptions" type="Button" parent="ControlButtons/VBoxContainer"]
 layout_mode = 2
 size_flags_vertical = 3
-text = "Options"
+text = "main_menu.options"
 
 [node name="UISounds" parent="ControlButtons/VBoxContainer/BtnOptions" instance=ExtResource("4_geber")]
 
 [node name="BtnCredits" type="Button" parent="ControlButtons/VBoxContainer"]
 layout_mode = 2
 size_flags_vertical = 3
-text = "Credits
-"
+text = "main_menu.credits"
 
 [node name="UISounds" parent="ControlButtons/VBoxContainer/BtnCredits" instance=ExtResource("4_geber")]
 
 [node name="BtnQuit" type="Button" parent="ControlButtons/VBoxContainer"]
 layout_mode = 2
 size_flags_vertical = 3
-text = "Quit"
+text = "main_menu.quit"
 
 [node name="UISounds" parent="ControlButtons/VBoxContainer/BtnQuit" instance=ExtResource("4_geber")]
 
@@ -131,7 +130,7 @@ offset_top = -42.0
 offset_right = 275.0
 offset_bottom = -2.0
 grow_vertical = 0
-text = "Made By QueenOfSquiggles"
+text = "main_menu.made_by"
 underline = 1
 uri = "https://queenofsquiggles.itch.io/"
 
@@ -147,7 +146,7 @@ anchor_right = 1.0
 offset_left = -40.0
 offset_bottom = 33.0
 grow_horizontal = 0
-text = "Lorem Ipsum"
+text = "Dyanamic Versioning Text"
 label_settings = SubResource("LabelSettings_0pa6q")
 script = ExtResource("7_1dicm")
 

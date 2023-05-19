@@ -23,11 +23,11 @@ ResourceScriptDirectories=["res://"]
 
 [application]
 
-config/name="SquiggleZone Game Base"
+config/name="Cute Magical Farming Sim"
 run/main_scene="res://Scenes/UI/LaunchSequence/launch_sequence.tscn"
-config/features=PackedStringArray("4.0", "C#", "Forward Plus")
+config/features=PackedStringArray("4.0", "Forward Plus")
 boot_splash/show_image=false
-config/icon="res://icon.svg"
+config/icon="res://icon.png"
 
 [autoload]
 
@@ -35,8 +35,6 @@ DynamicContentManager="*res://addons/dynamic-web-content/autoload/dynamic_conten
 BGM="*res://Scenes/Utility/Autoload/bgm.tscn"
 Scenes="*res://Scenes/Utility/Autoload/scenes.tscn"
 ModLoadingStep="*res://Scenes/Modification/mod_loading_step.tscn"
-ItemRegistry="*res://Modules/Items/ItemRegistry.cs"
-ConstanceMousePosShaderUpdate="*res://Scenes/ShaderSystems/constance_mouse_pos_shader_update.tscn"
 
 [display]
 
@@ -56,6 +54,10 @@ naming/default_signal_callback_name="_on_{signal_name}"
 [editor_plugins]
 
 enabled=PackedStringArray("res://addons/dynamic-web-content/plugin.cfg", "res://addons/MonoCustomResourceRegistry/plugin.cfg")
+
+[filesystem]
+
+import/fbx/enabled=false
 
 [gui]
 
@@ -185,6 +187,11 @@ pickup_item={
 "events": [Object(InputEventMouseButton,"resource_local_to_scene":false,"resource_name":"","device":-1,"window_id":0,"alt_pressed":false,"shift_pressed":false,"ctrl_pressed":false,"meta_pressed":false,"button_mask":0,"position":Vector2(0, 0),"global_position":Vector2(0, 0),"factor":1.0,"button_index":1,"pressed":false,"double_click":false,"script":null)
 ]
 }
+
+[internationalization]
+
+locale/translation_remaps={}
+locale/translations=PackedStringArray("res://Assets/Translation/translations_sheet.en.translation")
 
 [physics]
 
