@@ -12,14 +12,14 @@ using queen.extension;
 public partial class PsuedoAAACharController : CharacterBody3D
 {
     [ExportGroup("Movement Stats")]
-    [Export] private float Speed = 2.0f;
-    [Export] private float SprintSpeed = 5.0f;
-    [Export] private float Acceleration = 0.3f;
-    [Export] private float JumpVelocity = 4.5f;
-    [Export] private float mouse_sensitivity;
-    [Export] private float CrouchSpeedScale = 0.45f;
-    [Export] private float StepHeight = 0.4f;
-    [Export] private float StepStrength = 3.0f;
+    [Export] protected float Speed = 2.0f;
+    [Export] protected float SprintSpeed = 5.0f;
+    [Export] protected float Acceleration = 0.3f;
+    [Export] protected float JumpVelocity = 4.5f;
+    [Export] protected float mouse_sensitivity;
+    [Export] protected float CrouchSpeedScale = 0.45f;
+    [Export] protected float StepHeight = 0.4f;
+    [Export] protected float StepStrength = 3.0f;
 
     [ExportGroup("Node Paths")]
     [Export] private NodePath PathVCam;
@@ -30,24 +30,24 @@ public partial class PsuedoAAACharController : CharacterBody3D
     [Export] private NodePath PathInteractRay;
 
     // References
-    private VirtualCamera vcam;
-    private AnimationPlayer anim;
-    private RayCast3D CanStandCheck;
-    private RayCast3D CanStepCheckTop;
-    private RayCast3D CanStepCheckBottom;
-    private RayCast3D InteractionRay;
+    protected VirtualCamera vcam;
+    protected AnimationPlayer anim;
+    protected RayCast3D CanStandCheck;
+    protected RayCast3D CanStepCheckTop;
+    protected RayCast3D CanStepCheckBottom;
+    protected RayCast3D InteractionRay;
 
     // Values
-    private Vector2 camera_look_vector = new();
-    private float gravity = ProjectSettings.GetSetting("physics/3d/default_gravity").AsSingle();
-    private float CurrentSpeed = 0.0f;
-    private bool IsCrouching = false;
-    private bool IsOnStairs = false;
+    protected Vector2 camera_look_vector = new();
+    protected float gravity = ProjectSettings.GetSetting("physics/3d/default_gravity").AsSingle();
+    protected float CurrentSpeed = 0.0f;
+    protected bool IsCrouching = false;
+    protected bool IsOnStairs = false;
 
-    private float CanStepCheckTop_CastLength = 1.0f;
+    protected float CanStepCheckTop_CastLength = 1.0f;
     private float CanStepCheckBottom_CastLength = 1.0f;
-    private Vector2 InputVector = new();
-    private bool LastWasInteractable = false;
+    protected Vector2 InputVector = new();
+    protected bool LastWasInteractable = false;
 
     public override void _Ready()
     {
@@ -104,8 +104,6 @@ public partial class PsuedoAAACharController : CharacterBody3D
         Vector3 direction = (Transform.Basis * new Vector3(InputVector.X, 0, InputVector.Y)).Normalized();
         if (direction != Vector3.Zero)
         {
-
-
             // TODO Holy fuck this is some messy logic. This should really get cleaned up somehow. Maybe by having a series of contributing factors? IDK
             // Sprint or No Sprint
             var target_speed = (IsOnFloor() && Input.IsActionPressed("sprint")) ? SprintSpeed : Speed;
@@ -184,8 +182,7 @@ public partial class PsuedoAAACharController : CharacterBody3D
         {
             handled |= InputMouseLook(e);
             handled |= InputInteract(e);
-            handled |= InputCrouch(e);
-            handled |= InputOpenInventory(e);
+            handled |= ExtraInputEventHandling(e);
             // TODO add in other controls here!
 
         }
@@ -227,25 +224,11 @@ public partial class PsuedoAAACharController : CharacterBody3D
         return true;
     }
 
-    private bool InputCrouch(InputEvent e)
+    protected virtual bool ExtraInputEventHandling(InputEvent e)
     {
-        if (!e.IsActionPressed("crouch")) return false;
-        if (IsCrouching && CanStandCheck.IsColliding()) return false;
-        IsCrouching = !IsCrouching;
-        if (IsCrouching) anim.Play("Crouch");
-        else anim.PlayBackwards("Crouch");
-
-        return true;
+        Print.Debug($"AAA Controller is firing '{nameof(ExtraInputEventHandling)}'");
+        return false;
     }
 
-    private bool InventoryToggle = false;
-    private bool InputOpenInventory(InputEvent e)
-    {
-        if (!e.IsActionPressed("open_inventory")) return false;
-        InventoryToggle = !InventoryToggle;
-        Events.GUI.TriggerRequestInventory(InventoryToggle);
-        Velocity = Vector3.Zero;
-        return true;
-    }
 
 }
