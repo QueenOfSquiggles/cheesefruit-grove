@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using Godot;
 using queen.error;
+using queen.events;
 using queen.extension;
 
 public partial class RegistrationManager : Node
@@ -20,9 +21,19 @@ public partial class RegistrationManager : Node
     public override void _Ready()
     {
         if (!this.EnsureSingleton(ref Instance)) return;
+        ReloadRegistries();
+        Events.Data.OnModsLoaded += () =>
+        {
+            Print.Debug("Mods loaded. Reloading registries");
+            ReloadRegistries();
+        };
+    }
+
+    public void ReloadRegistries()
+    {
         Print.Debug("[Registration Manager] - Begin registration");
-        Plots = LoadRegistry<Plot>(REGISTRY_PATH_PLOTS, (Plot plot) => plot.ID, nameof(Plot));
-        Entities = LoadRegistry<WorldEntity>(REGISTRY_PATH_ENTITIES, (WorldEntity we) => we.ID, nameof(WorldEntity));
+        Plots = LoadRegistry(REGISTRY_PATH_PLOTS, (Plot plot) => plot.ID, nameof(Plot));
+        Entities = LoadRegistry(REGISTRY_PATH_ENTITIES, (WorldEntity we) => we.ID, nameof(WorldEntity));
         Print.Debug("[Registration Manager] - End registration");
     }
 
@@ -43,7 +54,6 @@ public partial class RegistrationManager : Node
             var temp = GD.Load<T>(f);
             if (temp is not null)
             {
-                Print.Debug($"Found registry resource [{label}] : {f}");
                 registry.Add(idGenCallback(temp), temp);
             }
             else
@@ -51,11 +61,11 @@ public partial class RegistrationManager : Node
                 Print.Debug($"file '{f}' is not valid for type [{label}]");
             }
         }
-        PrintRegistry(registry);
+        PrintRegistry(registry, label);
         return registry;
     }
 
-    private void PrintRegistry<T>(Dictionary<string, T> reg, string label = "unlabeled") where T : Resource
+    private void PrintRegistry<T>(Dictionary<string, T> reg, string label) where T : Resource
     {
         Print.Debug($"----['{label}' Registry ({reg.Count} elements) ]----");
         foreach (var pair in reg)

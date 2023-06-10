@@ -13,12 +13,14 @@ public static class ModRegistry
 {
 
     private const string MODS_PATH = "user://Mods";
+    public static int LoadedMods { get; private set; } = 0;
     private static List<IModificationAdapter> mods = new();
 
 
 
     public static void OnRegisterMods()
     {
+        Print.Debug($"[ModRegistry] Loaded {mods.Count} mods");
         foreach (var mod in mods)
             mod.OnRegister();
     }
@@ -27,17 +29,17 @@ public static class ModRegistry
     {
         foreach (var mod in mods)
             mod.OnUnRegister();
-
     }
 
 
     public static void LoadModsRecursively()
     {
+        LoadedMods = 0;
         var directory = ProjectSettings.GlobalizePath(MODS_PATH);
+        if (!DirAccess.DirExistsAbsolute(directory)) DirAccess.MakeDirRecursiveAbsolute(directory);
         using var dir = DirAccess.Open(directory);
         if (dir == null)
         {
-            DirAccess.MakeDirRecursiveAbsolute(directory);
             Print.Error($"Failed to load mods during mod step. Error: {DirAccess.GetOpenError()}");
             return;
         }
@@ -50,26 +52,38 @@ public static class ModRegistry
 
     private static void LoadModFromDir(string directory)
     {
+        Print.Debug($"Attempting to load mod from directory: '{directory}'");
         using var dir = DirAccess.Open(directory);
-        if (dir == null) return;
-        string packFile = null;
-        string dllFile = null;
+        if (dir == null)
+        {
+            Print.Warn("failed to open dir");
+            return;
+        }
+        string? packFile = null;
+        string? dllFile = null;
         foreach (var file in dir.GetFiles())
         {
             if (file.ToLower().EndsWith("dll")) dllFile = file;
+            if (file.ToLower().EndsWith("pck")) packFile = file;
         }
-        if (packFile is null) return;
+        if (packFile is null)
+        {
+            Print.Warn("No pack file found. Not a valid mod");
+            return;
+        }
+        Print.Debug($"Found pack file '{packFile}'" + (dllFile is null ? "" : $", DLL found '{dllFile}'"));
 
         // DLL is technically optional. Asset swapping doesn't require code. And some small mods could just use GDScript
         if (dllFile is not null) Assembly.LoadFile(directory.PathJoin(dllFile));
 
         // Load in the pack file. By default files are replaced to allow asset swapping.
-        var result = ProjectSettings.LoadResourcePack(packFile);
+        var result = ProjectSettings.LoadResourcePack(directory.PathJoin(packFile), true);
         if (!result)
         {
             Print.Error($"Failed to load Patch/Mod archive from: {packFile}");
             return;
         }
+        LoadedMods++;
         Print.Debug($"Loaded modification from {packFile}");
         if (dllFile is not null)
         {
@@ -77,8 +91,7 @@ public static class ModRegistry
             // example adapter path: res://HD_Models_And_Textures/ModAdapter.cs
             var modName = packFile.GetBaseName();
             var modAdapterScriptPath = $"res://{modName}/ModAdapter.cs";
-            var script = ResourceLoader.Load(modAdapterScriptPath) as CSharpScript;
-            if (script is null)
+            if (ResourceLoader.Load(modAdapterScriptPath) is not CSharpScript)
             {
                 Print.Error($"Failed to load C# script from {modAdapterScriptPath}. In order to receive method calls, an adapter must be placed in this exact position for this mod '{modName}'");
                 return;

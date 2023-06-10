@@ -72,7 +72,11 @@ public class EventsInventory
 
 public class EventsData
 {
+    public event Action OnModsLoaded;
+
     public event Action SerializeAll;
 
     public void TriggerSerializeAll() => SerializeAll?.Invoke();
+
+    public void TriggerOnModsLoaded() => OnModsLoaded?.Invoke();
 }

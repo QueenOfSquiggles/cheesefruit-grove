@@ -1,31 +1,77 @@
-[gd_scene load_steps=6 format=3 uid="uid://djvlmhr2jxix4"]
+[gd_scene load_steps=10 format=3 uid="uid://djvlmhr2jxix4"]
 
-[ext_resource type="PackedScene" uid="uid://buiwria0scnlv" path="res://Scenes/Character/Player/pseudo_aaa_fps_controller.tscn" id="1_60ukf"]
 [ext_resource type="Script" path="res://Scenes/Character/Player/FarmingController.cs" id="2_bvbvy"]
+[ext_resource type="PackedScene" path="res://Scenes/Utility/CameraUtilities/virtual_camera.tscn" id="2_wdgcp"]
 [ext_resource type="PackedScene" uid="uid://bqwng1o8by3wt" path="res://Scenes/ItemSystems/Collection/item_collector.tscn" id="3_vf455"]
+[ext_resource type="PackedScene" uid="uid://db4g3dbnfr7m5" path="res://Scenes/ShaderSystems/set_shader_global_position.tscn" id="4_hlkr2"]
+[ext_resource type="PackedScene" uid="uid://dg7138iwmapsx" path="res://Scenes/Character/Components/footstep_sounds_component.tscn" id="5_plq7p"]
+
+[sub_resource type="PhysicsMaterial" id="PhysicsMaterial_1i6tb"]
+friction = 0.41
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_ltvba"]
 
 [sub_resource type="SphereShape3D" id="SphereShape3D_5lf0f"]
 
 [sub_resource type="CylinderShape3D" id="CylinderShape3D_s2n37"]
 height = 4.0
 
-[node name="Farming Controller" instance=ExtResource("1_60ukf")]
+[node name="Farming Controller" type="RigidBody3D"]
+input_ray_pickable = false
+axis_lock_angular_x = true
+axis_lock_angular_y = true
+axis_lock_angular_z = true
+physics_material_override = SubResource("PhysicsMaterial_1i6tb")
+can_sleep = false
 script = ExtResource("2_bvbvy")
-ShootImpulseForce = 9.8
-ActiveSpaceOverride = 2
+Speed = 10.0
+SprintSpeed = 20.0
+mouse_sensitivity = 0.003
+StepStrength = 5.0
 PathItemCollector = NodePath("CamRoot/CameraSway/VirtualCamera/ItemCollector")
 PathSuctionArea = NodePath("CamRoot/CameraSway/VirtualCamera/SuctionForceField")
-Speed = 5.0
-SprintSpeed = 10.0
+PathVCam = NodePath("CamRoot/CameraSway/VirtualCamera")
+PathVCamRoot = NodePath("CamRoot")
+PathStepCheckTop = NodePath("StepRayTop")
+PathStepCheckBottom = NodePath("StepRayBottom")
+PathInteractRay = NodePath("CamRoot/CameraSway/VirtualCamera/InteractRay")
 
-[node name="ItemCollector" parent="CamRoot/CameraSway/VirtualCamera" index="1" instance=ExtResource("3_vf455")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -1)
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+shape = SubResource("CapsuleShape3D_ltvba")
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="CamRoot/CameraSway/VirtualCamera/ItemCollector" index="0"]
+[node name="StepRayTop" type="RayCast3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.22997, 0)
+target_position = Vector3(0, 0, -0.35)
+debug_shape_custom_color = Color(0, 1, 1, 1)
+debug_shape_thickness = 5
+
+[node name="StepRayBottom" type="RayCast3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0150951, 0)
+target_position = Vector3(0, 0, -0.5)
+debug_shape_custom_color = Color(0, 1, 0, 1)
+
+[node name="CamRoot" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5, 0)
+
+[node name="CameraSway" type="Node3D" parent="CamRoot"]
+
+[node name="VirtualCamera" parent="CamRoot/CameraSway" instance=ExtResource("2_wdgcp")]
+PushCamOnReady = true
+AllowVCamChildren = true
+
+[node name="InteractRay" type="RayCast3D" parent="CamRoot/CameraSway/VirtualCamera"]
+target_position = Vector3(0, 0, -4)
+collide_with_areas = true
+
+[node name="ItemCollector" parent="CamRoot/CameraSway/VirtualCamera" instance=ExtResource("3_vf455")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.528579)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="CamRoot/CameraSway/VirtualCamera/ItemCollector"]
 shape = SubResource("SphereShape3D_5lf0f")
 
-[node name="SuctionForceField" type="Area3D" parent="CamRoot/CameraSway/VirtualCamera" index="2"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -1)
+[node name="SuctionForceField" type="Area3D" parent="CamRoot/CameraSway/VirtualCamera"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.528579)
 monitorable = false
 gravity_space_override = 2
 gravity_point = true
@@ -34,9 +80,14 @@ gravity_point_center = Vector3(0, 0, 0)
 gravity_direction = Vector3(0, 0, 0)
 gravity = 19.6
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="CamRoot/CameraSway/VirtualCamera/SuctionForceField" index="0"]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="CamRoot/CameraSway/VirtualCamera/SuctionForceField"]
 transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, -2)
 shape = SubResource("CylinderShape3D_s2n37")
+
+[node name="SetShaderGlobalPosition" parent="." instance=ExtResource("4_hlkr2")]
+uniform_name = "player_position"
+
+[node name="FootstepSoundsComponent" parent="." instance=ExtResource("5_plq7p")]
 
 [connection signal="OnItemPickup" from="CamRoot/CameraSway/VirtualCamera/ItemCollector" to="." method="OnPickupItem"]
 [connection signal="body_entered" from="CamRoot/CameraSway/VirtualCamera/SuctionForceField" to="." method="OnBodyEnterSuctionZone"]

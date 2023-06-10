@@ -13,3 +13,5 @@ export/**
 # C Sharp Ignores
 **/obj/**
 *.cache
+
+.Export/
