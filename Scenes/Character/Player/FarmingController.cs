@@ -8,7 +8,7 @@ using queen.error;
 using queen.events;
 using queen.extension;
 
-public partial class FarmingController : RigidBody3D
+public partial class FarmingController : CharacterBody3D
 {
 
     [ExportCategory("Farm Character")]
@@ -186,7 +186,7 @@ public partial class FarmingController : RigidBody3D
 
     public override void _PhysicsProcess(double delta)
     {
-        Vector3 velocity = LinearVelocity;
+        Vector3 velocity = new Vector3();
         if (Input.MouseMode == Input.MouseModeEnum.Captured)
         {
             CamLookLogic(delta);
@@ -194,6 +194,8 @@ public partial class FarmingController : RigidBody3D
             JumpLogic(ref velocity, delta);
             StepLogic(ref velocity, delta);
         }
+        Velocity = velocity;
+        MoveAndSlide();
 
     }
 
@@ -202,9 +204,8 @@ public partial class FarmingController : RigidBody3D
         // Add the gravity.
 
         // Handle Jump.
-        // FIXME
-        // if (Input.IsActionJustPressed("ui_accept") && IsOnFloor())
-        //     velocity.Y = JumpVelocity;
+        if (Input.IsActionJustPressed("jump") && IsOnFloor())
+            velocity.Y = JumpVelocity;
     }
 
     private void CamMoveLogic(ref Vector3 velocity, double delta)
@@ -214,26 +215,30 @@ public partial class FarmingController : RigidBody3D
         if (InputVector.LengthSquared() < 0.1f)
             InputVector = Input.GetVector("gamepad_move_left", "gamepad_move_right", "gamepad_move_forward", "gamepad_move_back");
 
-        Vector3 direction = VCamRoot.GlobalTransform.Basis.Z * InputVector.Y;
-        direction += VCamRoot.GlobalTransform.Basis.X * InputVector.X;
+        Vector3 direction = new();
+        direction += vcam.GlobalTransform.Forward() * -InputVector.Y;
+        direction += vcam.GlobalTransform.Right() * InputVector.X;
+        direction.Y = 0f;
+        direction = direction.Normalized();
+
+
         if (direction != Vector3.Zero)
         {
+            // TODO Holy fuck this is some messy logic. This should really get cleaned up somehow. Maybe by having a series of contributing factors? IDK
             // Sprint or No Sprint
             var target_speed = (IsOnFloor() && Input.IsActionPressed("sprint")) ? SprintSpeed : Speed;
+            // Crouching so speed is slowed unless on stairs
             CurrentSpeed = Mathf.Lerp(CurrentSpeed, target_speed, Acceleration);
+            velocity.X += direction.X * CurrentSpeed;
+            velocity.Z += direction.Z * CurrentSpeed;
         }
         else
         {
             CurrentSpeed = Mathf.Lerp(CurrentSpeed, 0, Acceleration);
+            velocity.X = Mathf.MoveToward(Velocity.X, 0, CurrentSpeed);
+            velocity.Z = Mathf.MoveToward(Velocity.Z, 0, CurrentSpeed);
         }
-
-        var target_velocity = direction * CurrentSpeed;
-        var velocity_error = target_velocity - LinearVelocity;
-        var correction_impulse = _PID.Update(velocity_error, (float)delta) * CORRECTION_IMPULSE_FACTOR;
-        // TODO movement feels wrong. How to fix?
-        ApplyCentralImpulse(correction_impulse);
     }
-
     private void StepLogic(ref Vector3 velocity, double _delta)
     {
         if (InputVector.LengthSquared() < 0.8f) return;

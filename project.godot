@@ -37,6 +37,30 @@ Scenes="*res://Scenes/Utility/Autoload/scenes.tscn"
 ModLoadingStep="*res://Scenes/Modification/mod_loading_step.tscn"
 RegistrationManager="*res://Scenes/RegistrationManager/RegistrationManager.cs"
 
+[dialogic]
+
+settings/text_speed=0.01
+text/skippable=true
+text/autoadvance_delay=1.0
+text/hide_empty_textbox=true
+animations/join_default_length=0.5
+animations/leave_default_length=0.5
+animations/leave_default_wait=true
+animations/join_default_wait=true
+choices/autofocus_first=true
+choices/delay=0.2
+choices/reveal_delay=0
+choices/reveal_by_input=false
+save/autosave_delay=60.0
+translation/enabled=true
+translation/original_locale="en"
+translation/file_mode=0
+translation/translation_folder="res://Assets/Translation"
+text/autopauses={}
+layout/mode=0
+variables={}
+glossary/default_case_sensitive=true
+
 [display]
 
 window/size/viewport_width=1920
@@ -54,7 +78,7 @@ naming/default_signal_callback_name="_on_{signal_name}"
 
 [editor_plugins]
 
-enabled=PackedStringArray("res://addons/dynamic-web-content/plugin.cfg", "res://addons/MonoCustomResourceRegistry/plugin.cfg")
+enabled=PackedStringArray("res://addons/MonoCustomResourceRegistry/plugin.cfg", "res://addons/dynamic-web-content/plugin.cfg")
 
 [filesystem]
 
@@ -181,11 +205,26 @@ shoot={
 "events": [Object(InputEventMouseButton,"resource_local_to_scene":false,"resource_name":"","device":-1,"window_id":0,"alt_pressed":false,"shift_pressed":false,"ctrl_pressed":false,"meta_pressed":false,"button_mask":1,"position":Vector2(127, 19),"global_position":Vector2(131, 62),"factor":1.0,"button_index":1,"pressed":true,"double_click":false,"script":null)
 ]
 }
+dialogic_default_action={
+"deadzone": 0.5,
+"events": [Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"window_id":0,"alt_pressed":false,"shift_pressed":false,"ctrl_pressed":false,"meta_pressed":false,"pressed":false,"keycode":4194309,"physical_keycode":0,"key_label":0,"unicode":0,"echo":false,"script":null)
+, Object(InputEventMouseButton,"resource_local_to_scene":false,"resource_name":"","device":-1,"window_id":0,"alt_pressed":false,"shift_pressed":false,"ctrl_pressed":false,"meta_pressed":false,"button_mask":0,"position":Vector2(0, 0),"global_position":Vector2(0, 0),"factor":1.0,"button_index":1,"pressed":true,"double_click":false,"script":null)
+, Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"window_id":0,"alt_pressed":false,"shift_pressed":false,"ctrl_pressed":false,"meta_pressed":false,"pressed":false,"keycode":32,"physical_keycode":0,"key_label":0,"unicode":0,"echo":false,"script":null)
+, Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"window_id":0,"alt_pressed":false,"shift_pressed":false,"ctrl_pressed":false,"meta_pressed":false,"pressed":false,"keycode":88,"physical_keycode":0,"key_label":0,"unicode":0,"echo":false,"script":null)
+, Object(InputEventJoypadButton,"resource_local_to_scene":false,"resource_name":"","device":0,"button_index":0,"pressure":0.0,"pressed":false,"script":null)
+]
+}
 
 [internationalization]
 
 locale/translation_remaps={}
 locale/translations=PackedStringArray("res://Assets/Translation/translations_sheet.en.translation")
+
+[layer_names]
+
+3d_physics/layer_1="world_physics"
+3d_physics/layer_2="items_gravity"
+3d_physics/layer_3="player_interactions"
 
 [rendering]
 

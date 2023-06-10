@@ -1,13 +1,10 @@
-[gd_scene load_steps=10 format=3 uid="uid://djvlmhr2jxix4"]
+[gd_scene load_steps=9 format=3 uid="uid://djvlmhr2jxix4"]
 
 [ext_resource type="Script" path="res://Scenes/Character/Player/FarmingController.cs" id="2_bvbvy"]
 [ext_resource type="PackedScene" path="res://Scenes/Utility/CameraUtilities/virtual_camera.tscn" id="2_wdgcp"]
 [ext_resource type="PackedScene" uid="uid://bqwng1o8by3wt" path="res://Scenes/ItemSystems/Collection/item_collector.tscn" id="3_vf455"]
 [ext_resource type="PackedScene" uid="uid://db4g3dbnfr7m5" path="res://Scenes/ShaderSystems/set_shader_global_position.tscn" id="4_hlkr2"]
 [ext_resource type="PackedScene" uid="uid://dg7138iwmapsx" path="res://Scenes/Character/Components/footstep_sounds_component.tscn" id="5_plq7p"]
-
-[sub_resource type="PhysicsMaterial" id="PhysicsMaterial_1i6tb"]
-friction = 0.41
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_ltvba"]
 
@@ -16,13 +13,11 @@ friction = 0.41
 [sub_resource type="CylinderShape3D" id="CylinderShape3D_s2n37"]
 height = 4.0
 
-[node name="Farming Controller" type="RigidBody3D"]
+[node name="Farming Controller" type="CharacterBody3D"]
 input_ray_pickable = false
 axis_lock_angular_x = true
 axis_lock_angular_y = true
 axis_lock_angular_z = true
-physics_material_override = SubResource("PhysicsMaterial_1i6tb")
-can_sleep = false
 script = ExtResource("2_bvbvy")
 Speed = 10.0
 SprintSpeed = 20.0
@@ -62,16 +57,21 @@ AllowVCamChildren = true
 
 [node name="InteractRay" type="RayCast3D" parent="CamRoot/CameraSway/VirtualCamera"]
 target_position = Vector3(0, 0, -4)
+collision_mask = 4
 collide_with_areas = true
 
 [node name="ItemCollector" parent="CamRoot/CameraSway/VirtualCamera" instance=ExtResource("3_vf455")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.528579)
+collision_layer = 2
+collision_mask = 2
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="CamRoot/CameraSway/VirtualCamera/ItemCollector"]
 shape = SubResource("SphereShape3D_5lf0f")
 
 [node name="SuctionForceField" type="Area3D" parent="CamRoot/CameraSway/VirtualCamera"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.528579)
+collision_layer = 2
+collision_mask = 2
 monitorable = false
 gravity_space_override = 2
 gravity_point = true
