@@ -51,14 +51,16 @@ public partial class RegistrationManager : Node
 
         foreach (string f in files)
         {
-            var temp = GD.Load<T>(f);
+            var fileName = f.Replace(".remap", ""); // clear remap files to load default version
+
+            var temp = GD.Load<T>(fileName);
             if (temp is not null)
             {
                 registry.Add(idGenCallback(temp), temp);
             }
             else
             {
-                Print.Debug($"file '{f}' is not valid for type [{label}]");
+                Print.Debug($"file '{fileName}' is not valid for type [{label}]");
             }
         }
         PrintRegistry(registry, label);

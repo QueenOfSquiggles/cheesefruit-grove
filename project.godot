@@ -31,10 +31,10 @@ config/icon="res://icon.png"
 
 [autoload]
 
+ModLoadingStep="*res://Scenes/Modification/mod_loading_step.tscn"
 DynamicContentManager="*res://addons/dynamic-web-content/autoload/dynamic_content_manager.gd"
 BGM="*res://Scenes/Utility/Autoload/bgm.tscn"
 Scenes="*res://Scenes/Utility/Autoload/scenes.tscn"
-ModLoadingStep="*res://Scenes/Modification/mod_loading_step.tscn"
 RegistrationManager="*res://Scenes/RegistrationManager/RegistrationManager.cs"
 
 [dialogic]
@@ -78,7 +78,7 @@ naming/default_signal_callback_name="_on_{signal_name}"
 
 [editor_plugins]
 
-enabled=PackedStringArray("res://addons/MonoCustomResourceRegistry/plugin.cfg", "res://addons/dynamic-web-content/plugin.cfg")
+enabled=PackedStringArray("res://addons/dynamic-web-content/plugin.cfg", "res://addons/MonoCustomResourceRegistry/plugin.cfg")
 
 [filesystem]
 

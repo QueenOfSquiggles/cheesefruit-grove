@@ -61,7 +61,7 @@ public partial class ControlsTab : PanelContainer
 
         if (is_valid)
         {
-            Print.MsgOut(new Msg($"Processing input event override for action {CurrentActionTarget}, received event:\n\t{e.AsText()}"));
+            Print.Debug($"Processing input event override for action {CurrentActionTarget}, received event: {e.AsText()}");
             Controls.Instance.SetMapping(CurrentActionTarget, e);
             CurrentActionTarget = "";
             Listening = false;

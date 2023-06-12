@@ -34,6 +34,12 @@ public static class ModRegistry
 
     public static void LoadModsRecursively()
     {
+        if (OS.HasFeature("editor"))
+        {
+            Print.Warn("Mod loading is disabled while in editor. Use an exported version in debug mode for testing mods.");
+            return;
+        }
+
         LoadedMods = 0;
         var directory = ProjectSettings.GlobalizePath(MODS_PATH);
         if (!DirAccess.DirExistsAbsolute(directory)) DirAccess.MakeDirRecursiveAbsolute(directory);
@@ -48,6 +54,7 @@ public static class ModRegistry
         var dirs = dir.GetDirectories();
         foreach (var modDir in dirs)
             LoadModFromDir(directory.PathJoin(modDir));
+        LoadModFromDir(directory); // try load mod from root, has unreliable results with multiple mods
     }
 
     private static void LoadModFromDir(string directory)
@@ -77,7 +84,7 @@ public static class ModRegistry
         if (dllFile is not null) Assembly.LoadFile(directory.PathJoin(dllFile));
 
         // Load in the pack file. By default files are replaced to allow asset swapping.
-        var result = ProjectSettings.LoadResourcePack(directory.PathJoin(packFile), true);
+        var result = ProjectSettings.LoadResourcePack(directory.PathJoin(packFile));
         if (!result)
         {
             Print.Error($"Failed to load Patch/Mod archive from: {packFile}");

@@ -1,10 +1,8 @@
-[gd_scene load_steps=11 format=3 uid="uid://ci8028xlquyq1"]
+[gd_scene load_steps=9 format=3 uid="uid://ci8028xlquyq1"]
 
 [ext_resource type="PackedScene" path="res://Scenes/Utility/AccessHelp/force_access_load.tscn" id="2_kdbm6"]
 [ext_resource type="Script" path="res://Scenes/UI/LaunchSequence/LaunchSequence.cs" id="2_q1rby"]
 [ext_resource type="PackedScene" path="res://Scenes/Utility/Effects/cutscene_skipper.tscn" id="3_ngdg6"]
-[ext_resource type="Texture2D" uid="uid://b8oldtahjeklr" path="res://Scenes/UI/LaunchSequence/godot_logo_large_color_dark.svg" id="4_xynbv"]
-[ext_resource type="Texture2D" uid="uid://d0b6uaea3iq27" path="res://Assets/Krita/game_title_icon.png" id="5_l4rqn"]
 [ext_resource type="PackedScene" path="res://Scenes/Utility/Environment/load_graphics_settings.tscn" id="6_mmmhm"]
 
 [sub_resource type="Animation" id="Animation_sphh6"]
@@ -207,7 +205,6 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-texture = ExtResource("4_xynbv")
 stretch_mode = 5
 
 [node name="LblAGameBy" type="Label" parent="."]
@@ -238,7 +235,6 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-texture = ExtResource("5_l4rqn")
 expand_mode = 1
 stretch_mode = 5
 

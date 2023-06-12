@@ -5,68 +5,93 @@ namespace queen.error;
 
 public class Msg
 {
-    private string text;
+    public string Text { get; private set; } = "";
+    public string ColourModifiers { get; private set; } = "{0}";
+    public string MsgType { get; private set; } = "MISC";
+    public int LogLevel { get; private set; } = 0;
+    public bool IsWarning { get; private set; } = false;
+    public bool IsError { get; private set; } = false;
 
-    public Msg(string text)
+
+    public Msg(string text, bool isWarn = false, bool isErr = false)
     {
-        this.text = text;
+        Text = text;
+        IsWarning = isWarn;
+        IsError = isErr;
+    }
+
+    public Msg SetLevel(int level)
+    {
+        LogLevel = level;
+        return this;
+    }
+
+    public Msg SetType(string type)
+    {
+        MsgType = type;
+        return this;
     }
 
     ///  See Godot.Colors for names (There's a ton of them)
     public Msg Color(string col)
     {
-        text = $"[color={col}]{text}[/color]";
+        ColourModifiers = $"[color={col}]{Text}[/color]";
         return this;
     }
 
     public Msg Bold()
     {
-        text = $"[b]{text}[/b]";
+        ColourModifiers = $"[b]{ColourModifiers}[/b]";
         return this;
     }
     public Msg Italics()
     {
-        text = $"[i]{text}[/i]";
+        ColourModifiers = $"[i]{ColourModifiers}[/i]";
         return this;
     }
 
     public Msg Underlined()
     {
-        text = $"[u]{text}[/u]";
+        ColourModifiers = $"[u]{ColourModifiers}[/u]";
         return this;
     }
 
     public Msg Monospaced()
     {
-        text = $"[code]{text}[/code]";
+        ColourModifiers = $"[code]{ColourModifiers}[/code]";
         return this;
     }
 
     public Msg BGColour(string colour)
     {
-        text = $"[bgcolor={colour}]{text}[/bgcolor]";
+        ColourModifiers = $"[bgcolor={colour}]{ColourModifiers}[/bgcolor]";
         return this;
     }
     public Msg FGColour(string colour)
     {
-        text = $"[fgcolor={colour}]{text}[/fgcolor]";
+        ColourModifiers = $"[fgcolor={colour}]{ColourModifiers}[/fgcolor]";
         return this;
     }
     public Msg AlignCenter()
     {
-        text = $"[center]{text}[/center]";
+        ColourModifiers = $"[center]{ColourModifiers}[/center]";
         return this;
     }
     public Msg AlignRight()
     {
-        text = $"[right]{text}[/right]";
+        ColourModifiers = $"[right]{ColourModifiers}[/right]";
         return this;
     }
     public Msg Indent()
     {
-        text = $"[indent]{text}[/indent]";
+        ColourModifiers = $"[indent]{ColourModifiers}[/indent]";
         return this;
-    }    
+    }
 
-    public string GetAsText() => text;
+    public string WrapFormatting(string input)
+    {
+        return string.Format(ColourModifiers, input);
+    }
+
+
 }
