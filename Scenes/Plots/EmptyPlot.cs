@@ -10,8 +10,10 @@ public partial class EmptyPlot : Node3D
     [Export] private NodePath PathPromptNewPlot;
     [Export] private NodePath PathPlotRoot;
     [Export] private NodePath PathInteractionTrigger;
+    [Export] private NodePath PathPlotLabel;
 
     private Node3D? PlotRoot;
+    private Label3D? PlotLabel;
     private PopupMenu MenuPromptNewPlot;
     private InteractiveTrigger InteractTrigger;
 
@@ -19,6 +21,7 @@ public partial class EmptyPlot : Node3D
     public override void _Ready()
     {
         this.GetSafe(PathPlotRoot, out PlotRoot);
+        this.GetSafe(PathPlotLabel, out PlotLabel);
         this.GetSafe(PathPromptNewPlot, out MenuPromptNewPlot);
         this.GetSafe(PathInteractionTrigger, out InteractTrigger);
         var plot_types = RegistrationManager.Instance.Plots.Values.ToList();
@@ -52,9 +55,12 @@ public partial class EmptyPlot : Node3D
         {
             if (plot.ID == plot_id) MakeNewPlot(plot);
         }
+    }
+
+    private void OnPopupHide()
+    {
         Input.MouseMode = Input.MouseModeEnum.Captured;
         Events.Gameplay.TriggerRequestPlayerAbleToMove(true);
-
     }
 
     private void MakeNewPlot(Plot PlotType)

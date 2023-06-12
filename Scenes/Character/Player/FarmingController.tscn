@@ -1,17 +1,29 @@
-[gd_scene load_steps=9 format=3 uid="uid://djvlmhr2jxix4"]
+[gd_scene load_steps=14 format=3 uid="uid://djvlmhr2jxix4"]
 
 [ext_resource type="Script" path="res://Scenes/Character/Player/FarmingController.cs" id="2_bvbvy"]
-[ext_resource type="PackedScene" path="res://Scenes/Utility/CameraUtilities/virtual_camera.tscn" id="2_wdgcp"]
+[ext_resource type="PackedScene" uid="uid://cp1dbwc5bgdui" path="res://Scenes/Interactables/interaction_sensor.tscn" id="2_qjoep"]
+[ext_resource type="PackedScene" uid="uid://cvxg1i0juoqmy" path="res://Scenes/Utility/CameraUtilities/virtual_camera.tscn" id="2_wdgcp"]
 [ext_resource type="PackedScene" uid="uid://bqwng1o8by3wt" path="res://Scenes/ItemSystems/Collection/item_collector.tscn" id="3_vf455"]
 [ext_resource type="PackedScene" uid="uid://db4g3dbnfr7m5" path="res://Scenes/ShaderSystems/set_shader_global_position.tscn" id="4_hlkr2"]
 [ext_resource type="PackedScene" uid="uid://dg7138iwmapsx" path="res://Scenes/Character/Components/footstep_sounds_component.tscn" id="5_plq7p"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_ltvba"]
 
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_trwcs"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_na2r3"]
+
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_sng4u"]
+height = 3.0
+radius = 2.0
+
 [sub_resource type="SphereShape3D" id="SphereShape3D_5lf0f"]
 
 [sub_resource type="CylinderShape3D" id="CylinderShape3D_s2n37"]
 height = 4.0
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_cayxk"]
+radius = 0.2
 
 [node name="Farming Controller" type="CharacterBody3D"]
 input_ray_pickable = false
@@ -28,10 +40,27 @@ PathVCamRoot = NodePath("CamRoot")
 PathStepCheckTop = NodePath("StepRayTop")
 PathStepCheckBottom = NodePath("StepRayBottom")
 PathInteractRay = NodePath("CamRoot/CameraSway/VirtualCamera/InteractRay")
+PathInteractSensor = NodePath("InteractionSensor")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
 shape = SubResource("CapsuleShape3D_ltvba")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+mesh = SubResource("CapsuleMesh_trwcs")
+
+[node name="MeshInstance3D_2" type="MeshInstance3D" parent="."]
+transform = Transform3D(0.865753, 0, 0, 0, 0.74064, 0, 0, 0, 1.04666, 0, 1.48893, -0.225332)
+cast_shadow = 0
+mesh = SubResource("BoxMesh_na2r3")
+
+[node name="InteractionSensor" parent="." instance=ExtResource("2_qjoep")]
+AutoSelectObjects = true
+
+[node name="CollisionShape3D_2" type="CollisionShape3D" parent="InteractionSensor"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.25, -1.58974)
+shape = SubResource("CylinderShape3D_sng4u")
 
 [node name="StepRayTop" type="RayCast3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.22997, 0)
@@ -82,6 +111,17 @@ gravity = 19.6
 [node name="CollisionShape3D" type="CollisionShape3D" parent="CamRoot/CameraSway/VirtualCamera/SuctionForceField"]
 transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, -2)
 shape = SubResource("CylinderShape3D_s2n37")
+
+[node name="SpringArm3D" type="SpringArm3D" parent="CamRoot"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.0558, 0, -0.776962)
+shape = SubResource("SphereShape3D_cayxk")
+spring_length = 3.0
+
+[node name="ThirdPersonCamera" parent="CamRoot/SpringArm3D" instance=ExtResource("2_wdgcp")]
+LerpDuration = 0.2
+Adv_LerpRotX = false
+Adv_LerpRotY = false
+Adv_LerpRotZ = false
 
 [node name="SetShaderGlobalPosition" parent="." instance=ExtResource("4_hlkr2")]
 uniform_name = "player_position"

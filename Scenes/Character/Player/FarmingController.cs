@@ -37,6 +37,7 @@ public partial class FarmingController : CharacterBody3D
     [Export] private NodePath PathStepCheckTop;
     [Export] private NodePath PathStepCheckBottom;
     [Export] private NodePath PathInteractRay;
+    [Export] private NodePath PathInteractSensor;
 
     private bool _IsSuction = false;
     private bool _IsShooting = false;
@@ -53,6 +54,7 @@ public partial class FarmingController : CharacterBody3D
     protected RayCast3D CanStepCheckTop;
     protected RayCast3D CanStepCheckBottom;
     protected RayCast3D InteractionRay;
+    protected InteractionSensor InterSensor;
 
     // Values
     protected Vector2 camera_look_vector = new();
@@ -79,6 +81,7 @@ public partial class FarmingController : CharacterBody3D
         this.GetSafe(PathInteractRay, out InteractionRay);
         this.GetSafe(PathItemCollector, out _ItemCollector);
         this.GetSafe(PathSuctionArea, out _SuctionArea);
+        this.GetSafe(PathInteractSensor, out InterSensor);
 
         CanStepCheckTop.Position += new Vector3(0, StepHeight, 0);
         CanStepCheckBottom_CastLength = CanStepCheckBottom.TargetPosition.Length();
@@ -88,6 +91,8 @@ public partial class FarmingController : CharacterBody3D
         _ItemCollector.Enabled = false;
         _SuctionArea.GravitySpaceOverride = Area3D.SpaceOverride.Disabled;
         Input.MouseMode = Input.MouseModeEnum.Captured;
+
+        InterSensor.OnCurrentInteractionChange += OnInteractableChanged;
     }
 
 
@@ -153,7 +158,7 @@ public partial class FarmingController : CharacterBody3D
         GetParent().AddChild(scene);
 
         // If valid item scene is Rigid Body, apply force
-        if (scene is RigidBody3D rb) rb.ApplyCentralImpulse(-vcam.GlobalTransform.Basis.Z * ShootImpulseForce);
+        if (scene is RigidBody3D rb) rb.ApplyCentralImpulse(-VCamRoot.GlobalTransform.Basis.Z * ShootImpulseForce);
 
         // Remove item from inventory
         // TODO split responsibility of inventory management to different node
@@ -259,11 +264,11 @@ public partial class FarmingController : CharacterBody3D
 
         RotateY(look.X * mouse_sensitivity);
 
-        var rot = vcam.Rotation;
+        var rot = VCamRoot.Rotation;
         rot.X += look.Y * mouse_sensitivity;
         var cl = Mathf.DegToRad(89.0f);
         rot.X = Mathf.Clamp(rot.X, -cl, cl);
-        vcam.Rotation = rot;
+        VCamRoot.Rotation = rot;
 
         camera_look_vector = Vector2.Zero;
     }
@@ -307,30 +312,27 @@ public partial class FarmingController : CharacterBody3D
 
     private bool InputInteract(InputEvent e)
     {
+        // return value relates to handling input, not whether task was successful
+        if (!e.IsActionPressed("interact")) return false;
+        if (InterSensor.CurrentInteraction is not IInteractable inter) return true;
+        inter.Interact();
+        return true;
+    }
 
-        InteractionRay.ForceRaycastUpdate();
-
-        if (InteractionRay.GetCollider() is Node collider && collider is IInteractable inter && inter.IsActive())
+    private void OnInteractableChanged()
+    {
+        var newInteractable = InterSensor.CurrentInteraction;
+        if (newInteractable is IInteractable inter)
         {
-            if (!LastWasInteractable)
-            {
-                LastWasInteractable = true;
-                Events.GUI.TriggerAbleToInteract(inter.GetActiveName());
-            }
-
-            if (!e.IsActionPressed("interact")) return false;
-            else if (inter.Interact())
-            {
-                // TODO: do we want anything to happen on this end? Realistically the Interact object should handle SFX, VFX, etc...
-            }
+            //Events.GUI.TriggerAbleToInteract(inter.GetActiveName());
+            LastWasInteractable = true;
         }
         else if (LastWasInteractable)
         {
             LastWasInteractable = false;
-            Events.GUI.TriggerUnableToInteract();
+            //Events.GUI.TriggerUnableToInteract();
         }
 
-        return true;
     }
 
 }

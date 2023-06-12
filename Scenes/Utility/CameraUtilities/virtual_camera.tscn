@@ -1,4 +1,4 @@
-[gd_scene load_steps=2 format=3]
+[gd_scene load_steps=2 format=3 uid="uid://cvxg1i0juoqmy"]
 
 [ext_resource type="Script" path="res://Scenes/Utility/CameraUtilities/VirtualCamera.cs" id="1_7f0q0"]
 
