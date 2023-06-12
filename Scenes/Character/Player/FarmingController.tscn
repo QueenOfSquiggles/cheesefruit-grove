@@ -19,10 +19,8 @@ axis_lock_angular_x = true
 axis_lock_angular_y = true
 axis_lock_angular_z = true
 script = ExtResource("2_bvbvy")
-Speed = 10.0
-SprintSpeed = 20.0
-mouse_sensitivity = 0.003
-StepStrength = 5.0
+Speed = 5.0
+SprintSpeed = 10.0
 PathItemCollector = NodePath("CamRoot/CameraSway/VirtualCamera/ItemCollector")
 PathSuctionArea = NodePath("CamRoot/CameraSway/VirtualCamera/SuctionForceField")
 PathVCam = NodePath("CamRoot/CameraSway/VirtualCamera")
@@ -54,6 +52,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5, 0)
 [node name="VirtualCamera" parent="CamRoot/CameraSway" instance=ExtResource("2_wdgcp")]
 PushCamOnReady = true
 AllowVCamChildren = true
+LerpCamera = false
 
 [node name="InteractRay" type="RayCast3D" parent="CamRoot/CameraSway/VirtualCamera"]
 target_position = Vector3(0, 0, -4)
@@ -61,7 +60,7 @@ collision_mask = 4
 collide_with_areas = true
 
 [node name="ItemCollector" parent="CamRoot/CameraSway/VirtualCamera" instance=ExtResource("3_vf455")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.528579)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -1.03232)
 collision_layer = 2
 collision_mask = 2
 
@@ -69,7 +68,7 @@ collision_mask = 2
 shape = SubResource("SphereShape3D_5lf0f")
 
 [node name="SuctionForceField" type="Area3D" parent="CamRoot/CameraSway/VirtualCamera"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.528579)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -1.03232)
 collision_layer = 2
 collision_mask = 2
 monitorable = false

@@ -16,7 +16,7 @@ public partial class PsuedoAAACharController : CharacterBody3D
     [Export] protected float SprintSpeed = 5.0f;
     [Export] protected float Acceleration = 0.3f;
     [Export] protected float JumpVelocity = 4.5f;
-    [Export] protected float mouse_sensitivity;
+    [Export] protected float mouse_sensitivity = 0.03f;
     [Export] protected float CrouchSpeedScale = 0.45f;
     [Export] protected float StepHeight = 0.4f;
     [Export] protected float StepStrength = 3.0f;

@@ -24,7 +24,7 @@ public partial class FarmingController : CharacterBody3D
     [Export] protected float SprintSpeed = 5.0f;
     [Export] protected float Acceleration = 0.3f;
     [Export] protected float JumpVelocity = 4.5f;
-    [Export] protected float mouse_sensitivity;
+    [Export] protected float mouse_sensitivity = 0.003f;
     [Export] protected float StepHeight = 0.4f;
     [Export] protected float StepStrength = 3.0f;
 
@@ -67,6 +67,7 @@ public partial class FarmingController : CharacterBody3D
     private PID3D _PID = new(1.0f, 0.1f, 1.0f);
     private const float CORRECTION_IMPULSE_FACTOR = 0.01f;
 
+    protected float gravity = ProjectSettings.GetSetting("physics/3d/default_gravity").AsSingle();
 
 
     public override void _Ready()
@@ -112,7 +113,6 @@ public partial class FarmingController : CharacterBody3D
                 rb.Sleeping = false;
             }
         }
-        Print.Debug($"Is Suction = {_IsSuction}");
         return true;
     }
 
@@ -139,7 +139,6 @@ public partial class FarmingController : CharacterBody3D
 
     private void ShootItem(string itemID)
     {
-        Print.Debug($"Shooting item '{itemID}'");
         var itemDef = RegistrationManager.Instance.Entities.GetValueOrDefault(itemID);
         if (itemDef is null) Print.Debug($"Registry for '{itemID}' was null");
         if (itemDef?.WorldScene is null) Print.Debug($"WorldEntity:WorldScene for '{itemID}' was null");
@@ -178,15 +177,14 @@ public partial class FarmingController : CharacterBody3D
             _Items.Add(wic.ItemID, 1);
         }
         node.QueueFree();
-        Print.Debug($"Player picked up: '{wic.ItemID}', now holding {_Items[wic.ItemID]}");
     }
-
-
 
 
     public override void _PhysicsProcess(double delta)
     {
-        Vector3 velocity = new Vector3();
+        Vector3 velocity = Velocity;
+        if (!IsOnFloor()) velocity.Y -= gravity * (float)delta;
+
         if (Input.MouseMode == Input.MouseModeEnum.Captured)
         {
             CamLookLogic(delta);
@@ -196,7 +194,6 @@ public partial class FarmingController : CharacterBody3D
         }
         Velocity = velocity;
         MoveAndSlide();
-
     }
 
     private void JumpLogic(ref Vector3 velocity, double delta)
@@ -204,7 +201,7 @@ public partial class FarmingController : CharacterBody3D
         // Add the gravity.
 
         // Handle Jump.
-        if (Input.IsActionJustPressed("jump") && IsOnFloor())
+        if (Input.IsActionJustPressed("ui_accept") && IsOnFloor())
             velocity.Y = JumpVelocity;
     }
 
@@ -215,22 +212,15 @@ public partial class FarmingController : CharacterBody3D
         if (InputVector.LengthSquared() < 0.1f)
             InputVector = Input.GetVector("gamepad_move_left", "gamepad_move_right", "gamepad_move_forward", "gamepad_move_back");
 
-        Vector3 direction = new();
-        direction += vcam.GlobalTransform.Forward() * -InputVector.Y;
-        direction += vcam.GlobalTransform.Right() * InputVector.X;
-        direction.Y = 0f;
-        direction = direction.Normalized();
-
-
+        Vector3 direction = (Transform.Basis * new Vector3(InputVector.X, 0, InputVector.Y)).Normalized();
         if (direction != Vector3.Zero)
         {
             // TODO Holy fuck this is some messy logic. This should really get cleaned up somehow. Maybe by having a series of contributing factors? IDK
             // Sprint or No Sprint
             var target_speed = (IsOnFloor() && Input.IsActionPressed("sprint")) ? SprintSpeed : Speed;
-            // Crouching so speed is slowed unless on stairs
             CurrentSpeed = Mathf.Lerp(CurrentSpeed, target_speed, Acceleration);
-            velocity.X += direction.X * CurrentSpeed;
-            velocity.Z += direction.Z * CurrentSpeed;
+            velocity.X = direction.X * CurrentSpeed;
+            velocity.Z = direction.Z * CurrentSpeed;
         }
         else
         {
@@ -239,6 +229,7 @@ public partial class FarmingController : CharacterBody3D
             velocity.Z = Mathf.MoveToward(Velocity.Z, 0, CurrentSpeed);
         }
     }
+
     private void StepLogic(ref Vector3 velocity, double _delta)
     {
         if (InputVector.LengthSquared() < 0.8f) return;
@@ -266,7 +257,7 @@ public partial class FarmingController : CharacterBody3D
         var look = (camera_look_vector.LengthSquared() > 0.1f) ? camera_look_vector : GetGamepadLookVector();
         look *= (float)delta;
 
-        VCamRoot.RotateY(look.X * mouse_sensitivity);
+        RotateY(look.X * mouse_sensitivity);
 
         var rot = vcam.Rotation;
         rot.X += look.Y * mouse_sensitivity;
@@ -340,18 +331,6 @@ public partial class FarmingController : CharacterBody3D
         }
 
         return true;
-    }
-
-    private bool IsOnFloor()
-    {
-        // TODO figure out replacement
-        return false;
-    }
-
-    private bool IsOnWall()
-    {
-        // TODO figure out replacement
-        return false;
     }
 
 }

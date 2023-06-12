@@ -22,14 +22,12 @@ public partial class ItemCollector : Area3D
         {
             if (!node.IsInGroup(f))
             {
-                Print.Debug($"Rejected node: {node.Name}");
                 EmitSignal(nameof(OnItemRejected), node);
                 return;
             }
         }
         // in item group and passing all filters (or no filters are applied)
         EmitSignal(nameof(OnItemPickup), node);
-        Print.Debug($"Collected item: '{wic.ItemID}'");
         return;
     }
 }
