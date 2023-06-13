@@ -38,6 +38,8 @@ public partial class FarmingController : CharacterBody3D
     [Export] private NodePath PathStepCheckBottom;
     [Export] private NodePath PathInteractRay;
     [Export] private NodePath PathInteractSensor;
+    [Export] private NodePath PathThirdPersonCam;
+    [Export] private NodePath PathStats;
 
     private bool _IsSuction = false;
     private bool _IsShooting = false;
@@ -50,11 +52,13 @@ public partial class FarmingController : CharacterBody3D
 
     // References
     protected VirtualCamera vcam;
+    protected VirtualCamera ThirdPersonCam;
     protected Node3D VCamRoot;
     protected RayCast3D CanStepCheckTop;
     protected RayCast3D CanStepCheckBottom;
     protected RayCast3D InteractionRay;
     protected InteractionSensor InterSensor;
+    private CharStatManager Stats;
 
     // Values
     protected Vector2 camera_look_vector = new();
@@ -82,6 +86,8 @@ public partial class FarmingController : CharacterBody3D
         this.GetSafe(PathItemCollector, out _ItemCollector);
         this.GetSafe(PathSuctionArea, out _SuctionArea);
         this.GetSafe(PathInteractSensor, out InterSensor);
+        this.GetSafe(PathThirdPersonCam, out ThirdPersonCam);
+        this.GetSafe(PathStats, out Stats);
 
         CanStepCheckTop.Position += new Vector3(0, StepHeight, 0);
         CanStepCheckBottom_CastLength = CanStepCheckBottom.TargetPosition.Length();
@@ -92,7 +98,11 @@ public partial class FarmingController : CharacterBody3D
         _SuctionArea.GravitySpaceOverride = Area3D.SpaceOverride.Disabled;
         Input.MouseMode = Input.MouseModeEnum.Captured;
 
-        InterSensor.OnCurrentInteractionChange += OnInteractableChanged;
+        var MaxHealth = Stats.GetStat("max_health");
+        var MaxEnergy = Stats.GetStat("max_energy");
+        Stats.CreateDynamicStat("health", MaxHealth, MaxHealth, 0f, "max_health", "health_regen_factor");
+        Stats.CreateDynamicStat("energy", MaxEnergy, MaxEnergy, 0f, "max_energy", "energy_regen_factor");
+        Events.Gameplay.TriggerPlayerStatsUpdated(Stats.GetStat("health"), Stats.GetStat("max_health"), Stats.GetStat("energy"), Stats.GetStat("max_energy"));
     }
 
 
@@ -199,6 +209,8 @@ public partial class FarmingController : CharacterBody3D
         }
         Velocity = velocity;
         MoveAndSlide();
+
+        Events.Gameplay.TriggerPlayerStatsUpdated(Stats.GetStat("health"), Stats.GetStat("max_health"), Stats.GetStat("energy"), Stats.GetStat("max_energy"));
     }
 
     private void JumpLogic(ref Vector3 velocity, double delta)
@@ -222,7 +234,9 @@ public partial class FarmingController : CharacterBody3D
         {
             // TODO Holy fuck this is some messy logic. This should really get cleaned up somehow. Maybe by having a series of contributing factors? IDK
             // Sprint or No Sprint
-            var target_speed = (IsOnFloor() && Input.IsActionPressed("sprint")) ? SprintSpeed : Speed;
+            // Sprint if button pressed, on floor, and energy is available to consume
+            var sprinting = IsOnFloor() && Input.IsActionPressed("sprint") && Stats.ConsumeDynStat("energy", Stats.GetStat("sprint_energy_use") * (float)delta);
+            var target_speed = sprinting ? SprintSpeed : Speed;
             CurrentSpeed = Mathf.Lerp(CurrentSpeed, target_speed, Acceleration);
             velocity.X = direction.X * CurrentSpeed;
             velocity.Z = direction.Z * CurrentSpeed;
@@ -300,6 +314,8 @@ public partial class FarmingController : CharacterBody3D
             handled |= InputInteract(e);
             handled |= ToggleSuction(e);
             handled |= ToggleFiring(e);
+            handled |= InputToggleThirdPerson(e);
+            handled |= AddTestBuff(e);
         }
         if (handled) GetViewport().SetInputAsHandled();
     }
@@ -319,20 +335,22 @@ public partial class FarmingController : CharacterBody3D
         return true;
     }
 
-    private void OnInteractableChanged()
+    private bool InputToggleThirdPerson(InputEvent e)
     {
-        var newInteractable = InterSensor.CurrentInteraction;
-        if (newInteractable is IInteractable inter)
-        {
-            //Events.GUI.TriggerAbleToInteract(inter.GetActiveName());
-            LastWasInteractable = true;
-        }
-        else if (LastWasInteractable)
-        {
-            LastWasInteractable = false;
-            //Events.GUI.TriggerUnableToInteract();
-        }
+        if (!e.IsActionPressed("toggle_third_person")) return false;
 
+        if (ThirdPersonCam.IsOnStack) ThirdPersonCam.PopVCam();
+        else ThirdPersonCam.PushVCam();
+
+        return true;
     }
 
+    private bool AddTestBuff(InputEvent e)
+    {
+        if (e is not InputEventKey key) return false;
+        if (key.Keycode != Key.KpAdd) return false;
+        Print.Debug("Adding energy regen buff");
+        Stats.AddStatMod("energy_regen_factor", 50.0f, CharStatFloat.Modifier.ADD, 1.0f);
+        return true;
+    }
 }

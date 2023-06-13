@@ -68,11 +68,12 @@ public partial class EmptyPlot : Node3D
         if (PlotRoot is null) return;
         if (PlotType is null) return;
 
-        var world_scene = PlotType?.WorldScene?.Instantiate();
+        var world_scene = PlotType.WorldScene?.Instantiate();
         if (world_scene is null) return; // failed to create world scene
         if (world_scene is PlotInterface plot) plot.SetPlotType(PlotType);
         PlotRoot.AddChild(world_scene);
         InteractTrigger.custom_name = PlotType.ID;
+        if (PlotLabel is not null) PlotLabel.Text = PlotType.ID;
     }
 
     private void ModifyExistingPlot()

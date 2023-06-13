@@ -19,6 +19,8 @@ public partial class VirtualCamera : Marker3D
     [Export] private bool Adv_LerpRotY = true;
     [Export] private bool Adv_LerpRotZ = true;
 
+    public bool IsOnStack { get; private set; } = false;
+
     public float LerpFactor
     {
         get
@@ -43,9 +45,17 @@ public partial class VirtualCamera : Marker3D
         }
     }
 
-    public void PushVCam() => GetBrain()?.PushCamera(this);
+    public void PushVCam()
+    {
+        GetBrain()?.PushCamera(this);
+        IsOnStack = true;
+    }
 
-    public void PopVCam() => GetBrain()?.PopCamera(this);
+    public void PopVCam()
+    {
+        GetBrain()?.PopCamera(this);
+        IsOnStack = false;
+    }
 
     private CameraBrain? GetBrain()
     {

@@ -42,6 +42,7 @@ script = ExtResource("1_2uik0")
 PathPromptNewPlot = NodePath("PopupMenu")
 PathPlotRoot = NodePath("PlotRoot")
 PathInteractionTrigger = NodePath("InteractiveTrigger")
+PathPlotLabel = NodePath("PlotControls/Label3D")
 
 [node name="Bottom" type="MeshInstance3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.05, 0)

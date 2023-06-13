@@ -1,8 +1,10 @@
-[gd_scene load_steps=14 format=3 uid="uid://djvlmhr2jxix4"]
+[gd_scene load_steps=16 format=3 uid="uid://djvlmhr2jxix4"]
 
 [ext_resource type="Script" path="res://Scenes/Character/Player/FarmingController.cs" id="2_bvbvy"]
 [ext_resource type="PackedScene" uid="uid://cp1dbwc5bgdui" path="res://Scenes/Interactables/interaction_sensor.tscn" id="2_qjoep"]
+[ext_resource type="PackedScene" uid="uid://nibbesuue2eu" path="res://Modules/CharStats/char_stat_manager.tscn" id="2_sto53"]
 [ext_resource type="PackedScene" uid="uid://cvxg1i0juoqmy" path="res://Scenes/Utility/CameraUtilities/virtual_camera.tscn" id="2_wdgcp"]
+[ext_resource type="PackedScene" uid="uid://bgfhuuaxv471p" path="res://Modules/CharStats/char_stat_float.tscn" id="3_dxb1m"]
 [ext_resource type="PackedScene" uid="uid://bqwng1o8by3wt" path="res://Scenes/ItemSystems/Collection/item_collector.tscn" id="3_vf455"]
 [ext_resource type="PackedScene" uid="uid://db4g3dbnfr7m5" path="res://Scenes/ShaderSystems/set_shader_global_position.tscn" id="4_hlkr2"]
 [ext_resource type="PackedScene" uid="uid://dg7138iwmapsx" path="res://Scenes/Character/Components/footstep_sounds_component.tscn" id="5_plq7p"]
@@ -41,6 +43,25 @@ PathStepCheckTop = NodePath("StepRayTop")
 PathStepCheckBottom = NodePath("StepRayBottom")
 PathInteractRay = NodePath("CamRoot/CameraSway/VirtualCamera/InteractRay")
 PathInteractSensor = NodePath("InteractionSensor")
+PathThirdPersonCam = NodePath("CamRoot/SpringArm3D/ThirdPersonCamera")
+PathStats = NodePath("CharStatManager")
+
+[node name="CharStatManager" parent="." instance=ExtResource("2_sto53")]
+
+[node name="max_health" parent="CharStatManager" instance=ExtResource("3_dxb1m")]
+StoredValue = 100.0
+
+[node name="max_energy" parent="CharStatManager" instance=ExtResource("3_dxb1m")]
+StoredValue = 100.0
+
+[node name="health_regen_factor" parent="CharStatManager" instance=ExtResource("3_dxb1m")]
+StoredValue = 0.1
+
+[node name="energy_regen_factor" parent="CharStatManager" instance=ExtResource("3_dxb1m")]
+StoredValue = 3.0
+
+[node name="sprint_energy_use" parent="CharStatManager" instance=ExtResource("3_dxb1m")]
+StoredValue = 20.0
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)

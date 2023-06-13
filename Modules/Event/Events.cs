@@ -29,6 +29,7 @@ public class EventsGameplay
     public event Action OnPlayerDie;
     public event Action OnPlayerWin;
     public event Action<bool> RequestPlayerAbleToMove;
+    public event Action<float, float, float, float> OnPlayerStatsUpdated;
 
 
     public void TriggerOnLevelLoaded() => OnLevelLoaded?.Invoke();
@@ -36,6 +37,7 @@ public class EventsGameplay
     public void TriggerOnPlayerDie() => OnPlayerDie?.Invoke();
     public void TriggerOnPlayerWin() => OnPlayerWin?.Invoke();
     public void TriggerRequestPlayerAbleToMove(bool can_move) => RequestPlayerAbleToMove?.Invoke(can_move);
+    public void TriggerPlayerStatsUpdated(float health, float max_health, float energy, float max_energy) => OnPlayerStatsUpdated?.Invoke(health, max_health, energy, max_energy);
 }
 
 public class EventsUI

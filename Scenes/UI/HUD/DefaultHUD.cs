@@ -22,6 +22,10 @@ public partial class DefaultHUD : Control
     [Export] private NodePath path_reticle;
     [Export] private NodePath path_interaction_prompt;
     [Export] private NodePath path_generic_gui_root;
+    [Export] private NodePath path_player_stats_health_bar;
+    [Export] private NodePath path_player_stats_health_label;
+    [Export] private NodePath path_player_stats_energy_bar;
+    [Export] private NodePath path_player_stats_energy_label;
 
 
     private Label lbl_subtitle;
@@ -31,6 +35,11 @@ public partial class DefaultHUD : Control
     private TextureRect reticle;
     private Label interaction_prompt;
     private Control generic_gui_root;
+    private TextureProgressBar player_stats_health_bar;
+    private Label player_stats_health_label;
+    private TextureProgressBar player_stats_energy_bar;
+    private Label player_stats_energy_label;
+
 
     private Color COLOUR_TRANSPARENT = Color.FromString("#FFFFFF00", Colors.White);
     private Color COLOUR_VISIBLE = Colors.White;
@@ -44,6 +53,10 @@ public partial class DefaultHUD : Control
         this.GetNode(path_reticle, out reticle);
         this.GetNode(path_interaction_prompt, out interaction_prompt);
         this.GetSafe(path_generic_gui_root, out generic_gui_root);
+        this.GetSafe(path_player_stats_health_bar, out player_stats_health_bar);
+        this.GetSafe(path_player_stats_health_label, out player_stats_health_label);
+        this.GetSafe(path_player_stats_energy_bar, out player_stats_energy_bar);
+        this.GetSafe(path_player_stats_energy_label, out player_stats_energy_label);
 
         lbl_subtitle.Text = "";
         lbl_alert.Text = "";
@@ -62,6 +75,7 @@ public partial class DefaultHUD : Control
         Events.GUI.MarkUnableToInteract += OnCannotInteract;
         Events.GUI.RequestGUI += OnRequestGenericGUI;
         Events.GUI.RequestCloseGUI += OnRequestCloseGUI;
+        Events.Gameplay.OnPlayerStatsUpdated += OnPlayerStatsUpdated;
     }
 
     public override void _ExitTree()
@@ -72,6 +86,7 @@ public partial class DefaultHUD : Control
         Events.GUI.MarkUnableToInteract -= OnCannotInteract;
         Events.GUI.RequestGUI -= OnRequestGenericGUI;
         Events.GUI.RequestCloseGUI -= OnRequestCloseGUI;
+        Events.Gameplay.OnPlayerStatsUpdated -= OnPlayerStatsUpdated;
     }
 
     public void ShowSubtitle(string text)
@@ -124,6 +139,16 @@ public partial class DefaultHUD : Control
     private void OnRequestCloseGUI()
     {
         generic_gui_root.RemoveAllChildren();
+    }
+
+    private void OnPlayerStatsUpdated(float health, float max_health, float energy, float max_energy)
+    {
+        var health_percent = health / max_health;
+        var energy_percent = energy / max_energy;
+        player_stats_health_bar.Value = health_percent;
+        player_stats_energy_bar.Value = energy_percent;
+        player_stats_health_label.Text = health.ToString("0");
+        player_stats_energy_label.Text = energy.ToString("0");
     }
 
     public override void _Input(InputEvent e)
