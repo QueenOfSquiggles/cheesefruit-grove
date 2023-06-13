@@ -46,23 +46,6 @@ PathInteractSensor = NodePath("InteractionSensor")
 PathThirdPersonCam = NodePath("CamRoot/SpringArm3D/ThirdPersonCamera")
 PathStats = NodePath("CharStatManager")
 
-[node name="CharStatManager" parent="." instance=ExtResource("2_sto53")]
-
-[node name="max_health" parent="CharStatManager" instance=ExtResource("3_dxb1m")]
-StoredValue = 100.0
-
-[node name="max_energy" parent="CharStatManager" instance=ExtResource("3_dxb1m")]
-StoredValue = 100.0
-
-[node name="health_regen_factor" parent="CharStatManager" instance=ExtResource("3_dxb1m")]
-StoredValue = 0.1
-
-[node name="energy_regen_factor" parent="CharStatManager" instance=ExtResource("3_dxb1m")]
-StoredValue = 3.0
-
-[node name="sprint_energy_use" parent="CharStatManager" instance=ExtResource("3_dxb1m")]
-StoredValue = 20.0
-
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
 shape = SubResource("CapsuleShape3D_ltvba")
@@ -148,6 +131,23 @@ Adv_LerpRotZ = false
 uniform_name = "player_position"
 
 [node name="FootstepSoundsComponent" parent="." instance=ExtResource("5_plq7p")]
+
+[node name="CharStatManager" parent="." instance=ExtResource("2_sto53")]
+
+[node name="max_health" parent="CharStatManager" instance=ExtResource("3_dxb1m")]
+StoredValue = 100.0
+
+[node name="max_energy" parent="CharStatManager" instance=ExtResource("3_dxb1m")]
+StoredValue = 100.0
+
+[node name="health_regen_factor" parent="CharStatManager" instance=ExtResource("3_dxb1m")]
+StoredValue = 0.1
+
+[node name="energy_regen_factor" parent="CharStatManager" instance=ExtResource("3_dxb1m")]
+StoredValue = 3.0
+
+[node name="sprint_energy_use" parent="CharStatManager" instance=ExtResource("3_dxb1m")]
+StoredValue = 20.0
 
 [connection signal="OnItemPickup" from="CamRoot/CameraSway/VirtualCamera/ItemCollector" to="." method="OnPickupItem"]
 [connection signal="body_entered" from="CamRoot/CameraSway/VirtualCamera/SuctionForceField" to="." method="OnBodyEnterSuctionZone"]

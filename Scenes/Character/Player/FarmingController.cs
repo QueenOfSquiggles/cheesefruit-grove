@@ -32,11 +32,9 @@ public partial class FarmingController : CharacterBody3D
     [Export] private NodePath PathItemCollector;
     [Export] private NodePath PathSuctionArea;
 
-    [Export] private NodePath PathVCam;
     [Export] private NodePath PathVCamRoot;
     [Export] private NodePath PathStepCheckTop;
     [Export] private NodePath PathStepCheckBottom;
-    [Export] private NodePath PathInteractRay;
     [Export] private NodePath PathInteractSensor;
     [Export] private NodePath PathThirdPersonCam;
     [Export] private NodePath PathStats;
@@ -51,12 +49,10 @@ public partial class FarmingController : CharacterBody3D
 
 
     // References
-    protected VirtualCamera vcam;
     protected VirtualCamera ThirdPersonCam;
     protected Node3D VCamRoot;
     protected RayCast3D CanStepCheckTop;
     protected RayCast3D CanStepCheckBottom;
-    protected RayCast3D InteractionRay;
     protected InteractionSensor InterSensor;
     private CharStatManager Stats;
 
@@ -68,21 +64,15 @@ public partial class FarmingController : CharacterBody3D
     protected float CanStepCheckTop_CastLength = 1.0f;
     private float CanStepCheckBottom_CastLength = 1.0f;
     protected Vector2 InputVector = new();
-    protected bool LastWasInteractable = false;
-
-    private PID3D _PID = new(1.0f, 0.1f, 1.0f);
-    private const float CORRECTION_IMPULSE_FACTOR = 0.01f;
 
     protected float gravity = ProjectSettings.GetSetting("physics/3d/default_gravity").AsSingle();
 
 
     public override void _Ready()
     {
-        this.GetSafe(PathVCam, out vcam);
         this.GetSafe(PathVCamRoot, out VCamRoot);
         this.GetSafe(PathStepCheckTop, out CanStepCheckTop);
         this.GetSafe(PathStepCheckBottom, out CanStepCheckBottom);
-        this.GetSafe(PathInteractRay, out InteractionRay);
         this.GetSafe(PathItemCollector, out _ItemCollector);
         this.GetSafe(PathSuctionArea, out _SuctionArea);
         this.GetSafe(PathInteractSensor, out InterSensor);
