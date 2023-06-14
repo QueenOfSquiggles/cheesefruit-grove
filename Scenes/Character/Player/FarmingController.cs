@@ -181,6 +181,7 @@ public partial class FarmingController : CharacterBody3D
         {
             _Items.Add(wic.ItemID, 1);
         }
+        Print.Debug($"Picked up item: {wic.ItemID}");
         node.QueueFree();
     }
 
