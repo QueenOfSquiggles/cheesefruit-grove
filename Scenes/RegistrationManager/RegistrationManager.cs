@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Godot;
 using queen.error;
@@ -47,12 +48,11 @@ public partial class RegistrationManager : Node
             Print.Debug($"Failed to find root path for resource [{label}], expected path : {root_dir}");
             return registry; // empty registry
         }
-        var files = GetAllFilesRecursive(dir);
+        var files = GetAllFilesRecursive(dir).Where((s) => s.Contains(".tres"));
 
         foreach (string f in files)
         {
             var fileName = f.Replace(".remap", ""); // clear remap files to load default version
-
             var temp = GD.Load<T>(fileName);
             if (temp is not null)
             {

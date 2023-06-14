@@ -24,7 +24,7 @@ sky_material = SubResource("ShaderMaterial_empxl")
 [resource]
 background_mode = 2
 sky = SubResource("Sky_ybjmc")
-ambient_light_source = 3
+ambient_light_sky_contribution = 0.0
 reflected_light_source = 2
 tonemap_mode = 3
 tonemap_white = 0.8
