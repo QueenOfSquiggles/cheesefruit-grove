@@ -25,7 +25,7 @@ ResourceScriptDirectories=["res://"]
 
 config/name="Cute Magical Farming Sim"
 run/main_scene="res://Scenes/UI/LaunchSequence/launch_sequence.tscn"
-config/features=PackedStringArray("4.0", "Forward Plus")
+config/features=PackedStringArray("4.1", "Forward Plus")
 boot_splash/show_image=false
 config/icon="res://icon.png"
 
@@ -78,7 +78,7 @@ naming/default_signal_callback_name="_on_{signal_name}"
 
 [editor_plugins]
 
-enabled=PackedStringArray("res://addons/dynamic-web-content/plugin.cfg", "res://addons/MonoCustomResourceRegistry/plugin.cfg")
+enabled=PackedStringArray("res://addons/dynamic-web-content/plugin.cfg")
 
 [filesystem]
 
@@ -197,18 +197,18 @@ sprint={
 }
 suction={
 "deadzone": 0.5,
-"events": [Object(InputEventMouseButton,"resource_local_to_scene":false,"resource_name":"","device":-1,"window_id":0,"alt_pressed":false,"shift_pressed":false,"ctrl_pressed":false,"meta_pressed":false,"button_mask":2,"position":Vector2(103, 22),"global_position":Vector2(107, 65),"factor":1.0,"button_index":2,"pressed":true,"double_click":false,"script":null)
+"events": [Object(InputEventMouseButton,"resource_local_to_scene":false,"resource_name":"","device":-1,"window_id":0,"alt_pressed":false,"shift_pressed":false,"ctrl_pressed":false,"meta_pressed":false,"button_mask":2,"position":Vector2(103, 22),"global_position":Vector2(107, 65),"factor":1.0,"button_index":2,"canceled":false,"pressed":true,"double_click":false,"script":null)
 ]
 }
 shoot={
 "deadzone": 0.5,
-"events": [Object(InputEventMouseButton,"resource_local_to_scene":false,"resource_name":"","device":-1,"window_id":0,"alt_pressed":false,"shift_pressed":false,"ctrl_pressed":false,"meta_pressed":false,"button_mask":1,"position":Vector2(127, 19),"global_position":Vector2(131, 62),"factor":1.0,"button_index":1,"pressed":true,"double_click":false,"script":null)
+"events": [Object(InputEventMouseButton,"resource_local_to_scene":false,"resource_name":"","device":-1,"window_id":0,"alt_pressed":false,"shift_pressed":false,"ctrl_pressed":false,"meta_pressed":false,"button_mask":1,"position":Vector2(127, 19),"global_position":Vector2(131, 62),"factor":1.0,"button_index":1,"canceled":false,"pressed":true,"double_click":false,"script":null)
 ]
 }
 dialogic_default_action={
 "deadzone": 0.5,
 "events": [Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"window_id":0,"alt_pressed":false,"shift_pressed":false,"ctrl_pressed":false,"meta_pressed":false,"pressed":false,"keycode":4194309,"physical_keycode":0,"key_label":0,"unicode":0,"echo":false,"script":null)
-, Object(InputEventMouseButton,"resource_local_to_scene":false,"resource_name":"","device":-1,"window_id":0,"alt_pressed":false,"shift_pressed":false,"ctrl_pressed":false,"meta_pressed":false,"button_mask":0,"position":Vector2(0, 0),"global_position":Vector2(0, 0),"factor":1.0,"button_index":1,"pressed":true,"double_click":false,"script":null)
+, Object(InputEventMouseButton,"resource_local_to_scene":false,"resource_name":"","device":-1,"window_id":0,"alt_pressed":false,"shift_pressed":false,"ctrl_pressed":false,"meta_pressed":false,"button_mask":0,"position":Vector2(0, 0),"global_position":Vector2(0, 0),"factor":1.0,"button_index":1,"canceled":false,"pressed":true,"double_click":false,"script":null)
 , Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"window_id":0,"alt_pressed":false,"shift_pressed":false,"ctrl_pressed":false,"meta_pressed":false,"pressed":false,"keycode":32,"physical_keycode":0,"key_label":0,"unicode":0,"echo":false,"script":null)
 , Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"window_id":0,"alt_pressed":false,"shift_pressed":false,"ctrl_pressed":false,"meta_pressed":false,"pressed":false,"keycode":88,"physical_keycode":0,"key_label":0,"unicode":0,"echo":false,"script":null)
 , Object(InputEventJoypadButton,"resource_local_to_scene":false,"resource_name":"","device":0,"button_index":0,"pressure":0.0,"pressed":false,"script":null)

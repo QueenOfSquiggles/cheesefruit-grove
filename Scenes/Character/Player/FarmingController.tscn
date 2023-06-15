@@ -147,5 +147,11 @@ StoredValue = 3.0
 [node name="sprint_energy_use" parent="CharStatManager" instance=ExtResource("3_dxb1m")]
 StoredValue = 20.0
 
+[node name="base_speed" parent="CharStatManager" instance=ExtResource("3_dxb1m")]
+StoredValue = 5.0
+
+[node name="sprint_speed_factor" parent="CharStatManager" instance=ExtResource("3_dxb1m")]
+StoredValue = 2.0
+
 [connection signal="OnItemPickup" from="CamRoot/CameraSway/VirtualCamera/ItemCollector" to="." method="OnPickupItem"]
 [connection signal="body_entered" from="CamRoot/CameraSway/VirtualCamera/SuctionForceField" to="." method="OnBodyEnterSuctionZone"]

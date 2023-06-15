@@ -20,8 +20,6 @@ public partial class FarmingController : CharacterBody3D
     [Export] private Area3D.SpaceOverride ActiveSpaceOverride = Area3D.SpaceOverride.CombineReplace;
 
     [ExportGroup("Movement Stats")]
-    [Export] protected float Speed = 2.0f;
-    [Export] protected float SprintSpeed = 5.0f;
     [Export] protected float Acceleration = 0.3f;
     [Export] protected float JumpVelocity = 4.5f;
     [Export] protected float mouse_sensitivity = 0.003f;
@@ -227,7 +225,8 @@ public partial class FarmingController : CharacterBody3D
             // Sprint or No Sprint
             // Sprint if button pressed, on floor, and energy is available to consume
             var sprinting = IsOnFloor() && Input.IsActionPressed("sprint") && Stats.ConsumeDynStat("energy", Stats.GetStat("sprint_energy_use") * (float)delta);
-            var target_speed = sprinting ? SprintSpeed : Speed;
+            var target_speed = Stats.GetStat("base_speed");
+            if (sprinting) target_speed *= Stats.GetStat("sprint_speed_factor");
             CurrentSpeed = Mathf.Lerp(CurrentSpeed, target_speed, Acceleration);
             velocity.X = direction.X * CurrentSpeed;
             velocity.Z = direction.Z * CurrentSpeed;

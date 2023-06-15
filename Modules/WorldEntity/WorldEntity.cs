@@ -1,8 +1,7 @@
 using System;
 using Godot;
-using MonoCustomResourceRegistry;
 
-[RegisteredType(nameof(WorldEntity))]
+[GlobalClass]
 public partial class WorldEntity : Resource
 {
 

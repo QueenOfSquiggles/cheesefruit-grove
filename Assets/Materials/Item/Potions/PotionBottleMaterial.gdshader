@@ -3,7 +3,7 @@ shader_type spatial;
 #include "res://Assets/Materials/ShaderIncludes/point_rotations.gdshaderinc"
 
 
-render_mode cull_disabled, unshaded;
+render_mode cull_disabled, diffuse_toon, specular_toon, shadows_disabled;
 
 uniform sampler2D potion_gradient : hint_default_white;
 uniform vec4 fresnel_colour : source_color = vec4(1.0);
@@ -43,4 +43,7 @@ void fragment() {
 			ALBEDO = texture(potion_gradient, vec2(1.0, 0.0)).rgb;
 		}
 	}
+//	ROUGHNESS = 1.0;
+//	METALLIC = 0.0;
+//	SPECULAR = 1.0;
 }

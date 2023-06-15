@@ -16,6 +16,6 @@ shader = ExtResource("1_y2218")
 shader_parameter/fresnel_colour = Color(1, 0.54902, 0.984314, 1)
 shader_parameter/edge_colour = Color(1, 1, 1, 1)
 shader_parameter/fill = 0.78
-shader_parameter/edge_thickness = 0.1
+shader_parameter/edge_thickness = 0.02
 shader_parameter/mesh_radius = 0.2
 shader_parameter/potion_gradient = SubResource("GradientTexture1D_ai61e")

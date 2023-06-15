@@ -69,6 +69,10 @@ layer = 6
 [node name="HUD Requests" parent="." instance=ExtResource("25_33y0o")]
 
 [node name="SkyboxSystem" parent="." instance=ExtResource("2_pi0p3")]
+transform = Transform3D(1, 0, 0, 0, -1, 8.74228e-08, 0, -8.74228e-08, -1, 0, 0, 0)
+CurrentTime = 2118.33
+DEBUG_LightsAngle = 5.52606
+DEBUG_TOD_Percent = 0.8795
 
 [node name="CameraBrain" parent="." instance=ExtResource("5_32866")]
 transform = Transform3D(-0.120137, -0.233186, 0.964983, 0, 0.972023, 0.234887, -0.992757, 0.0282186, -0.116776, 5.993, 3.418, -1.702)
@@ -152,12 +156,6 @@ shape = SubResource("ConcavePolygonShape3D_3ces5")
 
 [node name="EmptyPlot" parent="LevelGeometry" instance=ExtResource("10_4s8qn")]
 transform = Transform3D(-4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, 11, 0, -1)
-
-[node name="EmptyPlot_2" parent="LevelGeometry" instance=ExtResource("10_4s8qn")]
-transform = Transform3D(-1, 0, 8.74228e-08, 0, 1, 0, -8.74228e-08, 0, -1, 1, 0, 11)
-
-[node name="EmptyPlot_3" parent="LevelGeometry" instance=ExtResource("10_4s8qn")]
-transform = Transform3D(1.31134e-07, 0, 1, 0, 1, 0, -1, 0, 1.31134e-07, -11, 0, 0)
 
 [node name="EmptyPlot_4" parent="LevelGeometry" instance=ExtResource("10_4s8qn")]
 transform = Transform3D(1, 0, -1.74846e-07, 0, 1, 0, 1.74846e-07, 0, 1, 0, 0, -11)

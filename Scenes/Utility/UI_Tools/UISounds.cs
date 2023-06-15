@@ -22,7 +22,11 @@ public partial class UISounds : Node
         this.GetNode(path_select_sfx, out sfx_select);
         this.GetNode(path_click_sfx, out sfx_click);
         var parent = GetParent<Control>();
-        if (VoiceID == "") VoiceID = DisplayServer.TtsGetVoicesForLanguage(OS.GetLocaleLanguage())[0];
+        if (VoiceID == "")
+        {
+            bool IsEnabled = ProjectSettings.GetSetting("audio/general/text_to_speech", false).AsBool();
+            if (IsEnabled) VoiceID = DisplayServer.TtsGetVoicesForLanguage(OS.GetLocaleLanguage())[0];
+        }
 
         if (Debugging.Assert(parent != null, "UISounds node must be child of a Control node!"))
         {

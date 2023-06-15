@@ -1,8 +1,7 @@
 using System;
 using Godot;
-using MonoCustomResourceRegistry;
 
-[RegisteredType(nameof(Plot))]
+[GlobalClass]
 public partial class Plot : Resource
 {
 
