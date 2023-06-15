@@ -1,24 +1,54 @@
-[gd_scene load_steps=3 format=3 uid="uid://dw5oemfleara3"]
+[gd_scene load_steps=7 format=3 uid="uid://dw5oemfleara3"]
 
 [ext_resource type="PackedScene" uid="uid://cpi11vcqc7gk3" path="res://Scenes/Utility/Environment/world_env_settings_compliant.tscn" id="1_54dqo"]
-[ext_resource type="Script" path="res://Scenes/Sky/skybox_system.gd" id="1_eo4j3"]
+[ext_resource type="Script" path="res://Scenes/Sky/SkyboxSystem.cs" id="1_nqetm"]
+
+[sub_resource type="Curve" id="Curve_pcpy2"]
+_data = [Vector2(0, 0), 0.0, 0.0, 0, 0, Vector2(0.25, 0), 0.0, 19.5681, 1, 0, Vector2(0.4, 1), 0.0, 0.0, 0, 1, Vector2(0.6, 1), 0.0, 0.0430898, 1, 0, Vector2(0.75, 0), -21.0856, 0.0, 0, 1, Vector2(1, 0), 0.0, 0.0, 0, 0]
+point_count = 6
+
+[sub_resource type="Curve" id="Curve_4hxry"]
+_data = [Vector2(0, 0), 0.0, 0.0, 0, 0, Vector2(0.25, 0), 0.0, 7.0433, 0, 0, Vector2(0.5, 1), 0.0, 0.0, 0, 0, Vector2(0.75, 0), -9.98678, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
+point_count = 5
+
+[sub_resource type="Curve" id="Curve_oslpy"]
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(0.25, 0), -9.20808, 0.0, 0, 1, Vector2(0.75, 0), 0.0, 0.0649642, 1, 0, Vector2(1, 1), 0.0545458, 0.0, 0, 0]
+point_count = 4
+
+[sub_resource type="BoxMesh" id="BoxMesh_qmrvo"]
 
 [node name="SkyboxSystem" type="Node3D"]
-script = ExtResource("1_eo4j3")
-current_time = 251
+script = ExtResource("1_nqetm")
+SkyFactor = SubResource("Curve_pcpy2")
+SunIntensityCurve = SubResource("Curve_4hxry")
+MoonColour = Color(0.168627, 0.27451, 0.788235, 1)
+MoonIntensityCurve = SubResource("Curve_oslpy")
+SecondsPerCycle = 24.0
+PathWorldEnvironment = NodePath("WorldEnv_SettingsCompliant")
+PathLightsChunk = NodePath("LightsChunk")
+PathSun = NodePath("LightsChunk/Sun")
+PathMoon = NodePath("LightsChunk/Moon")
+UpdatePropsEveryFrame = true
+DEBUG_LightsAngle = 3.14159
+DEBUG_TOD_Percent = 0.5
 
 [node name="WorldEnv_SettingsCompliant" parent="." instance=ExtResource("1_54dqo")]
 
 [node name="LightsChunk" type="Node3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 0.791757, -0.610836, 0, 0.610836, 0.791757, 0, 0, 0)
+transform = Transform3D(-0.995004, 9.57137e-08, -0.0998334, 8.74228e-08, 1, 8.74228e-08, 0.0998334, 7.82583e-08, -0.995004, 0, 0, 0)
 
 [node name="Sun" type="DirectionalLight3D" parent="LightsChunk"]
-transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0, 0, 0)
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 0, 0)
 shadow_enabled = true
 directional_shadow_blend_splits = true
 
 [node name="Moon" type="DirectionalLight3D" parent="LightsChunk"]
-visible = false
-light_color = Color(0.560784, 0.937255, 1, 1)
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0)
+light_color = Color(0.168627, 0.27451, 0.788235, 1)
+light_energy = 0.0
 shadow_enabled = true
 directional_shadow_blend_splits = true
+
+[node name="REF_BOX" type="MeshInstance3D" parent="."]
+transform = Transform3D(4.08648, 0, 0, 0, 4.08648, 0, 0, 0, 4.08648, 0, -5.48198, 0)
+mesh = SubResource("BoxMesh_qmrvo")

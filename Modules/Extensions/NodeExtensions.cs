@@ -13,12 +13,12 @@ public static class NodeExtensions
     /// <param name="node">The node we are searching from</param>
     /// <param name="path">The path (absolute or relative to node) to the node we want. Can be a string </param>
     /// <param name="result">Outputs the node if found, else null</param>
-    public static void GetNode<T>(this Node node, NodePath? path, out T? result) where T : class
+    public static void GetNode<T>(this Node node, NodePath? path, out T? result, bool alertErrors = true) where T : class
     {
         result = null;
         if (path is not null) result = node.GetNode(path) as T;
 
-        if (result is null)
+        if (result is null && alertErrors)
         {
             Print.Error($"Node initialization failure: {node.Name} failed to acquire node from path {path}. Returning null");
 
@@ -41,9 +41,9 @@ public static class NodeExtensions
     /// A redirect to reduce confusion with the built-in function 'GetNode'
     /// </summary>
     /// <seealso cref="GetNode"/>
-    public static void GetSafe<T>(this Node node, NodePath path, out T result) where T : class
+    public static void GetSafe<T>(this Node node, NodePath path, out T result, bool alertErrors = true) where T : class
     {
-        node.GetNode(path, out result);
+        node.GetNode(path, out result, alertErrors);
     }
 
 

@@ -245,3 +245,23 @@ mouse_position={
 "type": "vec2",
 "value": Vector2(128, 128)
 }
+time_of_day={
+"type": "float",
+"value": 0.5
+}
+weather_overcast_percent={
+"type": "float",
+"value": 0.7
+}
+weather_wind_velocity={
+"type": "vec3",
+"value": Vector3(1, 0, 1)
+}
+weather_moon_phase={
+"type": "float",
+"value": 0.0
+}
+weather_sunmoon_angle={
+"type": "vec3",
+"value": Vector3(0, 0, 0)
+}

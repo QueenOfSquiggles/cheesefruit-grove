@@ -13,15 +13,18 @@ uniform float cloud_scale : hint_range(0.0, 1.0, 0.01) = 0.25;
 uniform float speed : hint_range(0.0, 0.25, 0.001) = 0.002;
 uniform float cloud_dark : hint_range(0.0, 1.0, 0.01) = 0.5;
 uniform float cloud_light : hint_range(0.0, 1.0, 0.01) = 0.3;
-uniform float cloud_cover : hint_range(0.0, 1.0, 0.01) = 0.2;
 uniform float cloud_alpha : hint_range(0.0, 10.0, 0.01) = 8.0;
 uniform float sky_tint : hint_range(0.0, 1.0, 0.001) = 0.5;
 uniform float height_offset : hint_range(0.0, 1.0, 0.001) = 0.2;
 uniform float sky_contribution : hint_range(0.0, 1.0, 0.1) = 0.5;
 
-uniform vec4 sky_colour : source_color = vec4(0.0, 0.0, 1.0, 1.0);
+uniform vec4 sky_colour_day : source_color = vec4(1.0);
+uniform vec4 sky_colour_night : source_color = vec4(1.0);
 uniform vec4 cloud_tint : source_color = vec4(1.0);
+uniform vec4 cloud_tint_night : source_color = vec4(1.0);
 
+uniform float weather_overcast_percent : hint_range(0.0, 1.0, 0.01) = 0.2;
+global uniform float time_of_day;
 
 const mat2 m = mat2(vec2( 1.6, 1.2), vec2(-1.2, 1.6));
 
@@ -124,7 +127,6 @@ void sky() {
 		
 		c += c1;
 		
-		vec3 skycolour = COLOR;
 		vec3 cloudcolour = vec3(1.1, 1.1, 0.9) * clamp((cloud_dark + cloud_light * c), 0.0, 1.0);
 		float horizon_fall_off = max(normal.y, 0.0);
 		
@@ -132,9 +134,17 @@ void sky() {
 			horizon_fall_off = max(-normal.y, 0.0);
 		}
 		
-		f = cloud_cover + cloud_alpha * f * r;
+		f = weather_overcast_percent + cloud_alpha * f * r;
+
+
+		// 0.25 is noon, 0.75 is midnight
 		
-		vec3 result = mix(sky_colour.rgb, clamp(sky_tint * sky_colour.rgb + cloudcolour * cloud_tint.rgb, 0.0, 1.0), clamp(f + c, 0.0, 1.0) * horizon_fall_off);
+
+		// Daytime colouration
+		vec3 sky_col = mix(sky_colour_night.rgb,sky_colour_day.rgb, time_of_day);
+		vec3 tint = mix(cloud_tint_night.rgb, cloud_tint.rgb, time_of_day);
+
+		vec3 result = mix(sky_col.rgb, clamp(sky_tint * sky_col.rgb + cloudcolour * tint, 0.0, 1.0), clamp(f + c, 0.0, 1.0) * horizon_fall_off);
 		
 		// Convert the color to black and white.
 		COLOR = result; // vec3((result.r + result.g + result.b) / 3.0);
