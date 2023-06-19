@@ -239,7 +239,7 @@ global_illumination/gi/use_half_resolution=true
 
 player_position={
 "type": "vec3",
-"value": Vector3(0, 0, 0)
+"value": Vector3(-3, 0, -3)
 }
 mouse_position={
 "type": "vec2",
@@ -259,7 +259,7 @@ weather_wind_velocity={
 }
 weather_moon_phase={
 "type": "float",
-"value": 0.0
+"value": 0.5
 }
 weather_sunmoon_angle={
 "type": "vec3",

@@ -4,7 +4,7 @@
 [ext_resource type="Script" path="res://Scenes/Sky/SkyboxSystem.cs" id="1_nqetm"]
 
 [sub_resource type="Curve" id="Curve_pcpy2"]
-_data = [Vector2(0, 0), 0.0, 0.0, 0, 0, Vector2(0.25, 0), 0.0, 19.5681, 1, 0, Vector2(0.4, 1), 0.0, 0.0, 0, 1, Vector2(0.6, 1), 0.0, 0.0430898, 1, 0, Vector2(0.75, 0), -21.0856, 0.0, 0, 1, Vector2(1, 0), 0.0, 0.0, 0, 0]
+_data = [Vector2(0, 0), 0.0, 0.0, 0, 0, Vector2(0.25, 0), 0.0, 6.66667, 1, 0, Vector2(0.4, 1), 0.0, 0.0, 0, 1, Vector2(0.6, 1), 0.0, -0.0738152, 1, 0, Vector2(0.75, 0), -21.0856, 0.0, 0, 1, Vector2(1, 0), 0.0, 0.0, 0, 0]
 point_count = 6
 
 [sub_resource type="Curve" id="Curve_4hxry"]
@@ -17,35 +17,35 @@ point_count = 4
 
 [node name="SkyboxSystem" type="Node3D"]
 script = ExtResource("1_nqetm")
-CurrentTime = 2385.29
+CurrentTime = 1300.0
 SkyFactor = SubResource("Curve_pcpy2")
 SunIntensityCurve = SubResource("Curve_4hxry")
-MoonColour = Color(0.168627, 0.27451, 0.788235, 1)
+MoonColour = Color(0.86707, 0.569622, 0.983205, 1)
 MoonIntensityCurve = SubResource("Curve_oslpy")
 AutoProgressCycle = true
-SecondsPerCycle = 12.0
 PathWorldEnvironment = NodePath("WorldEnv_SettingsCompliant")
 PathLightsChunk = NodePath("LightsChunk")
 PathSun = NodePath("LightsChunk/Sun")
 PathMoon = NodePath("LightsChunk/Moon")
 UpdatePropsEveryFrame = true
-DEBUG_LightsAngle = 6.24468
-DEBUG_TOD_Percent = 0.993871
+DEBUG_LightsAngle = 3.40339
+DEBUG_TOD_Percent = 0.541667
+metadata/_edit_group_ = true
 
 [node name="WorldEnv_SettingsCompliant" parent="." instance=ExtResource("1_54dqo")]
 
 [node name="LightsChunk" type="Node3D" parent="."]
-transform = Transform3D(-0.999997, 9.39628e-05, 0.00243482, -1.50884e-07, -0.999258, 0.0385006, 0.00243664, 0.0385005, 0.999256, 0, 0, 0)
+transform = Transform3D(-0.995073, 0.0256601, -0.0957643, 1.45851e-07, 0.965925, 0.258819, 0.0991425, 0.257544, -0.961167, 0, 0, 0)
 
 [node name="Sun" type="DirectionalLight3D" parent="LightsChunk"]
-transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0)
-light_energy = 0.0
+transform = Transform3D(0.958602, 0.0980394, -0.267341, 0.268947, -0.0032953, 0.96315, 0.0935456, -0.995177, -0.0295262, 0, 0, 0)
+light_energy = 0.983434
 shadow_enabled = true
 directional_shadow_blend_splits = true
 
 [node name="Moon" type="DirectionalLight3D" parent="LightsChunk"]
-transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 0, 0)
-light_color = Color(0.168627, 0.27451, 0.788235, 1)
-light_energy = 0.498408
+transform = Transform3D(0.994386, 0.0747189, 0.0749296, 0.074719, 0.0056144, -0.997189, -0.0749295, 0.997188, -4.31847e-08, 0, 0, 0)
+light_color = Color(0.86707, 0.569622, 0.983205, 1)
+light_energy = 0.0
 shadow_enabled = true
 directional_shadow_blend_splits = true

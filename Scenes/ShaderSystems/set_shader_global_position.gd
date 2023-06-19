@@ -1,3 +1,4 @@
+@tool
 extends Marker3D
 
 @export var uniform_name := ""
