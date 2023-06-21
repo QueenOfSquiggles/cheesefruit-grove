@@ -1,7 +1,10 @@
-[gd_resource type="ShaderMaterial" load_steps=3 format=3 uid="uid://2obdaod3cf5e"]
+[gd_resource type="ShaderMaterial" load_steps=6 format=3 uid="uid://2obdaod3cf5e"]
 
 [ext_resource type="Shader" path="res://Assets/Materials/Sky/simple_sky_shader.gdshader" id="1_xls37"]
 [ext_resource type="Texture2D" uid="uid://bk7wo8opf8x3i" path="res://Assets/Krita/skybox/stars_texture.jpg" id="2_e8hgc"]
+[ext_resource type="Texture2D" uid="uid://ch0mt4moqdypi" path="res://Scenes/Sky/clouds_middle_noise_texture.tres" id="2_ldaro"]
+[ext_resource type="Texture2D" uid="uid://dirpk6a75t6hg" path="res://Scenes/Sky/clouds_bottom_noise_texture.tres" id="2_ok3jw"]
+[ext_resource type="Texture2D" uid="uid://ba830w7ge6qlf" path="res://Scenes/Sky/clouds_top_noise_texture.tres" id="4_srt0f"]
 
 [resource]
 shader = ExtResource("1_xls37")
@@ -26,12 +29,15 @@ shader_parameter/clouds_top_color = Color(1, 1, 1, 1)
 shader_parameter/clouds_middle_color = Color(0.92, 0.92, 0.98, 1)
 shader_parameter/clouds_bottom_color = Color(0.83, 0.83, 0.94, 1)
 shader_parameter/clouds_speed = 2.0
-shader_parameter/clouds_direction = 0.2
-shader_parameter/clouds_scale = 2.79
-shader_parameter/clouds_cutoff = 0.45
-shader_parameter/clouds_fuzziness = 0.5
+shader_parameter/clouds_direction = 0.15
+shader_parameter/clouds_scale = 0.1
+shader_parameter/clouds_cutoff = 0.61
+shader_parameter/clouds_fuzziness = 0.0
 shader_parameter/clouds_weight = 0.0
-shader_parameter/clouds_blur = 0.25
+shader_parameter/clouds_blur = 1.0
+shader_parameter/clouds_top_texture = ExtResource("4_srt0f")
+shader_parameter/clouds_middle_texture = ExtResource("2_ldaro")
+shader_parameter/clouds_bottom_texture = ExtResource("2_ok3jw")
 shader_parameter/stars_speed = 1.0
 shader_parameter/stars_scale = 5.0
 shader_parameter/stars_texture = ExtResource("2_e8hgc")

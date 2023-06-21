@@ -3,7 +3,7 @@
 // https://godotshaders.com/shader/stylized-sky-with-procedural-sun-and-moon/
 // Modified to integrate with sky system
 shader_type sky;
-render_mode use_quarter_res_pass;
+render_mode use_half_res_pass;
 
 // Originaly based on https://godotshaders.com/shader/stylized-sky-shader-with-clouds/ but there's not much left
 
@@ -34,9 +34,9 @@ group_uniforms moon; // Second DirectionalLight3D will be the moon
 
 group_uniforms clouds;
 	// Replaced by noise functions, unncomment if you want to use graphical textures
-//	uniform sampler2D clouds_top_texture : filter_linear_mipmap, hint_default_black;
-//	uniform sampler2D clouds_middle_texture : filter_linear_mipmap, hint_default_black;
-//	uniform sampler2D clouds_bottom_texture : filter_linear_mipmap, hint_default_black;
+	uniform sampler2D clouds_top_texture : filter_linear_mipmap, hint_default_black;
+	uniform sampler2D clouds_middle_texture : filter_linear_mipmap, hint_default_black;
+	uniform sampler2D clouds_bottom_texture : filter_linear_mipmap, hint_default_black;
 	uniform vec3 clouds_edge_color : source_color = vec3( 0.8, 0.8, 0.98 );
 	uniform vec3 clouds_top_color : source_color = vec3( 1.0, 1.0, 1.00 );
 	uniform vec3 clouds_middle_color : source_color = vec3( 0.92, 0.92, 0.98 );
@@ -151,146 +151,151 @@ float moon_intersection(vec3 moon_origin, float shadow_radius, float moon_radius
 
 void sky()
 {
-	float time = overwritten_time != 0.0 ? overwritten_time : TIME;
+	if (AT_HALF_RES_PASS) {
+		
+		float time = overwritten_time != 0.0 ? overwritten_time : TIME;
 
-	//////////////////// SKY ///////////////////////////////////////////////////////////////////////
-	float _eyedir_y = abs( sin( EYEDIR.y * PI * 0.5 ));
+		//////////////////// SKY ///////////////////////////////////////////////////////////////////////
+		float _eyedir_y = abs( sin( EYEDIR.y * PI * 0.5 ));
 
-	// The day color will be our base color
-	vec3 _sky_color = mix( day_bottom_color, day_top_color, _eyedir_y );
-	_sky_color = mix( _sky_color, vec3( 0.0 ), clamp(( 0.7 - clouds_cutoff ) * clouds_weight, 0.0, 1.0 ));
+		// The day color will be our base color
+		vec3 _sky_color = mix( day_bottom_color, day_top_color, _eyedir_y );
+		_sky_color = mix( _sky_color, vec3( 0.0 ), clamp(( 0.7 - clouds_cutoff ) * clouds_weight, 0.0, 1.0 ));
 
-	float _sunset_amount = clamp( 0.5 - abs( LIGHT0_DIRECTION.y ), 0.0, 0.5 ) * 2.0;
-	// The sky should be more red around the west, on the opposite side you don't see it as much
-	float _sunset_distance = clamp( 1.0 - pow( distance( EYEDIR, LIGHT0_DIRECTION ), 2 ), 0.0, 1.0 );
-	vec3 _sky_sunset_color = mix( sunset_bottom_color, sunset_top_color, _eyedir_y + 0.5 );
-	_sky_sunset_color = mix( _sky_sunset_color, sunset_bottom_color, _sunset_amount * _sunset_distance );
-	_sky_color = mix( _sky_color, _sky_sunset_color, _sunset_amount );
+		float _sunset_amount = clamp( 0.5 - abs( LIGHT0_DIRECTION.y ), 0.0, 0.5 ) * 2.0;
+		// The sky should be more red around the west, on the opposite side you don't see it as much
+		float _sunset_distance = clamp( 1.0 - pow( distance( EYEDIR, LIGHT0_DIRECTION ), 2 ), 0.0, 1.0 );
+		vec3 _sky_sunset_color = mix( sunset_bottom_color, sunset_top_color, _eyedir_y + 0.5 );
+		_sky_sunset_color = mix( _sky_sunset_color, sunset_bottom_color, _sunset_amount * _sunset_distance );
+		_sky_color = mix( _sky_color, _sky_sunset_color, _sunset_amount );
 
-	float _night_amount = clamp( -LIGHT0_DIRECTION.y + 0.7, 0.0, 1.0 );
-	vec3 _sky_night_color = mix( night_bottom_color, night_top_color, _eyedir_y );
-	_sky_color = mix( _sky_color, _sky_night_color, _night_amount );
+		float _night_amount = clamp( -LIGHT0_DIRECTION.y + 0.7, 0.0, 1.0 );
+		vec3 _sky_night_color = mix( night_bottom_color, night_top_color, _eyedir_y );
+		_sky_color = mix( _sky_color, _sky_night_color, _night_amount );
 
-	// Final sky color
-	COLOR = _sky_color;
+		// Final sky color
+		COLOR = _sky_color;
 
-	//////////////////// HORIZON ///////////////////////////////////////////////////////////////////
-	float _horizon_amount = 0.0;
-	if( EYEDIR.y < 0.0 )
-	{
-		_horizon_amount = clamp( abs( EYEDIR.y ) / horizon_blur, 0.0, 1.0 );
-		// Mixing with the color of the night sky to make the horizon darker
-		vec3 _horizon_color = mix( horizon_color, _sky_color, _night_amount * 0.9 );
-		// And if ther are many dark clouds, we also make the horizon darker
-		_horizon_color = mix( _horizon_color, vec3( 0.0 ), ( 1.0 - clouds_cutoff ) * clouds_weight * 0.7 );
-		COLOR = mix( COLOR, _horizon_color, _horizon_amount );
-	}
-
-	//////////////////// MOON //////////////////////////////////////////////////////////////////////
-	float _moon_amount = 0.0;
-	if( LIGHT1_ENABLED )
-	{
-		// Bigger moon near the horizon
-		float _moon_size = moon_size + cos( LIGHT1_DIRECTION.y * PI ) * moon_size * 0.25;
-		float _moon_distance = distance( EYEDIR, LIGHT1_DIRECTION ) / _moon_size;
-		// Finding moon disc and edge blur
-		_moon_amount = clamp(( 1.0 - _moon_distance ) / moon_blur, 0.0, 1.0 );
-		if( _moon_amount > 0.0 )
+		//////////////////// HORIZON ///////////////////////////////////////////////////////////////////
+		float _horizon_amount = 0.0;
+		if( EYEDIR.y < 0.0 )
 		{
-			// Moon illumination depending on the position of the sun
-			vec3 _moon_normal = normalize( LIGHT1_DIRECTION - EYEDIR);
-			
-			float _moon_intersect = moon_intersection(LIGHT1_DIRECTION, moon_shadow_scale * _moon_size, _moon_size, EYEDIR);
-			_moon_amount *= 1.0 - _horizon_amount;
-			COLOR = mix( COLOR, moon_color, _moon_intersect * _moon_amount );
+			_horizon_amount = clamp( abs( EYEDIR.y ) / horizon_blur, 0.0, 1.0 );
+			// Mixing with the color of the night sky to make the horizon darker
+			vec3 _horizon_color = mix( horizon_color, _sky_color, _night_amount * 0.9 );
+			// And if ther are many dark clouds, we also make the horizon darker
+			_horizon_color = mix( _horizon_color, vec3( 0.0 ), ( 1.0 - clouds_cutoff ) * clouds_weight * 0.7 );
+			COLOR = mix( COLOR, _horizon_color, _horizon_amount );
 		}
-	}
 
-	//////////////////// SUN ///////////////////////////////////////////////////////////////////////
-	float _sun_distance = 0.0;
-	if( LIGHT0_ENABLED )
-	{
-		_sun_distance = distance( EYEDIR, LIGHT0_DIRECTION );
-		// Bigger sun near the horizon
-		float _sun_size = sun_size + cos( LIGHT0_DIRECTION.y * PI ) * sun_size * 0.25;
-		// Finding sun disc and edge blur
-		float _sun_amount = clamp(( 1.0 - _sun_distance / _sun_size ) / sun_blur, 0.0, 1.0 );
-		if( _sun_amount > 0.0 )
+		//////////////////// MOON //////////////////////////////////////////////////////////////////////
+		float _moon_amount = 0.0;
+		if( LIGHT1_ENABLED )
 		{
-			// Changing color of the sun during sunset
-			float _sunset_amount = 1.0;
-			if( LIGHT0_DIRECTION.y > 0.0 )
-				_sunset_amount = clamp( cos( LIGHT0_DIRECTION.y * PI ), 0.0, 1.0 );
-			vec3 _sun_color = mix( sun_color, sun_sunset_color, _sunset_amount );
-			// Hiding the sun behind the moon
-			_sun_amount = clamp( _sun_amount * ( 1.0 - _moon_amount ), 0.0, 1.0 );
-			// Hiding the sun behind the horizon
-			_sun_amount *= 1.0 - _horizon_amount;
-			// Leveling the "glow" in color
-			if( _sun_color.r > 1.0 || _sun_color.g > 1.0 || _sun_color.b > 1.0 )
-				_sun_color *= _sun_amount;
-			COLOR = mix( COLOR, _sun_color, _sun_amount );
+			// Bigger moon near the horizon
+			float _moon_size = moon_size + cos( LIGHT1_DIRECTION.y * PI ) * moon_size * 0.25;
+			float _moon_distance = distance( EYEDIR, LIGHT1_DIRECTION ) / _moon_size;
+			// Finding moon disc and edge blur
+			_moon_amount = clamp(( 1.0 - _moon_distance ) / moon_blur, 0.0, 1.0 );
+			if( _moon_amount > 0.0 )
+			{
+				// Moon illumination depending on the position of the sun
+				vec3 _moon_normal = normalize( LIGHT1_DIRECTION - EYEDIR);
+				
+				float _moon_intersect = moon_intersection(LIGHT1_DIRECTION, moon_shadow_scale * _moon_size, _moon_size, EYEDIR);
+				_moon_amount *= 1.0 - _horizon_amount;
+				COLOR = mix( COLOR, moon_color, _moon_intersect * _moon_amount );
+			}
 		}
-	}
 
-	//////////////////// STARS /////////////////////////////////////////////////////////////////
-	vec2 _sky_uv = EYEDIR.xz / sqrt( EYEDIR.y );
-	if( EYEDIR.y > -0.01 && LIGHT0_DIRECTION.y < 0.0  )
-	{
-		// Stars UV rotation
-		float _stars_speed_cos = cos( stars_speed * time * 0.005 );
-		float _stars_speed_sin = sin( stars_speed * time * 0.005 );
-		vec2 _stars_uv = vec2(
-			_sky_uv.x * _stars_speed_cos - _sky_uv.y * _stars_speed_sin,
-			_sky_uv.x * _stars_speed_sin + _sky_uv.y * _stars_speed_cos
-		);
-		_stars_uv *= vec2(stars_scale);
-		// Stars texture
-		vec3 _stars_color = texture( stars_texture, _stars_uv ).rgb * -LIGHT0_DIRECTION.y;
-		// Hiding stars behind the moon
-		_stars_color *= 1.0 - _moon_amount;
-		COLOR += _stars_color;
-	}
+		//////////////////// SUN ///////////////////////////////////////////////////////////////////////
+		float _sun_distance = 0.0;
+		if( LIGHT0_ENABLED )
+		{
+			_sun_distance = distance( EYEDIR, LIGHT0_DIRECTION );
+			// Bigger sun near the horizon
+			float _sun_size = sun_size + cos( LIGHT0_DIRECTION.y * PI ) * sun_size * 0.25;
+			// Finding sun disc and edge blur
+			float _sun_amount = clamp(( 1.0 - _sun_distance / _sun_size ) / sun_blur, 0.0, 1.0 );
+			if( _sun_amount > 0.0 )
+			{
+				// Changing color of the sun during sunset
+				float _sunset_amount = 1.0;
+				if( LIGHT0_DIRECTION.y > 0.0 )
+					_sunset_amount = clamp( cos( LIGHT0_DIRECTION.y * PI ), 0.0, 1.0 );
+				vec3 _sun_color = mix( sun_color, sun_sunset_color, _sunset_amount );
+				// Hiding the sun behind the moon
+				_sun_amount = clamp( _sun_amount * ( 1.0 - _moon_amount ), 0.0, 1.0 );
+				// Hiding the sun behind the horizon
+				_sun_amount *= 1.0 - _horizon_amount;
+				// Leveling the "glow" in color
+				if( _sun_color.r > 1.0 || _sun_color.g > 1.0 || _sun_color.b > 1.0 )
+					_sun_color *= _sun_amount;
+				COLOR = mix( COLOR, _sun_color, _sun_amount );
+			}
+		}
 
-	//////////////////// CLOUDS ////////////////////////////////////////////////////////////////
-	if( EYEDIR.y > 0.0 )
-	{
-		// Clouds UV movement direction
-		float _clouds_speed = time * clouds_speed * 0.01;
-		float _sin_x = sin( clouds_direction * PI * 2.0 );
-		float _cos_y = cos( clouds_direction * PI * 2.0 );
-		// I using 3 levels of clouds. Top is the lightes and botom the darkest.
-		// The speed of movement (and direction a little) is different for the illusion of the changing shape of the clouds.
-		vec2 _clouds_movement = vec2( _sin_x, _cos_y ) * _clouds_speed;
-//		float _noise_top = texture( clouds_top_texture, ( _sky_uv + _clouds_movement ) * clouds_scale ).r;
-		float _noise_top = gen_fractal_ping_pong( ( _sky_uv + _clouds_movement ) * clouds_scale, 0, 0.5 );
-		_clouds_movement = vec2( _sin_x * 0.97, _cos_y * 1.07 ) * _clouds_speed * 0.89;
-//		float _noise_middle = texture( clouds_middle_texture, ( _sky_uv + _clouds_movement ) * clouds_scale ).r;
-		float _noise_middle = gen_fractal_ping_pong( ( _sky_uv + _clouds_movement ) * clouds_scale, 1, 0.75 );
-		_clouds_movement = vec2( _sin_x * 1.01, _cos_y * 0.89 ) * _clouds_speed * 0.79;
-//		float _noise_bottom = texture( clouds_bottom_texture, ( _sky_uv + _clouds_movement ) * clouds_scale ).r;
-		float _noise_bottom = gen_fractal_ping_pong( ( _sky_uv + _clouds_movement ) * clouds_scale, 2, 1.0 );
-		// Smoothstep with the addition of a noise value from a lower level gives a nice, deep result
-		_noise_bottom = smoothstep( clouds_cutoff, clouds_cutoff + clouds_fuzziness, _noise_bottom );
-		_noise_middle = smoothstep( clouds_cutoff, clouds_cutoff + clouds_fuzziness, _noise_middle + _noise_bottom * 0.2 ) * 1.1;
-		_noise_top = smoothstep( clouds_cutoff, clouds_cutoff + clouds_fuzziness, _noise_top + _noise_middle * 0.4 ) * 1.2;
-		float _clouds_amount = clamp( _noise_top + _noise_middle + _noise_bottom, 0.0, 1.0 );
-		// Fading clouds near the horizon
-		_clouds_amount *= clamp( abs( EYEDIR.y ) / clouds_blur, 0.0, 1.0 );
+		//////////////////// STARS /////////////////////////////////////////////////////////////////
+		vec2 _sky_uv = EYEDIR.xz / sqrt( EYEDIR.y );
+		if( EYEDIR.y > -0.01 && LIGHT0_DIRECTION.y < 0.0  )
+		{
+			// Stars UV rotation
+			float _stars_speed_cos = cos( stars_speed * time * 0.005 );
+			float _stars_speed_sin = sin( stars_speed * time * 0.005 );
+			vec2 _stars_uv = vec2(
+				_sky_uv.x * _stars_speed_cos - _sky_uv.y * _stars_speed_sin,
+				_sky_uv.x * _stars_speed_sin + _sky_uv.y * _stars_speed_cos
+			);
+			_stars_uv *= vec2(stars_scale);
+			// Stars texture
+			vec3 _stars_color = texture( stars_texture, _stars_uv ).rgb * -LIGHT0_DIRECTION.y;
+			// Hiding stars behind the moon
+			_stars_color *= 1.0 - _moon_amount;
+			COLOR += _stars_color;
+		}
 
-		vec3 _clouds_color = mix( vec3( 0.0 ), clouds_top_color, _noise_top );
-		_clouds_color = mix( _clouds_color, clouds_middle_color, _noise_middle );
-		_clouds_color = mix( _clouds_color, clouds_bottom_color, _noise_bottom );
-		// The edge color gives a nice smooth edge, you can try turning this off if you need sharper edges
-		_clouds_color = mix( clouds_edge_color, _clouds_color, _noise_top );
-		// The sun passing through the clouds effect
-		_clouds_color = mix( _clouds_color, clamp( sun_color, 0.0, 1.0 ), pow( 1.0 - clamp( _sun_distance, 0.0, 1.0 ), 5 ));
-		// Color combined with sunset condition
-		_clouds_color = mix( _clouds_color, sunset_bottom_color, _sunset_amount * 0.75 );
-		// Color depending on the "progress" of the night.
-		_clouds_color = mix( _clouds_color, _sky_color, clamp( _night_amount, 0.0, 0.98 ));
-		_clouds_color = mix( _clouds_color, vec3( 0.0 ), clouds_weight * 0.9 );
-		COLOR = mix( COLOR, _clouds_color, _clouds_amount );
+		//////////////////// CLOUDS ////////////////////////////////////////////////////////////////
+		if( EYEDIR.y > 0.0 )
+		{
+			// Clouds UV movement direction
+			float _clouds_speed = time * clouds_speed * 0.01;
+			float _sin_x = sin( clouds_direction * PI * 2.0 );
+			float _cos_y = cos( clouds_direction * PI * 2.0 );
+			// I using 3 levels of clouds. Top is the lightes and botom the darkest.
+			// The speed of movement (and direction a little) is different for the illusion of the changing shape of the clouds.
+			vec2 _clouds_movement = vec2( _sin_x, _cos_y ) * _clouds_speed;
+			float _noise_top = texture( clouds_top_texture, ( _sky_uv + _clouds_movement ) * clouds_scale ).r;
+	//		float _noise_top = gen_fractal_ping_pong( ( _sky_uv + _clouds_movement ) * clouds_scale, 0, 0.5 );
+			_clouds_movement = vec2( _sin_x * 0.97, _cos_y * 1.07 ) * _clouds_speed * 0.89;
+			float _noise_middle = texture( clouds_middle_texture, ( _sky_uv + _clouds_movement ) * clouds_scale ).r;
+	//		float _noise_middle = gen_fractal_ping_pong( ( _sky_uv + _clouds_movement ) * clouds_scale, 1, 0.75 );
+			_clouds_movement = vec2( _sin_x * 1.01, _cos_y * 0.89 ) * _clouds_speed * 0.79;
+			float _noise_bottom = texture( clouds_bottom_texture, ( _sky_uv + _clouds_movement ) * clouds_scale ).r;
+	//		float _noise_bottom = gen_fractal_ping_pong( ( _sky_uv + _clouds_movement ) * clouds_scale, 2, 1.0 );
+			// Smoothstep with the addition of a noise value from a lower level gives a nice, deep result
+			_noise_bottom = smoothstep( clouds_cutoff, clouds_cutoff + clouds_fuzziness, _noise_bottom );
+			_noise_middle = smoothstep( clouds_cutoff, clouds_cutoff + clouds_fuzziness, _noise_middle + _noise_bottom * 0.2 ) * 1.1;
+			_noise_top = smoothstep( clouds_cutoff, clouds_cutoff + clouds_fuzziness, _noise_top + _noise_middle * 0.4 ) * 1.2;
+			float _clouds_amount = clamp( _noise_top + _noise_middle + _noise_bottom, 0.0, 1.0 );
+			// Fading clouds near the horizon
+			_clouds_amount *= clamp( abs( EYEDIR.y ) / clouds_blur, 0.0, 1.0 );
+
+			vec3 _clouds_color = mix( vec3( 0.0 ), clouds_top_color, _noise_top );
+			_clouds_color = mix( _clouds_color, clouds_middle_color, _noise_middle );
+			_clouds_color = mix( _clouds_color, clouds_bottom_color, _noise_bottom );
+			// The edge color gives a nice smooth edge, you can try turning this off if you need sharper edges
+			_clouds_color = mix( clouds_edge_color, _clouds_color, _noise_top );
+			// The sun passing through the clouds effect
+			_clouds_color = mix( _clouds_color, clamp( sun_color, 0.0, 1.0 ), pow( 1.0 - clamp( _sun_distance, 0.0, 1.0 ), 5 ));
+			// Color combined with sunset condition
+			_clouds_color = mix( _clouds_color, sunset_bottom_color, _sunset_amount * 0.75 );
+			// Color depending on the "progress" of the night.
+			_clouds_color = mix( _clouds_color, _sky_color, clamp( _night_amount, 0.0, 0.98 ));
+			_clouds_color = mix( _clouds_color, vec3( 0.0 ), clouds_weight * 0.9 );
+			COLOR = mix( COLOR, _clouds_color, _clouds_amount );
+		}
+	} else {
+		COLOR = HALF_RES_COLOR.rgb;
 	}
 }
 
