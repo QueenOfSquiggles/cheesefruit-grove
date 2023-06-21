@@ -1,0 +1,21 @@
+[remap]
+
+importer="wavefront_obj"
+importer_version=1
+type="Mesh"
+uid="uid://ci2wyws75gdt"
+path="res://.godot/imported/Hilly_Terrain_Hill_Corner_Inner_4x4.obj-e2f2e6e6206e09d69eefe046d92287db.mesh"
+
+[deps]
+
+files=["res://.godot/imported/Hilly_Terrain_Hill_Corner_Inner_4x4.obj-e2f2e6e6206e09d69eefe046d92287db.mesh"]
+
+source_file="res://Assets/Packs/ModulerTerrainCollection_KeithAtFertileSoilProductions_CC0/Hilly_Terrain_Hill_Corner_Inner_4x4.obj"
+dest_files=["res://.godot/imported/Hilly_Terrain_Hill_Corner_Inner_4x4.obj-e2f2e6e6206e09d69eefe046d92287db.mesh", "res://.godot/imported/Hilly_Terrain_Hill_Corner_Inner_4x4.obj-e2f2e6e6206e09d69eefe046d92287db.mesh"]
+
+[params]
+
+generate_tangents=true
+scale_mesh=Vector3(1, 1, 1)
+offset_mesh=Vector3(0, 0, 0)
+optimize_mesh=true

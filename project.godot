@@ -1,7 +1,7 @@
 ; Engine configuration file.
 ; It's best edited using the editor UI and not directly,
 ; since the parameters that go here are not all obvious.
-;
+; 
 ; Format:
 ;   [section] ; section goes between []
 ;   param=value ; assign values to parameters
@@ -25,9 +25,10 @@ ResourceScriptDirectories=["res://"]
 
 config/name="Cute Magical Farming Sim"
 run/main_scene="res://Scenes/UI/LaunchSequence/launch_sequence.tscn"
-config/features=PackedStringArray("4.1", "Forward Plus")
+config/features=PackedStringArray("4.1", "C#", "Forward Plus")
 boot_splash/show_image=false
 config/icon="res://icon.png"
+config/description=""
 
 [autoload]
 
@@ -255,7 +256,7 @@ weather_overcast_percent={
 }
 weather_wind_velocity={
 "type": "vec3",
-"value": Vector3(1, 0, 1)
+"value": Vector3(0.05, 0, 0.1)
 }
 weather_moon_phase={
 "type": "float",
@@ -265,3 +266,8 @@ weather_sunmoon_angle={
 "type": "vec3",
 "value": Vector3(0, 0, 0)
 }
+weather_wetness={
+"type": "float",
+"value": 0.5
+}
+

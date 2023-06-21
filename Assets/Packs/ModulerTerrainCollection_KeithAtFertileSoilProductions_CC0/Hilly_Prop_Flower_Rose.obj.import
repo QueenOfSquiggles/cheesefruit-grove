@@ -1,0 +1,21 @@
+[remap]
+
+importer="wavefront_obj"
+importer_version=1
+type="Mesh"
+uid="uid://celumqs1xlb7a"
+path="res://.godot/imported/Hilly_Prop_Flower_Rose.obj-a36f1b887f4df4a9a0e83b04b7ad2e60.mesh"
+
+[deps]
+
+files=["res://.godot/imported/Hilly_Prop_Flower_Rose.obj-a36f1b887f4df4a9a0e83b04b7ad2e60.mesh"]
+
+source_file="res://Assets/Packs/ModulerTerrainCollection_KeithAtFertileSoilProductions_CC0/Hilly_Prop_Flower_Rose.obj"
+dest_files=["res://.godot/imported/Hilly_Prop_Flower_Rose.obj-a36f1b887f4df4a9a0e83b04b7ad2e60.mesh", "res://.godot/imported/Hilly_Prop_Flower_Rose.obj-a36f1b887f4df4a9a0e83b04b7ad2e60.mesh"]
+
+[params]
+
+generate_tangents=true
+scale_mesh=Vector3(1, 1, 1)
+offset_mesh=Vector3(0, 0, 0)
+optimize_mesh=true

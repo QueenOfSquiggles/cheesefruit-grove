@@ -1,0 +1,21 @@
+[remap]
+
+importer="wavefront_obj"
+importer_version=1
+type="Mesh"
+uid="uid://d0waqyoxa3rpo"
+path="res://.godot/imported/Shared_Prop_Boulder_6.obj-440ad2e9b07fa35311f547dee198e011.mesh"
+
+[deps]
+
+files=["res://.godot/imported/Shared_Prop_Boulder_6.obj-440ad2e9b07fa35311f547dee198e011.mesh"]
+
+source_file="res://Assets/Packs/ModulerTerrainCollection_KeithAtFertileSoilProductions_CC0/Shared_Prop_Boulder_6.obj"
+dest_files=["res://.godot/imported/Shared_Prop_Boulder_6.obj-440ad2e9b07fa35311f547dee198e011.mesh", "res://.godot/imported/Shared_Prop_Boulder_6.obj-440ad2e9b07fa35311f547dee198e011.mesh"]
+
+[params]
+
+generate_tangents=true
+scale_mesh=Vector3(1, 1, 1)
+offset_mesh=Vector3(0, 0, 0)
+optimize_mesh=true

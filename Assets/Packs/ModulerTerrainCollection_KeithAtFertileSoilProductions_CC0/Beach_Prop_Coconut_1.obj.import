@@ -1,0 +1,21 @@
+[remap]
+
+importer="wavefront_obj"
+importer_version=1
+type="Mesh"
+uid="uid://b6j430qugpn6u"
+path="res://.godot/imported/Beach_Prop_Coconut_1.obj-512c6cba0ccb045c3fb8de344f5f255c.mesh"
+
+[deps]
+
+files=["res://.godot/imported/Beach_Prop_Coconut_1.obj-512c6cba0ccb045c3fb8de344f5f255c.mesh"]
+
+source_file="res://Assets/Packs/ModulerTerrainCollection_KeithAtFertileSoilProductions_CC0/Beach_Prop_Coconut_1.obj"
+dest_files=["res://.godot/imported/Beach_Prop_Coconut_1.obj-512c6cba0ccb045c3fb8de344f5f255c.mesh", "res://.godot/imported/Beach_Prop_Coconut_1.obj-512c6cba0ccb045c3fb8de344f5f255c.mesh"]
+
+[params]
+
+generate_tangents=true
+scale_mesh=Vector3(1, 1, 1)
+offset_mesh=Vector3(0, 0, 0)
+optimize_mesh=true

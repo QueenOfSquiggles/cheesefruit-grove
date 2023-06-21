@@ -1,0 +1,21 @@
+[remap]
+
+importer="wavefront_obj"
+importer_version=1
+type="Mesh"
+uid="uid://ch8cior3hfsqm"
+path="res://.godot/imported/Cave_Terrain_Hill_Side_Sharp.obj-e0d33c662621bd0483900008665bc821.mesh"
+
+[deps]
+
+files=["res://.godot/imported/Cave_Terrain_Hill_Side_Sharp.obj-e0d33c662621bd0483900008665bc821.mesh"]
+
+source_file="res://Assets/Packs/ModulerTerrainCollection_KeithAtFertileSoilProductions_CC0/Cave_Terrain_Hill_Side_Sharp.obj"
+dest_files=["res://.godot/imported/Cave_Terrain_Hill_Side_Sharp.obj-e0d33c662621bd0483900008665bc821.mesh", "res://.godot/imported/Cave_Terrain_Hill_Side_Sharp.obj-e0d33c662621bd0483900008665bc821.mesh"]
+
+[params]
+
+generate_tangents=true
+scale_mesh=Vector3(1, 1, 1)
+offset_mesh=Vector3(0, 0, 0)
+optimize_mesh=true

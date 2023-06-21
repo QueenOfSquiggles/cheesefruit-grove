@@ -1,0 +1,21 @@
+[remap]
+
+importer="wavefront_obj"
+importer_version=1
+type="Mesh"
+uid="uid://dgl1c1xdnflur"
+path="res://.godot/imported/Hilly_Prop_Rock_3.obj-b8821f7e7622699143cbea180d77e544.mesh"
+
+[deps]
+
+files=["res://.godot/imported/Hilly_Prop_Rock_3.obj-b8821f7e7622699143cbea180d77e544.mesh"]
+
+source_file="res://Assets/Packs/ModulerTerrainCollection_KeithAtFertileSoilProductions_CC0/Hilly_Prop_Rock_3.obj"
+dest_files=["res://.godot/imported/Hilly_Prop_Rock_3.obj-b8821f7e7622699143cbea180d77e544.mesh", "res://.godot/imported/Hilly_Prop_Rock_3.obj-b8821f7e7622699143cbea180d77e544.mesh"]
+
+[params]
+
+generate_tangents=true
+scale_mesh=Vector3(1, 1, 1)
+offset_mesh=Vector3(0, 0, 0)
+optimize_mesh=true

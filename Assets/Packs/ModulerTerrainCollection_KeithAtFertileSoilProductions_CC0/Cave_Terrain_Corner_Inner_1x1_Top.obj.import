@@ -1,0 +1,21 @@
+[remap]
+
+importer="wavefront_obj"
+importer_version=1
+type="Mesh"
+uid="uid://nsyn5jhwsdvx"
+path="res://.godot/imported/Cave_Terrain_Corner_Inner_1x1_Top.obj-f88d4d3a791b09f251bf558e32010635.mesh"
+
+[deps]
+
+files=["res://.godot/imported/Cave_Terrain_Corner_Inner_1x1_Top.obj-f88d4d3a791b09f251bf558e32010635.mesh"]
+
+source_file="res://Assets/Packs/ModulerTerrainCollection_KeithAtFertileSoilProductions_CC0/Cave_Terrain_Corner_Inner_1x1_Top.obj"
+dest_files=["res://.godot/imported/Cave_Terrain_Corner_Inner_1x1_Top.obj-f88d4d3a791b09f251bf558e32010635.mesh", "res://.godot/imported/Cave_Terrain_Corner_Inner_1x1_Top.obj-f88d4d3a791b09f251bf558e32010635.mesh"]
+
+[params]
+
+generate_tangents=true
+scale_mesh=Vector3(1, 1, 1)
+offset_mesh=Vector3(0, 0, 0)
+optimize_mesh=true
