@@ -2,21 +2,19 @@
 
 [ext_resource type="Shader" path="res://Assets/Materials/Grass/grass.gdshader" id="1_e30dd"]
 
-[sub_resource type="Gradient" id="Gradient_gcpfp"]
-interpolation_mode = 2
-offsets = PackedFloat32Array(0.25, 0.75)
+[sub_resource type="Gradient" id="Gradient_o2h42"]
 
-[sub_resource type="FastNoiseLite" id="FastNoiseLite_xxkgj"]
-seed = 355
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_0wgun"]
+noise_type = 2
+seed = 785
 fractal_type = 2
-fractal_octaves = 2
-fractal_lacunarity = 2.85
-fractal_gain = 0.46
+fractal_octaves = 3
+cellular_jitter = 0.865
 
-[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_hm54o"]
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_xj28c"]
 seamless = true
-color_ramp = SubResource("Gradient_gcpfp")
-noise = SubResource("FastNoiseLite_xxkgj")
+color_ramp = SubResource("Gradient_o2h42")
+noise = SubResource("FastNoiseLite_0wgun")
 
 [resource]
 render_priority = 0
@@ -25,9 +23,9 @@ shader_parameter/grass_colour_base = Color(0.352941, 0.270588, 0.129412, 1)
 shader_parameter/grass_colour_tip = Color(0, 0.545098, 0, 1)
 shader_parameter/grass_sway_pitch = 0.1
 shader_parameter/grass_sway_yaw = 0.1
-shader_parameter/wind_noise_scale = 0.01
-shader_parameter/wind_scroll = 0.1
-shader_parameter/wind_affect_noise = SubResource("NoiseTexture2D_hm54o")
+shader_parameter/wind_noise_scale = 0.1
+shader_parameter/wind_scroll = 0.4
+shader_parameter/wind_noise = SubResource("NoiseTexture2D_xj28c")
 shader_parameter/min_roughness = 0.465
 shader_parameter/max_roughness = 1.0
 shader_parameter/player_radius = 0.79

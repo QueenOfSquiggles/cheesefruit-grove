@@ -255,7 +255,7 @@ weather_overcast_percent={
 }
 weather_wind_velocity={
 "type": "vec3",
-"value": Vector3(0.05, 0, 0.1)
+"value": Vector3(1, 0, 1)
 }
 weather_moon_phase={
 "type": "float",
@@ -264,8 +264,4 @@ weather_moon_phase={
 weather_sunmoon_angle={
 "type": "vec3",
 "value": Vector3(0, 0, 0)
-}
-weather_wetness={
-"type": "float",
-"value": 0.5
 }
