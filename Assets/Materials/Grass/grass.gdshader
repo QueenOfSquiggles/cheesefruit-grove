@@ -35,13 +35,13 @@ void vertex() {
 	vec3 worldPos_static = (MODEL_MATRIX * vec4(VERTEX, 1.0)).xyz;
 	vec3 worldPos = worldPos_static * wind_noise_scale;
 	float time = TIME * length(weather_wind_velocity) * wind_scroll;
-	worldPos += normalize(-weather_wind_velocity) * time;
 	vec3 wind_dir = normalize(-weather_wind_velocity);
+	worldPos += wind_dir * time;
 	mat3 to_model = inverse(mat3(MODEL_MATRIX));
-	vec3 wind_forward = to_model * normalize(wind_dir);
+	vec3 wind_forward = to_model * wind_dir;
 	vec3 wind_right = normalize(cross(wind_forward, UP));
 	float wind_noise_sample = texture(wind_noise, worldPos.xz + 0.1).r;
-	wind_strength = length(wind_dir) * pow(wind_noise_sample, 1.5);
+	wind_strength = length(weather_wind_velocity) * pow(wind_noise_sample, 1.5);
 	
 	float sway_pitch = grass_sway_pitch * wind_strength;
 	float sway_yaw = grass_sway_yaw * wind_strength * sin(time);
