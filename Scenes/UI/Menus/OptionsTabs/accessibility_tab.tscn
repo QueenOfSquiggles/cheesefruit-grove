@@ -14,14 +14,14 @@ offset_right = 1051.0
 grow_vertical = 2
 script = ExtResource("1_qvlnx")
 path_checkbox_no_flashing_lights = NodePath("MarginContainer/VBoxContainer/ScrollContainer/MarginContainer/VBoxContainer/FlashingLights/CheckBox_NoFlashingLights")
-path_slider_rumble_strength = NodePath("MarginContainer/VBoxContainer/ScrollContainer/MarginContainer/VBoxContainer/ControllerRumble/Stength")
-path_slider_screen_shake_strength = NodePath("MarginContainer/VBoxContainer/ScrollContainer/MarginContainer/VBoxContainer/ScreenShake/Stength")
-path_slider_rumble_duration = NodePath("MarginContainer/VBoxContainer/ScrollContainer/MarginContainer/VBoxContainer/ControllerRumble/MaxDuration")
-path_slider_screen_shake_duration = NodePath("MarginContainer/VBoxContainer/ScrollContainer/MarginContainer/VBoxContainer/ScreenShake/MaxDuration")
-path_slider_max_volume = NodePath("MarginContainer/VBoxContainer/ScrollContainer/MarginContainer/VBoxContainer/AudioLimit/SliderCombo")
-path_slider_engine_time_scale = NodePath("MarginContainer/VBoxContainer/ScrollContainer/MarginContainer/VBoxContainer/EngineTimeScale/Stength")
+path_slider_rumble_strength = NodePath("MarginContainer/VBoxContainer/ScrollContainer/MarginContainer/VBoxContainer/ControllerRumble/Stength/HBoxContainer/HSlider")
+path_slider_screen_shake_strength = NodePath("MarginContainer/VBoxContainer/ScrollContainer/MarginContainer/VBoxContainer/ScreenShake/Stength/HBoxContainer/HSlider")
+path_slider_rumble_duration = NodePath("MarginContainer/VBoxContainer/ScrollContainer/MarginContainer/VBoxContainer/ControllerRumble/MaxDuration/HBoxContainer/HSlider")
+path_slider_screen_shake_duration = NodePath("MarginContainer/VBoxContainer/ScrollContainer/MarginContainer/VBoxContainer/ScreenShake/MaxDuration/HBoxContainer/HSlider")
+path_slider_max_volume = NodePath("MarginContainer/VBoxContainer/ScrollContainer/MarginContainer/VBoxContainer/AudioLimit/SliderCombo/HBoxContainer/HSlider")
+path_slider_engine_time_scale = NodePath("MarginContainer/VBoxContainer/ScrollContainer/MarginContainer/VBoxContainer/EngineTimeScale/Stength/HBoxContainer/HSlider")
 path_option_font = NodePath("MarginContainer/VBoxContainer/ScrollContainer/MarginContainer/VBoxContainer/FontStyle2/FontStyle")
-path_gui_scale = NodePath("MarginContainer/VBoxContainer/ScrollContainer/MarginContainer/VBoxContainer/UIScaling/SliderCombo")
+path_gui_scale = NodePath("MarginContainer/VBoxContainer/ScrollContainer/MarginContainer/VBoxContainer/UIScaling/SliderCombo/HBoxContainer/HSlider")
 path_check_always_show_reticle = NodePath("MarginContainer/VBoxContainer/ScrollContainer/MarginContainer/VBoxContainer/AlwaysShowReticle/CheckBox")
 
 [node name="MarginContainer" type="MarginContainer" parent="."]
@@ -281,3 +281,11 @@ script = ExtResource("6_8fdip")
 [connection signal="pressed" from="MarginContainer/VBoxContainer/HBoxContainer/BtnApplyChanges" to="." method="ApplyChanges"]
 [connection signal="toggled" from="MarginContainer/VBoxContainer/HBoxContainer/CheckToggleDescriptions" to="MarginContainer/VBoxContainer/HBoxContainer/CheckToggleDescriptions" method="_on_toggled"]
 [connection signal="toggled" from="MarginContainer/VBoxContainer/ScrollContainer/MarginContainer/VBoxContainer/FlashingLights/CheckBox_NoFlashingLights" to="." method="OnNoFlashingLightsChanged"]
+
+[editable path="MarginContainer/VBoxContainer/ScrollContainer/MarginContainer/VBoxContainer/UIScaling/SliderCombo"]
+[editable path="MarginContainer/VBoxContainer/ScrollContainer/MarginContainer/VBoxContainer/AudioLimit/SliderCombo"]
+[editable path="MarginContainer/VBoxContainer/ScrollContainer/MarginContainer/VBoxContainer/ScreenShake/Stength"]
+[editable path="MarginContainer/VBoxContainer/ScrollContainer/MarginContainer/VBoxContainer/ScreenShake/MaxDuration"]
+[editable path="MarginContainer/VBoxContainer/ScrollContainer/MarginContainer/VBoxContainer/ControllerRumble/Stength"]
+[editable path="MarginContainer/VBoxContainer/ScrollContainer/MarginContainer/VBoxContainer/ControllerRumble/MaxDuration"]
+[editable path="MarginContainer/VBoxContainer/ScrollContainer/MarginContainer/VBoxContainer/EngineTimeScale/Stength"]

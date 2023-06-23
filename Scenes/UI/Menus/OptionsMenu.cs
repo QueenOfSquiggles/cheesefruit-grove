@@ -26,7 +26,7 @@ public partial class OptionsMenu : Control
         this.GetSafe(path_sliding_scene_root, out SlidingSceneRoot);
     }
 
-    private void OnBtnGameplay() => DoPanelThing(path_panel_gameplay);
+    private void OnBtnGameplay() { } // => DoPanelThing(path_panel_gameplay);
     private void OnBtnGraphics() => DoPanelThing(path_panel_graphics);
     private void OnBtnAccess() => DoPanelThing(path_panel_access);
     private void OnBtnAudio() => DoPanelThing(path_panel_audio);

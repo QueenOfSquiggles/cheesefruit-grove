@@ -8,17 +8,16 @@ public partial class PauseMenu : Control
 
     [Export(PropertyHint.File, "*.tscn")] private string main_menu_file;
     [Export(PropertyHint.File, "*.tscn")] private string options_menu_file;
-
-    [Export] private NodePath PathSlidingSceneRoot = "SlidePanelRoot";
+    [Export] private NodePath PathMenuPanel;
 
     private Control CurrentPopup = null;
-    private Control SlidingSceneRoot;
+    private Control MenuPanel;
 
     public override void _Ready()
     {
+        this.GetSafe(PathMenuPanel, out MenuPanel);
         GetTree().Paused = true;
         Input.MouseMode = Input.MouseModeEnum.Visible;
-        this.GetSafe(PathSlidingSceneRoot, out SlidingSceneRoot);
     }
 
     public override void _UnhandledInput(InputEvent e)
@@ -61,8 +60,8 @@ public partial class PauseMenu : Control
         var packed = GD.Load<PackedScene>(scene_file);
         var scene = packed?.Instantiate<Control>();
         if (scene is null) return;
-        scene.GlobalPosition = new Vector2(Size.X, 0);
-        SlidingSceneRoot.AddChild(scene);
+        scene.GlobalPosition = new Vector2(MenuPanel.Size.X, 0);
+        AddChild(scene);
         CurrentPopup = scene;
     }
 }

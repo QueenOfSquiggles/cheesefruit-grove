@@ -19,12 +19,12 @@ public partial class accessibility_tab : PanelContainer
     [Export] private NodePath path_check_always_show_reticle;
 
     private CheckBox checkbox_no_flashing_lights;
-    private HSlider slider_rumble_strength;
-    private HSlider slider_screen_shake_strength;
-    private HSlider slider_rumble_duration;
-    private HSlider slider_screen_shake_duration;
-    private HSlider slider_max_volume;
-    private HSlider slider_time_scale;
+    private Slider slider_rumble_strength;
+    private Slider slider_screen_shake_strength;
+    private Slider slider_rumble_duration;
+    private Slider slider_screen_shake_duration;
+    private Slider slider_max_volume;
+    private Slider slider_time_scale;
     private Slider slider_gui_scale;
     private OptionButton option_font;
     private CheckBox check_always_show_reticle;
