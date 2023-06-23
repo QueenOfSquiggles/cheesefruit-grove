@@ -1,143 +1,107 @@
-[gd_scene load_steps=5 format=3 uid="uid://dbfdlcj7agxhj"]
+[gd_scene load_steps=6 format=3 uid="uid://dbfdlcj7agxhj"]
 
 [ext_resource type="Script" path="res://Scenes/UI/Menus/OptionsTabs/AudioTab.cs" id="1_uko75"]
 [ext_resource type="PackedScene" uid="uid://sgndh4ywb4st" path="res://Scenes/UI/Menus/OptionsTabs/slider_combo.tscn" id="2_wor7r"]
 [ext_resource type="PackedScene" uid="uid://ci8q8yf6jrc8n" path="res://Scenes/Utility/UI_Tools/ui_effects.tscn" id="3_3gmn4"]
-[ext_resource type="PackedScene" path="res://Scenes/Utility/UI_Tools/request_focus_on_parent.tscn" id="4_73uww"]
+[ext_resource type="Script" path="res://Scenes/UI/Animations/SlidingPanelComponent.cs" id="4_yvpk1"]
 
-[node name="CenterContainer" type="MarginContainer"]
-offset_right = 1152.0
-offset_bottom = 648.0
-theme_override_constants/margin_left = 32
-theme_override_constants/margin_top = 32
-theme_override_constants/margin_right = 32
-theme_override_constants/margin_bottom = 32
+[sub_resource type="LabelSettings" id="LabelSettings_81ya3"]
+font_size = 32
 
-[node name="Audio" type="PanelContainer" parent="."]
-layout_mode = 2
+[node name="AudioOptions" type="PanelContainer"]
+anchors_preset = 9
+anchor_bottom = 1.0
+offset_right = 346.0
+grow_vertical = 2
 size_flags_vertical = 4
 script = ExtResource("1_uko75")
-path_slider_main = NodePath("MarginContainer/VBoxContainer/PanelContainer/VBoxContainer/MainBus/HSlider")
-path_slider_vo = NodePath("MarginContainer/VBoxContainer/PanelContainer/VBoxContainer/VOBus/HSlider")
-path_slider_sfx = NodePath("MarginContainer/VBoxContainer/PanelContainer/VBoxContainer/SFXBus/HSlider")
-path_slider_creature = NodePath("MarginContainer/VBoxContainer/PanelContainer/VBoxContainer/CreatureBus/HSlider")
-path_slider_drones = NodePath("MarginContainer/VBoxContainer/PanelContainer/VBoxContainer/DronesBus/HSlider")
+path_slider_main = NodePath("MarginContainer/VBoxContainer/ScrollContainer/VBoxContainer/MainBus/HBoxContainer/HSlider")
+path_slider_vo = NodePath("MarginContainer/VBoxContainer/ScrollContainer/VBoxContainer/VOBus/HBoxContainer/HSlider")
+path_slider_sfx = NodePath("MarginContainer/VBoxContainer/ScrollContainer/VBoxContainer/SFXBus/HBoxContainer/HSlider")
+path_slider_creature = NodePath("MarginContainer/VBoxContainer/ScrollContainer/VBoxContainer/CreatureBus/HBoxContainer/HSlider")
+path_slider_drones = NodePath("MarginContainer/VBoxContainer/ScrollContainer/VBoxContainer/DronesBus/HBoxContainer/HSlider")
 
-[node name="MarginContainer" type="MarginContainer" parent="Audio"]
+[node name="MarginContainer" type="MarginContainer" parent="."]
 layout_mode = 2
 theme_override_constants/margin_left = 32
 theme_override_constants/margin_top = 32
 theme_override_constants/margin_right = 32
 theme_override_constants/margin_bottom = 32
 
-[node name="VBoxContainer" type="VBoxContainer" parent="Audio/MarginContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer"]
 layout_mode = 2
+theme_override_constants/separation = 32
 
-[node name="Label" type="Label" parent="Audio/MarginContainer/VBoxContainer"]
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer"]
 layout_mode = 2
 text = "Audio Volumes"
+label_settings = SubResource("LabelSettings_81ya3")
 horizontal_alignment = 1
 
-[node name="PanelContainer" type="PanelContainer" parent="Audio/MarginContainer/VBoxContainer"]
-custom_minimum_size = Vector2(720, 0)
-layout_mode = 2
-
-[node name="VBoxContainer" type="VBoxContainer" parent="Audio/MarginContainer/VBoxContainer/PanelContainer"]
-layout_mode = 2
-
-[node name="MainBus" parent="Audio/MarginContainer/VBoxContainer/PanelContainer/VBoxContainer" instance=ExtResource("2_wor7r")]
-layout_mode = 2
-text = "Main"
-min_value = -72.0
-max_value = 6.0
-step_value = 1.0
-
-[node name="Lbl" parent="Audio/MarginContainer/VBoxContainer/PanelContainer/VBoxContainer/MainBus" index="0"]
-text = "Main"
-
-[node name="HSlider" parent="Audio/MarginContainer/VBoxContainer/PanelContainer/VBoxContainer/MainBus" index="1"]
-min_value = -72.0
-max_value = 6.0
-step = 1.0
-
-[node name="VOBus" parent="Audio/MarginContainer/VBoxContainer/PanelContainer/VBoxContainer" instance=ExtResource("2_wor7r")]
-layout_mode = 2
-text = "Voice Over"
-min_value = -72.0
-max_value = 6.0
-step_value = 1.0
-
-[node name="Lbl" parent="Audio/MarginContainer/VBoxContainer/PanelContainer/VBoxContainer/VOBus" index="0"]
-text = "Voice Over"
-
-[node name="HSlider" parent="Audio/MarginContainer/VBoxContainer/PanelContainer/VBoxContainer/VOBus" index="1"]
-min_value = -72.0
-max_value = 6.0
-step = 1.0
-
-[node name="SFXBus" parent="Audio/MarginContainer/VBoxContainer/PanelContainer/VBoxContainer" instance=ExtResource("2_wor7r")]
-layout_mode = 2
-text = "SFX"
-min_value = -72.0
-max_value = 6.0
-step_value = 1.0
-
-[node name="Lbl" parent="Audio/MarginContainer/VBoxContainer/PanelContainer/VBoxContainer/SFXBus" index="0"]
-text = "SFX"
-
-[node name="HSlider" parent="Audio/MarginContainer/VBoxContainer/PanelContainer/VBoxContainer/SFXBus" index="1"]
-min_value = -72.0
-max_value = 6.0
-step = 1.0
-
-[node name="CreatureBus" parent="Audio/MarginContainer/VBoxContainer/PanelContainer/VBoxContainer" instance=ExtResource("2_wor7r")]
-layout_mode = 2
-text = "Creature Sounds"
-min_value = -72.0
-max_value = 6.0
-step_value = 1.0
-
-[node name="Lbl" parent="Audio/MarginContainer/VBoxContainer/PanelContainer/VBoxContainer/CreatureBus" index="0"]
-text = "Creature Sounds"
-
-[node name="HSlider" parent="Audio/MarginContainer/VBoxContainer/PanelContainer/VBoxContainer/CreatureBus" index="1"]
-min_value = -72.0
-max_value = 6.0
-step = 1.0
-
-[node name="DronesBus" parent="Audio/MarginContainer/VBoxContainer/PanelContainer/VBoxContainer" instance=ExtResource("2_wor7r")]
-layout_mode = 2
-text = "Drones & BG"
-min_value = -72.0
-max_value = 6.0
-step_value = 1.0
-
-[node name="Lbl" parent="Audio/MarginContainer/VBoxContainer/PanelContainer/VBoxContainer/DronesBus" index="0"]
-text = "Drones & BG"
-
-[node name="HSlider" parent="Audio/MarginContainer/VBoxContainer/PanelContainer/VBoxContainer/DronesBus" index="1"]
-min_value = -72.0
-max_value = 6.0
-step = 1.0
-
-[node name="HSeparator3" type="HSeparator" parent="Audio/MarginContainer/VBoxContainer"]
+[node name="HSeparator3" type="HSeparator" parent="MarginContainer/VBoxContainer"]
 custom_minimum_size = Vector2(0, 32)
 layout_mode = 2
 
-[node name="BtnApply" type="Button" parent="Audio/MarginContainer/VBoxContainer"]
+[node name="BtnApply" type="Button" parent="MarginContainer/VBoxContainer"]
 layout_mode = 2
 text = "Apply Changes"
 
-[node name="UIEffects" parent="Audio/MarginContainer/VBoxContainer/BtnApply" instance=ExtResource("3_3gmn4")]
+[node name="UIEffects" parent="MarginContainer/VBoxContainer/BtnApply" instance=ExtResource("3_3gmn4")]
 
-[node name="RequestFocusOnParent" parent="." instance=ExtResource("4_73uww")]
+[node name="ScrollContainer" type="ScrollContainer" parent="MarginContainer/VBoxContainer"]
 layout_mode = 2
-focus_target = NodePath("../Audio/MarginContainer/VBoxContainer/BtnApply")
+size_flags_vertical = 3
+horizontal_scroll_mode = 0
 
-[connection signal="pressed" from="Audio/MarginContainer/VBoxContainer/BtnApply" to="Audio" method="ApplyChanges"]
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer/ScrollContainer"]
+custom_minimum_size = Vector2(480, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_constants/separation = 32
 
-[editable path="Audio/MarginContainer/VBoxContainer/PanelContainer/VBoxContainer/MainBus"]
-[editable path="Audio/MarginContainer/VBoxContainer/PanelContainer/VBoxContainer/VOBus"]
-[editable path="Audio/MarginContainer/VBoxContainer/PanelContainer/VBoxContainer/SFXBus"]
-[editable path="Audio/MarginContainer/VBoxContainer/PanelContainer/VBoxContainer/CreatureBus"]
-[editable path="Audio/MarginContainer/VBoxContainer/PanelContainer/VBoxContainer/DronesBus"]
+[node name="MainBus" parent="MarginContainer/VBoxContainer/ScrollContainer/VBoxContainer" instance=ExtResource("2_wor7r")]
+layout_mode = 2
+text = "Main Audio (Controls Others)"
+
+[node name="Lbl" parent="MarginContainer/VBoxContainer/ScrollContainer/VBoxContainer/MainBus" index="0"]
+text = "Main Audio (Controls Others)"
+
+[node name="VOBus" parent="MarginContainer/VBoxContainer/ScrollContainer/VBoxContainer" instance=ExtResource("2_wor7r")]
+layout_mode = 2
+text = "Voices"
+
+[node name="Lbl" parent="MarginContainer/VBoxContainer/ScrollContainer/VBoxContainer/VOBus" index="0"]
+text = "Voices"
+
+[node name="SFXBus" parent="MarginContainer/VBoxContainer/ScrollContainer/VBoxContainer" instance=ExtResource("2_wor7r")]
+layout_mode = 2
+text = "SFX"
+
+[node name="Lbl" parent="MarginContainer/VBoxContainer/ScrollContainer/VBoxContainer/SFXBus" index="0"]
+text = "SFX"
+
+[node name="CreatureBus" parent="MarginContainer/VBoxContainer/ScrollContainer/VBoxContainer" instance=ExtResource("2_wor7r")]
+layout_mode = 2
+text = "Creature Noises"
+
+[node name="Lbl" parent="MarginContainer/VBoxContainer/ScrollContainer/VBoxContainer/CreatureBus" index="0"]
+text = "Creature Noises"
+
+[node name="DronesBus" parent="MarginContainer/VBoxContainer/ScrollContainer/VBoxContainer" instance=ExtResource("2_wor7r")]
+layout_mode = 2
+text = "Background Music"
+
+[node name="Lbl" parent="MarginContainer/VBoxContainer/ScrollContainer/VBoxContainer/DronesBus" index="0"]
+text = "Background Music"
+
+[node name="SlidingPanelComponent" type="Node" parent="."]
+script = ExtResource("4_yvpk1")
+
+[connection signal="pressed" from="MarginContainer/VBoxContainer/BtnApply" to="." method="ApplyChanges"]
+
+[editable path="MarginContainer/VBoxContainer/ScrollContainer/VBoxContainer/MainBus"]
+[editable path="MarginContainer/VBoxContainer/ScrollContainer/VBoxContainer/VOBus"]
+[editable path="MarginContainer/VBoxContainer/ScrollContainer/VBoxContainer/SFXBus"]
+[editable path="MarginContainer/VBoxContainer/ScrollContainer/VBoxContainer/CreatureBus"]
+[editable path="MarginContainer/VBoxContainer/ScrollContainer/VBoxContainer/DronesBus"]

@@ -6,8 +6,11 @@ using queen.extension;
 
 public partial class GraphicsTab : PanelContainer
 {
-    [Export] private NodePath path_option_fullscreen;
+    [Export] private PackedScene PackedGraphicsDisplay;
 
+    [ExportGroup("Node Paths")]
+    [Export] private NodePath PathGraphicsDisplayRoot = "MarginContainer/VBoxContainer/GraphicsDisplayRoot";
+    [Export] private NodePath path_option_fullscreen;
     [Export] private NodePath path_check_bloom;
     [Export] private NodePath path_check_ssr;
     [Export] private NodePath path_check_ssao;
@@ -55,6 +58,13 @@ public partial class GraphicsTab : PanelContainer
         slider_saturation.Value = Graphics.Instance.Saturation;
 
         Events.Data.SerializeAll += ApplyGraphicsSettings;
+
+        var root = GetNode(PathGraphicsDisplayRoot) as Control;
+        if (root is not null)
+        {
+            var scene = PackedGraphicsDisplay.Instantiate();
+            root.AddChild(scene);
+        }
     }
 
     public override void _ExitTree()

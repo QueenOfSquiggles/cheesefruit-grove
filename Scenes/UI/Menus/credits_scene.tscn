@@ -1,196 +1,204 @@
-[gd_scene load_steps=4 format=3]
+[gd_scene load_steps=5 format=3 uid="uid://bes6on8dhb1c3"]
 
 [ext_resource type="Script" path="res://Scenes/UI/Menus/CreditsScene.cs" id="2_0eafv"]
-[ext_resource type="PackedScene" path="res://Scenes/Utility/UI_Tools/request_focus_on_parent.tscn" id="4_5aol3"]
+[ext_resource type="Script" path="res://Scenes/UI/Animations/SlidingPanelComponent.cs" id="3_l3624"]
 [ext_resource type="PackedScene" uid="uid://ci8q8yf6jrc8n" path="res://Scenes/Utility/UI_Tools/ui_effects.tscn" id="4_7sq8l"]
 
-[node name="CreditsScene" type="Control"]
-layout_mode = 3
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
+[sub_resource type="LabelSettings" id="LabelSettings_vlqgw"]
+font_size = 32
+shadow_size = 3
+shadow_color = Color(0, 0, 0, 1)
+shadow_offset = Vector2(5, 5)
+
+[node name="PanelContainer" type="PanelContainer"]
+anchors_preset = 4
+anchor_top = 0.5
+anchor_bottom = 0.5
+offset_top = -183.5
+offset_right = 806.0
+offset_bottom = 183.5
 grow_vertical = 2
 script = ExtResource("2_0eafv")
-main_menu_path = "res://Scenes/UI/Menus/main_menu.tscn"
 
-[node name="TextureRect" type="TextureRect" parent="."]
-texture_repeat = 2
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-expand_mode = 2
+[node name="MarginContainer" type="MarginContainer" parent="."]
+layout_mode = 2
+theme_override_constants/margin_left = 32
+theme_override_constants/margin_top = 32
+theme_override_constants/margin_right = 32
+theme_override_constants/margin_bottom = 32
 
-[node name="CreditsPanel" type="CenterContainer" parent="."]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-
-[node name="PanelContainer" type="PanelContainer" parent="CreditsPanel"]
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer"]
 layout_mode = 2
 
-[node name="VBoxContainer" type="VBoxContainer" parent="CreditsPanel/PanelContainer"]
-layout_mode = 2
-
-[node name="Header" type="Label" parent="CreditsPanel/PanelContainer/VBoxContainer"]
+[node name="Header" type="Label" parent="MarginContainer/VBoxContainer"]
 layout_mode = 2
 text = "Credits"
+label_settings = SubResource("LabelSettings_vlqgw")
 horizontal_alignment = 1
 
-[node name="HSeparator" type="HSeparator" parent="CreditsPanel/PanelContainer/VBoxContainer"]
+[node name="HSeparator" type="HSeparator" parent="MarginContainer/VBoxContainer"]
 layout_mode = 2
 
-[node name="GridContainer" type="GridContainer" parent="CreditsPanel/PanelContainer/VBoxContainer"]
+[node name="HEADING" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
 layout_mode = 2
-columns = 5
+alignment = 2
 
-[node name="Category" type="Label" parent="CreditsPanel/PanelContainer/VBoxContainer/GridContainer"]
+[node name="Category" type="Label" parent="MarginContainer/VBoxContainer/HEADING"]
 layout_mode = 2
 text = "Category"
 
-[node name="VSeparator" type="VSeparator" parent="CreditsPanel/PanelContainer/VBoxContainer/GridContainer"]
+[node name="VSeparator" type="VSeparator" parent="MarginContainer/VBoxContainer/HEADING"]
 layout_mode = 2
+theme_override_constants/separation = 32
 
-[node name="Name" type="Label" parent="CreditsPanel/PanelContainer/VBoxContainer/GridContainer"]
+[node name="Name" type="Label" parent="MarginContainer/VBoxContainer/HEADING"]
 layout_mode = 2
 text = "Name"
 
-[node name="VSeparator2" type="VSeparator" parent="CreditsPanel/PanelContainer/VBoxContainer/GridContainer"]
+[node name="VSeparator2" type="VSeparator" parent="MarginContainer/VBoxContainer/HEADING"]
 layout_mode = 2
+theme_override_constants/separation = 32
 
-[node name="LinkButton" type="LinkButton" parent="CreditsPanel/PanelContainer/VBoxContainer/GridContainer"]
+[node name="LinkButton" type="LinkButton" parent="MarginContainer/VBoxContainer/HEADING"]
 layout_mode = 2
 text = "Link"
 
-[node name="UISounds" parent="CreditsPanel/PanelContainer/VBoxContainer/GridContainer/LinkButton" instance=ExtResource("4_7sq8l")]
+[node name="UISounds" parent="MarginContainer/VBoxContainer/HEADING/LinkButton" instance=ExtResource("4_7sq8l")]
 
-[node name="Category6" type="Label" parent="CreditsPanel/PanelContainer/VBoxContainer/GridContainer"]
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+alignment = 2
+
+[node name="Category6" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer"]
 layout_mode = 2
 text = "HD Models & Materials"
 
-[node name="VSeparator16" type="VSeparator" parent="CreditsPanel/PanelContainer/VBoxContainer/GridContainer"]
+[node name="VSeparator16" type="VSeparator" parent="MarginContainer/VBoxContainer/HBoxContainer"]
 layout_mode = 2
+theme_override_constants/separation = 32
 
-[node name="Name6" type="Label" parent="CreditsPanel/PanelContainer/VBoxContainer/GridContainer"]
+[node name="Name6" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer"]
 layout_mode = 2
 text = "PolyHaven"
 
-[node name="VSeparator17" type="VSeparator" parent="CreditsPanel/PanelContainer/VBoxContainer/GridContainer"]
+[node name="VSeparator17" type="VSeparator" parent="MarginContainer/VBoxContainer/HBoxContainer"]
 layout_mode = 2
+theme_override_constants/separation = 32
 
-[node name="LinkButton6" type="LinkButton" parent="CreditsPanel/PanelContainer/VBoxContainer/GridContainer"]
+[node name="LinkButton6" type="LinkButton" parent="MarginContainer/VBoxContainer/HBoxContainer"]
 layout_mode = 2
 text = "Link"
 uri = "https://polyhaven.com/"
 
-[node name="UISounds" parent="CreditsPanel/PanelContainer/VBoxContainer/GridContainer/LinkButton6" instance=ExtResource("4_7sq8l")]
+[node name="UISounds" parent="MarginContainer/VBoxContainer/HBoxContainer/LinkButton6" instance=ExtResource("4_7sq8l")]
 
-[node name="Category7" type="Label" parent="CreditsPanel/PanelContainer/VBoxContainer/GridContainer"]
+[node name="HBoxContainer_2" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+alignment = 2
+
+[node name="Category7" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer_2"]
 layout_mode = 2
 text = "UI Textures"
 
-[node name="VSeparator18" type="VSeparator" parent="CreditsPanel/PanelContainer/VBoxContainer/GridContainer"]
+[node name="VSeparator18" type="VSeparator" parent="MarginContainer/VBoxContainer/HBoxContainer_2"]
 layout_mode = 2
+theme_override_constants/separation = 32
 
-[node name="Name7" type="Label" parent="CreditsPanel/PanelContainer/VBoxContainer/GridContainer"]
+[node name="Name7" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer_2"]
 layout_mode = 2
 text = "Kenney"
 
-[node name="VSeparator19" type="VSeparator" parent="CreditsPanel/PanelContainer/VBoxContainer/GridContainer"]
+[node name="VSeparator19" type="VSeparator" parent="MarginContainer/VBoxContainer/HBoxContainer_2"]
 layout_mode = 2
+theme_override_constants/separation = 32
 
-[node name="LinkButton7" type="LinkButton" parent="CreditsPanel/PanelContainer/VBoxContainer/GridContainer"]
+[node name="LinkButton7" type="LinkButton" parent="MarginContainer/VBoxContainer/HBoxContainer_2"]
 layout_mode = 2
 text = "Link"
 uri = "https://www.kenney.nl/"
 
-[node name="UISounds" parent="CreditsPanel/PanelContainer/VBoxContainer/GridContainer/LinkButton7" instance=ExtResource("4_7sq8l")]
+[node name="UISounds" parent="MarginContainer/VBoxContainer/HBoxContainer_2/LinkButton7" instance=ExtResource("4_7sq8l")]
 
-[node name="Category9" type="Label" parent="CreditsPanel/PanelContainer/VBoxContainer/GridContainer"]
+[node name="HBoxContainer_3" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+alignment = 2
+
+[node name="Category9" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer_3"]
 layout_mode = 2
 text = "Digital SFX"
 
-[node name="VSeparator22" type="VSeparator" parent="CreditsPanel/PanelContainer/VBoxContainer/GridContainer"]
+[node name="VSeparator22" type="VSeparator" parent="MarginContainer/VBoxContainer/HBoxContainer_3"]
 layout_mode = 2
+theme_override_constants/separation = 32
 
-[node name="Name9" type="Label" parent="CreditsPanel/PanelContainer/VBoxContainer/GridContainer"]
+[node name="Name9" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer_3"]
 layout_mode = 2
 text = "rFXGen"
 
-[node name="VSeparator23" type="VSeparator" parent="CreditsPanel/PanelContainer/VBoxContainer/GridContainer"]
+[node name="VSeparator23" type="VSeparator" parent="MarginContainer/VBoxContainer/HBoxContainer_3"]
 layout_mode = 2
+theme_override_constants/separation = 32
 
-[node name="LinkButton9" type="LinkButton" parent="CreditsPanel/PanelContainer/VBoxContainer/GridContainer"]
+[node name="LinkButton9" type="LinkButton" parent="MarginContainer/VBoxContainer/HBoxContainer_3"]
 layout_mode = 2
 text = "Link"
 uri = "https://raylibtech.itch.io/rfxgen"
 
-[node name="UISounds" parent="CreditsPanel/PanelContainer/VBoxContainer/GridContainer/LinkButton9" instance=ExtResource("4_7sq8l")]
+[node name="UISounds" parent="MarginContainer/VBoxContainer/HBoxContainer_3/LinkButton9" instance=ExtResource("4_7sq8l")]
 
-[node name="Category9_2" type="Label" parent="CreditsPanel/PanelContainer/VBoxContainer/GridContainer"]
+[node name="HBoxContainer_4" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+alignment = 2
+
+[node name="Category9_2" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer_4"]
 layout_mode = 2
 text = "Some Retro Assets"
 
-[node name="VSeparator22_2" type="VSeparator" parent="CreditsPanel/PanelContainer/VBoxContainer/GridContainer"]
+[node name="VSeparator22_2" type="VSeparator" parent="MarginContainer/VBoxContainer/HBoxContainer_4"]
 layout_mode = 2
+theme_override_constants/separation = 32
 
-[node name="Name9_2" type="Label" parent="CreditsPanel/PanelContainer/VBoxContainer/GridContainer"]
+[node name="Name9_2" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer_4"]
 layout_mode = 2
 text = "Classic64 (craigsnedeker)"
 
-[node name="VSeparator23_2" type="VSeparator" parent="CreditsPanel/PanelContainer/VBoxContainer/GridContainer"]
+[node name="VSeparator23_2" type="VSeparator" parent="MarginContainer/VBoxContainer/HBoxContainer_4"]
 layout_mode = 2
+theme_override_constants/separation = 32
 
-[node name="LinkButton9_2" type="LinkButton" parent="CreditsPanel/PanelContainer/VBoxContainer/GridContainer"]
+[node name="LinkButton9_2" type="LinkButton" parent="MarginContainer/VBoxContainer/HBoxContainer_4"]
 layout_mode = 2
 text = "Link"
 uri = "https://craigsnedeker.itch.io/classic64-asset-library"
 
-[node name="UISounds" parent="CreditsPanel/PanelContainer/VBoxContainer/GridContainer/LinkButton9_2" instance=ExtResource("4_7sq8l")]
+[node name="UISounds" parent="MarginContainer/VBoxContainer/HBoxContainer_4/LinkButton9_2" instance=ExtResource("4_7sq8l")]
 
-[node name="Category8" type="Label" parent="CreditsPanel/PanelContainer/VBoxContainer/GridContainer"]
+[node name="HBoxContainer_5" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+alignment = 2
+
+[node name="Category8" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer_5"]
 layout_mode = 2
 text = "All Else"
 
-[node name="VSeparator20" type="VSeparator" parent="CreditsPanel/PanelContainer/VBoxContainer/GridContainer"]
+[node name="VSeparator20" type="VSeparator" parent="MarginContainer/VBoxContainer/HBoxContainer_5"]
 layout_mode = 2
+theme_override_constants/separation = 32
 
-[node name="Name8" type="Label" parent="CreditsPanel/PanelContainer/VBoxContainer/GridContainer"]
+[node name="Name8" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer_5"]
 layout_mode = 2
 text = "QueenOfSquiggles"
 
-[node name="VSeparator21" type="VSeparator" parent="CreditsPanel/PanelContainer/VBoxContainer/GridContainer"]
+[node name="VSeparator21" type="VSeparator" parent="MarginContainer/VBoxContainer/HBoxContainer_5"]
 layout_mode = 2
+theme_override_constants/separation = 32
 
-[node name="LinkButton8" type="LinkButton" parent="CreditsPanel/PanelContainer/VBoxContainer/GridContainer"]
+[node name="LinkButton8" type="LinkButton" parent="MarginContainer/VBoxContainer/HBoxContainer_5"]
 layout_mode = 2
 text = "Link"
 uri = "https://queenofsquiggles.itch.io/"
 
-[node name="UISounds" parent="CreditsPanel/PanelContainer/VBoxContainer/GridContainer/LinkButton8" instance=ExtResource("4_7sq8l")]
+[node name="UISounds" parent="MarginContainer/VBoxContainer/HBoxContainer_5/LinkButton8" instance=ExtResource("4_7sq8l")]
 
-[node name="ReturnMainMenuPanel" type="PanelContainer" parent="."]
-layout_mode = 1
-anchors_preset = 2
-anchor_top = 1.0
-anchor_bottom = 1.0
-offset_top = -76.0
-offset_right = 199.0
-grow_vertical = 0
-
-[node name="Button" type="Button" parent="ReturnMainMenuPanel"]
-layout_mode = 2
-text = "Return to Main Menu"
-
-[node name="RequestFocusOnParent" parent="ReturnMainMenuPanel/Button" instance=ExtResource("4_5aol3")]
-layout_mode = 1
-
-[node name="UISounds" parent="ReturnMainMenuPanel/Button" instance=ExtResource("4_7sq8l")]
-
-[connection signal="pressed" from="ReturnMainMenuPanel/Button" to="." method="OnMenuButtonPressed"]
+[node name="SlidingPanelComponent" type="Node" parent="."]
+script = ExtResource("3_l3624")

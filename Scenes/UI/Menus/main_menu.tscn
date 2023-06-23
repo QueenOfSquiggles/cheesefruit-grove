@@ -1,9 +1,10 @@
-[gd_scene load_steps=9 format=3 uid="uid://b4l37id685tw"]
+[gd_scene load_steps=10 format=3 uid="uid://b4l37id685tw"]
 
 [ext_resource type="Script" path="res://Scenes/UI/Menus/MainMenu.cs" id="1_ef7d4"]
 [ext_resource type="Script" path="res://addons/dynamic-web-content/elements/dynamic_image_button.gd" id="2_somet"]
 [ext_resource type="PackedScene" path="res://Scenes/Utility/UI_Tools/request_focus_on_parent.tscn" id="3_k7orp"]
 [ext_resource type="PackedScene" uid="uid://ci8q8yf6jrc8n" path="res://Scenes/Utility/UI_Tools/ui_effects.tscn" id="4_geber"]
+[ext_resource type="Texture2D" uid="uid://dg4dlinjntkaf" path="res://icon.png" id="5_scqaj"]
 [ext_resource type="PackedScene" path="res://Scenes/Utility/ControlsHelp/load_controls_mappings.tscn" id="6_unbtx"]
 [ext_resource type="Script" path="res://Scenes/UI/Menus/VersioningLabel.cs" id="7_1dicm"]
 [ext_resource type="Script" path="res://Scenes/Audio/SceneBGMLoader.cs" id="8_4ubeu"]
@@ -23,6 +24,7 @@ script = ExtResource("1_ef7d4")
 play_scene = "res://Game/testing_level_custom_mesh.tscn"
 options_scene = "res://Scenes/UI/Menus/options_menu.tscn"
 credits_scene = "res://Scenes/UI/Menus/credits_scene.tscn"
+PathButtonsControlPanel = NodePath("ControlButtons")
 
 [node name="TextureRect" type="TextureRect" parent="."]
 texture_repeat = 2
@@ -68,73 +70,74 @@ element_id = "social-button"
 
 [node name="ControlButtons" type="PanelContainer" parent="."]
 layout_mode = 1
-anchors_preset = 4
-anchor_top = 0.5
-anchor_bottom = 0.5
-offset_left = 68.0
-offset_top = -103.0
-offset_right = 258.0
-offset_bottom = 103.0
+anchors_preset = 9
+anchor_bottom = 1.0
+offset_right = 268.0
 grow_vertical = 2
 
-[node name="VBoxContainer" type="VBoxContainer" parent="ControlButtons"]
+[node name="MarginContainer" type="MarginContainer" parent="ControlButtons"]
+layout_mode = 2
+theme_override_constants/margin_left = 32
+theme_override_constants/margin_top = 32
+theme_override_constants/margin_right = 32
+theme_override_constants/margin_bottom = 32
+
+[node name="VBoxContainer" type="VBoxContainer" parent="ControlButtons/MarginContainer"]
+layout_mode = 2
+theme_override_constants/separation = 128
+alignment = 2
+
+[node name="TitleTexture" type="TextureRect" parent="ControlButtons/MarginContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+texture = ExtResource("5_scqaj")
+expand_mode = 5
+stretch_mode = 5
+
+[node name="CenterContainer" type="CenterContainer" parent="ControlButtons/MarginContainer/VBoxContainer"]
 layout_mode = 2
 
-[node name="BtnPlay" type="Button" parent="ControlButtons/VBoxContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="ControlButtons/MarginContainer/VBoxContainer/CenterContainer"]
+layout_mode = 2
+
+[node name="BtnPlay" type="Button" parent="ControlButtons/MarginContainer/VBoxContainer/CenterContainer/VBoxContainer"]
 layout_mode = 2
 size_flags_vertical = 3
 text = "main_menu.play"
 
-[node name="RequestFocusOnParent" parent="ControlButtons/VBoxContainer/BtnPlay" instance=ExtResource("3_k7orp")]
+[node name="RequestFocusOnParent" parent="ControlButtons/MarginContainer/VBoxContainer/CenterContainer/VBoxContainer/BtnPlay" instance=ExtResource("3_k7orp")]
 layout_mode = 1
 
-[node name="UISounds" parent="ControlButtons/VBoxContainer/BtnPlay" instance=ExtResource("4_geber")]
+[node name="UISounds" parent="ControlButtons/MarginContainer/VBoxContainer/CenterContainer/VBoxContainer/BtnPlay" instance=ExtResource("4_geber")]
 
-[node name="BtnOptions" type="Button" parent="ControlButtons/VBoxContainer"]
+[node name="BtnOptions" type="Button" parent="ControlButtons/MarginContainer/VBoxContainer/CenterContainer/VBoxContainer"]
 layout_mode = 2
 size_flags_vertical = 3
 text = "main_menu.options"
 
-[node name="UISounds" parent="ControlButtons/VBoxContainer/BtnOptions" instance=ExtResource("4_geber")]
+[node name="UISounds" parent="ControlButtons/MarginContainer/VBoxContainer/CenterContainer/VBoxContainer/BtnOptions" instance=ExtResource("4_geber")]
 
-[node name="BtnCredits" type="Button" parent="ControlButtons/VBoxContainer"]
+[node name="BtnCredits" type="Button" parent="ControlButtons/MarginContainer/VBoxContainer/CenterContainer/VBoxContainer"]
 layout_mode = 2
 size_flags_vertical = 3
 text = "main_menu.credits"
 
-[node name="UISounds" parent="ControlButtons/VBoxContainer/BtnCredits" instance=ExtResource("4_geber")]
+[node name="UISounds" parent="ControlButtons/MarginContainer/VBoxContainer/CenterContainer/VBoxContainer/BtnCredits" instance=ExtResource("4_geber")]
 
-[node name="BtnQuit" type="Button" parent="ControlButtons/VBoxContainer"]
+[node name="BtnQuit" type="Button" parent="ControlButtons/MarginContainer/VBoxContainer/CenterContainer/VBoxContainer"]
 layout_mode = 2
 size_flags_vertical = 3
 text = "main_menu.quit"
 
-[node name="UISounds" parent="ControlButtons/VBoxContainer/BtnQuit" instance=ExtResource("4_geber")]
+[node name="UISounds" parent="ControlButtons/MarginContainer/VBoxContainer/CenterContainer/VBoxContainer/BtnQuit" instance=ExtResource("4_geber")]
 
-[node name="TitleTexture" type="TextureRect" parent="."]
-layout_mode = 0
-offset_left = 47.0
-offset_top = 9.0
-offset_right = 631.0
-offset_bottom = 275.0
-expand_mode = 2
-stretch_mode = 5
-
-[node name="LinkButton" type="LinkButton" parent="."]
-layout_mode = 1
-anchors_preset = 2
-anchor_top = 1.0
-anchor_bottom = 1.0
-offset_left = 37.0
-offset_top = -42.0
-offset_right = 275.0
-offset_bottom = -2.0
-grow_vertical = 0
+[node name="LinkButton" type="LinkButton" parent="ControlButtons/MarginContainer/VBoxContainer"]
+layout_mode = 2
 text = "main_menu.made_by"
 underline = 1
 uri = "https://queenofsquiggles.itch.io/"
 
-[node name="UISounds" parent="LinkButton" instance=ExtResource("4_geber")]
+[node name="UISounds" parent="ControlButtons/MarginContainer/VBoxContainer/LinkButton" instance=ExtResource("4_geber")]
 
 [node name="LoadControlsMappings" parent="." instance=ExtResource("6_unbtx")]
 
@@ -154,7 +157,7 @@ script = ExtResource("7_1dicm")
 script = ExtResource("8_4ubeu")
 crossfade_duration = 2.0
 
-[connection signal="pressed" from="ControlButtons/VBoxContainer/BtnPlay" to="." method="OnBtnPlay"]
-[connection signal="pressed" from="ControlButtons/VBoxContainer/BtnOptions" to="." method="OnBtnOptions"]
-[connection signal="pressed" from="ControlButtons/VBoxContainer/BtnCredits" to="." method="OnBtnCredits"]
-[connection signal="pressed" from="ControlButtons/VBoxContainer/BtnQuit" to="." method="OnBtnQuit"]
+[connection signal="pressed" from="ControlButtons/MarginContainer/VBoxContainer/CenterContainer/VBoxContainer/BtnPlay" to="." method="OnBtnPlay"]
+[connection signal="pressed" from="ControlButtons/MarginContainer/VBoxContainer/CenterContainer/VBoxContainer/BtnOptions" to="." method="OnBtnOptions"]
+[connection signal="pressed" from="ControlButtons/MarginContainer/VBoxContainer/CenterContainer/VBoxContainer/BtnCredits" to="." method="OnBtnCredits"]
+[connection signal="pressed" from="ControlButtons/MarginContainer/VBoxContainer/CenterContainer/VBoxContainer/BtnQuit" to="." method="OnBtnQuit"]

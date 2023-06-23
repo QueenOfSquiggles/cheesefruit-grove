@@ -4,7 +4,7 @@
 [ext_resource type="Script" path="res://Scenes/UI/Menus/OptionsTabs/SliderValue.gd" id="1_p7yam"]
 [ext_resource type="PackedScene" uid="uid://ci8q8yf6jrc8n" path="res://Scenes/Utility/UI_Tools/ui_effects.tscn" id="3_yxesj"]
 
-[node name="SliderCombo" type="HBoxContainer"]
+[node name="SliderCombo" type="VBoxContainer"]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -18,10 +18,13 @@ custom_minimum_size = Vector2(64, 0)
 layout_mode = 2
 tooltip_text = "Affects how bright or dark the scene is. You may need to change this depending on your screen settings."
 mouse_filter = 0
-horizontal_alignment = 2
+horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="HSlider" type="HSlider" parent="."]
+[node name="HBoxContainer" type="HBoxContainer" parent="."]
+layout_mode = 2
+
+[node name="HSlider" type="HSlider" parent="HBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 1
@@ -32,9 +35,9 @@ scrollable = false
 tick_count = 10
 ticks_on_borders = true
 
-[node name="UISounds" parent="HSlider" instance=ExtResource("3_yxesj")]
+[node name="UISounds" parent="HBoxContainer/HSlider" instance=ExtResource("3_yxesj")]
 
-[node name="ValueLbl" type="Label" parent="."]
+[node name="ValueLbl" type="Label" parent="HBoxContainer"]
 custom_minimum_size = Vector2(64, 0)
 layout_mode = 2
 text = "1"
@@ -43,12 +46,12 @@ clip_text = true
 text_overrun_behavior = 1
 script = ExtResource("1_p7yam")
 
-[node name="BtnReset" type="Button" parent="."]
+[node name="BtnReset" type="Button" parent="HBoxContainer"]
 layout_mode = 2
 text = "Reset"
 
-[node name="UISounds" parent="BtnReset" instance=ExtResource("3_yxesj")]
+[node name="UISounds" parent="HBoxContainer/BtnReset" instance=ExtResource("3_yxesj")]
 
-[connection signal="drag_ended" from="HSlider" to="." method="_on_h_slider_drag_ended"]
-[connection signal="value_changed" from="HSlider" to="ValueLbl" method="_on_h_slider_value_changed"]
-[connection signal="pressed" from="BtnReset" to="." method="_on_btn_reset_pressed"]
+[connection signal="drag_ended" from="HBoxContainer/HSlider" to="." method="_on_h_slider_drag_ended"]
+[connection signal="value_changed" from="HBoxContainer/HSlider" to="HBoxContainer/ValueLbl" method="_on_h_slider_value_changed"]
+[connection signal="pressed" from="HBoxContainer/BtnReset" to="." method="_on_btn_reset_pressed"]

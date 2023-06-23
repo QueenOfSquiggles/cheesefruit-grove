@@ -9,67 +9,64 @@ font_size = 40
 outline_size = 4
 outline_color = Color(0, 0, 0, 1)
 
-[node name="PauseMenu" type="Control"]
+[node name="PauseMenu" type="PanelContainer"]
 process_mode = 3
-layout_mode = 3
-anchors_preset = 15
-anchor_right = 1.0
+anchors_preset = 9
 anchor_bottom = 1.0
-grow_horizontal = 2
+offset_right = 356.0
 grow_vertical = 2
 script = ExtResource("2_u13u6")
 main_menu_file = "res://Scenes/UI/Menus/main_menu.tscn"
+options_menu_file = "res://Scenes/UI/Menus/options_menu.tscn"
 
-[node name="CenterContainer" type="CenterContainer" parent="."]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-
-[node name="PanelContainer" type="PanelContainer" parent="CenterContainer"]
+[node name="SlidePanelRoot" type="Control" parent="."]
 layout_mode = 2
+mouse_filter = 1
 
-[node name="MarginContainer" type="MarginContainer" parent="CenterContainer/PanelContainer"]
+[node name="MarginContainer" type="MarginContainer" parent="."]
 layout_mode = 2
 theme_override_constants/margin_left = 32
 theme_override_constants/margin_top = 16
 theme_override_constants/margin_right = 32
 theme_override_constants/margin_bottom = 32
 
-[node name="VBoxContainer" type="VBoxContainer" parent="CenterContainer/PanelContainer/MarginContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer"]
 layout_mode = 2
+theme_override_constants/separation = 20
 
-[node name="Label" type="Label" parent="CenterContainer/PanelContainer/MarginContainer/VBoxContainer"]
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer"]
 layout_mode = 2
 text = "Pause Menu"
 label_settings = SubResource("LabelSettings_rp5ep")
 horizontal_alignment = 1
 
-[node name="HSeparator" type="HSeparator" parent="CenterContainer/PanelContainer/MarginContainer/VBoxContainer"]
+[node name="HSeparator" type="HSeparator" parent="MarginContainer/VBoxContainer"]
 layout_mode = 2
-theme_override_constants/separation = 20
+theme_override_constants/separation = 32
 
-[node name="BtnContinue" type="Button" parent="CenterContainer/PanelContainer/MarginContainer/VBoxContainer"]
+[node name="BtnContinue" type="Button" parent="MarginContainer/VBoxContainer"]
 layout_mode = 2
 text = "Continue"
 
-[node name="RequestFocusOnParent" parent="CenterContainer/PanelContainer/MarginContainer/VBoxContainer/BtnContinue" instance=ExtResource("2_4gb37")]
+[node name="RequestFocusOnParent" parent="MarginContainer/VBoxContainer/BtnContinue" instance=ExtResource("2_4gb37")]
 layout_mode = 1
 
-[node name="UISounds" parent="CenterContainer/PanelContainer/MarginContainer/VBoxContainer/BtnContinue" instance=ExtResource("3_b8rfi")]
+[node name="UISounds" parent="MarginContainer/VBoxContainer/BtnContinue" instance=ExtResource("3_b8rfi")]
 
-[node name="Control" type="Control" parent="CenterContainer/PanelContainer/MarginContainer/VBoxContainer"]
-custom_minimum_size = Vector2(0, 20)
+[node name="BtnOptions" type="Button" parent="MarginContainer/VBoxContainer"]
 layout_mode = 2
+tooltip_text = "Warning!: You will lose all progress"
+text = "Options"
 
-[node name="BtnMainMenu" type="Button" parent="CenterContainer/PanelContainer/MarginContainer/VBoxContainer"]
+[node name="UISounds" parent="MarginContainer/VBoxContainer/BtnOptions" instance=ExtResource("3_b8rfi")]
+
+[node name="BtnMainMenu" type="Button" parent="MarginContainer/VBoxContainer"]
 layout_mode = 2
 tooltip_text = "Warning!: You will lose all progress"
 text = "Return to Main Menu"
 
-[node name="UISounds" parent="CenterContainer/PanelContainer/MarginContainer/VBoxContainer/BtnMainMenu" instance=ExtResource("3_b8rfi")]
+[node name="UISounds" parent="MarginContainer/VBoxContainer/BtnMainMenu" instance=ExtResource("3_b8rfi")]
 
-[connection signal="pressed" from="CenterContainer/PanelContainer/MarginContainer/VBoxContainer/BtnContinue" to="." method="ReturnToPlay"]
-[connection signal="pressed" from="CenterContainer/PanelContainer/MarginContainer/VBoxContainer/BtnMainMenu" to="." method="ExitToMainMenu"]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/BtnContinue" to="." method="ReturnToPlay"]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/BtnOptions" to="." method="OnBtnOptions"]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/BtnMainMenu" to="." method="ExitToMainMenu"]

@@ -38,13 +38,13 @@ public partial class accessibility_tab : PanelContainer
         this.GetNode(path_check_always_show_reticle, out check_always_show_reticle);
         // The Slider Combo needs to be 'cracked' to access the actual slider node. Not preferable...
         // TODO maybe find a better way to access this node? 
-        slider_rumble_strength = GetNode<Control>(path_slider_rumble_strength).GetNode("HSlider") as HSlider;
-        slider_screen_shake_strength = GetNode<Control>(path_slider_screen_shake_strength).GetNode("HSlider") as HSlider;
-        slider_rumble_duration = GetNode<Control>(path_slider_rumble_duration).GetNode("HSlider") as HSlider;
-        slider_screen_shake_duration = GetNode<Control>(path_slider_screen_shake_duration).GetNode("HSlider") as HSlider;
-        slider_max_volume = GetNode<Control>(path_slider_max_volume).GetNode("HSlider") as HSlider;
-        slider_time_scale = GetNode<Control>(path_slider_engine_time_scale).GetNode("HSlider") as HSlider;
-        slider_gui_scale = GetNode<Control>(path_gui_scale).GetNode("HSlider") as HSlider;
+        this.GetSafe(path_slider_rumble_strength, out slider_rumble_strength);
+        this.GetSafe(path_slider_screen_shake_strength, out slider_screen_shake_strength);
+        this.GetSafe(path_slider_rumble_duration, out slider_rumble_duration);
+        this.GetSafe(path_slider_screen_shake_duration, out slider_screen_shake_duration);
+        this.GetSafe(path_slider_max_volume, out slider_max_volume);
+        this.GetSafe(path_slider_engine_time_scale, out slider_time_scale);
+        this.GetSafe(path_gui_scale, out slider_gui_scale);
 
         checkbox_no_flashing_lights.SetPressedNoSignal(Access.Instance.PreventFlashingLights);
         slider_rumble_strength.Value = Effects.Instance.RumbleStrength;

@@ -1,145 +1,91 @@
-[gd_scene load_steps=17 format=3 uid="uid://ceeiivirtbxx6"]
+[gd_scene load_steps=7 format=3 uid="uid://ceeiivirtbxx6"]
 
 [ext_resource type="Script" path="res://Scenes/UI/Menus/OptionsTabs/GraphicsTab.cs" id="1_lbres"]
 [ext_resource type="PackedScene" uid="uid://sgndh4ywb4st" path="res://Scenes/UI/Menus/OptionsTabs/slider_combo.tscn" id="2_h61vd"]
 [ext_resource type="PackedScene" uid="uid://ci8q8yf6jrc8n" path="res://Scenes/Utility/UI_Tools/ui_effects.tscn" id="2_u0rvq"]
-[ext_resource type="PackedScene" path="res://Scenes/Utility/UI_Tools/request_focus_on_parent.tscn" id="4_6nv34"]
+[ext_resource type="PackedScene" uid="uid://4elgg5q5jaob" path="res://Scenes/UI/Menus/OptionsTabs/graphics_demo_display_async.tscn" id="2_upr2m"]
+[ext_resource type="Script" path="res://Scenes/UI/Animations/SlidingPanelComponent.cs" id="4_26by2"]
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_li7xm"]
-albedo_color = Color(0, 0.576471, 0.72549, 1)
+[sub_resource type="LabelSettings" id="LabelSettings_scsl4"]
+font_size = 32
 
-[sub_resource type="BoxMesh" id="BoxMesh_kt1oe"]
-size = Vector3(10, 0.2, 10)
-
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_lic7c"]
-albedo_color = Color(0.576471, 0.215686, 0.0862745, 1)
-roughness = 0.2
-
-[sub_resource type="TextMesh" id="TextMesh_eewj2"]
-text = "Graphics Demo"
-
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_xadcm"]
-albedo_color = Color(0.905882, 0.905882, 0, 1)
-metallic = 1.0
-roughness = 0.0
-
-[sub_resource type="SphereMesh" id="SphereMesh_1i7mw"]
-
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_jjcou"]
-emission_enabled = true
-emission = Color(1, 1, 1, 1)
-emission_energy_multiplier = 2.0
-
-[sub_resource type="CapsuleMesh" id="CapsuleMesh_rvuxa"]
-
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_t31dy"]
-albedo_color = Color(1, 0, 1, 1)
-roughness = 0.46
-
-[sub_resource type="TorusMesh" id="TorusMesh_ryoah"]
-
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_scu24"]
-albedo_color = Color(0, 0, 0, 1)
-metallic = 0.36
-roughness = 0.74
-
-[sub_resource type="QuadMesh" id="QuadMesh_jq6ow"]
-
-[node name="CenterContainer" type="MarginContainer"]
-offset_right = 1152.0
-offset_bottom = 648.0
-theme_override_constants/margin_left = 32
-theme_override_constants/margin_top = 32
-theme_override_constants/margin_right = 32
-theme_override_constants/margin_bottom = 32
-
-[node name="GraphicsTab" type="PanelContainer" parent="."]
-layout_mode = 2
+[node name="GraphicsTab" type="PanelContainer"]
+anchors_preset = 9
+anchor_bottom = 1.0
+offset_left = 11.0
+offset_right = 33.0
+grow_vertical = 2
 script = ExtResource("1_lbres")
-path_option_fullscreen = NodePath("MarginContainer/VBoxContainer/HBoxContainer/MarginContainer/ScrollContainer/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer/OptionFullscreenMode")
-path_check_bloom = NodePath("MarginContainer/VBoxContainer/HBoxContainer/MarginContainer/ScrollContainer/PanelContainer/MarginContainer/VBoxContainer/CheckBloom")
-path_check_ssr = NodePath("MarginContainer/VBoxContainer/HBoxContainer/MarginContainer/ScrollContainer/PanelContainer/MarginContainer/VBoxContainer/CheckSSR")
-path_check_ssao = NodePath("MarginContainer/VBoxContainer/HBoxContainer/MarginContainer/ScrollContainer/PanelContainer/MarginContainer/VBoxContainer/CheckSSAO")
-path_check_ssil = NodePath("MarginContainer/VBoxContainer/HBoxContainer/MarginContainer/ScrollContainer/PanelContainer/MarginContainer/VBoxContainer/CheckSSIL")
-path_check_sdfgi = NodePath("MarginContainer/VBoxContainer/HBoxContainer/MarginContainer/ScrollContainer/PanelContainer/MarginContainer/VBoxContainer/CheckSDFGI")
-path_slider_exposure = NodePath("MarginContainer/VBoxContainer/HBoxContainer/MarginContainer/ScrollContainer/PanelContainer/MarginContainer/VBoxContainer/SlideExposure/HSlider")
-path_slider_brightness = NodePath("MarginContainer/VBoxContainer/HBoxContainer/MarginContainer/ScrollContainer/PanelContainer/MarginContainer/VBoxContainer/SlideBrightness/HSlider")
-path_slider_contrast = NodePath("MarginContainer/VBoxContainer/HBoxContainer/MarginContainer/ScrollContainer/PanelContainer/MarginContainer/VBoxContainer/SlideContrast/HSlider")
-path_slider_saturation = NodePath("MarginContainer/VBoxContainer/HBoxContainer/MarginContainer/ScrollContainer/PanelContainer/MarginContainer/VBoxContainer/SlideSaturation/HSlider")
+PackedGraphicsDisplay = ExtResource("2_upr2m")
+path_option_fullscreen = NodePath("MarginContainer/VBoxContainer/ScrollContainer_2/VBoxContainer/HBoxContainer/OptionFullscreenMode")
+path_check_bloom = NodePath("MarginContainer/VBoxContainer/ScrollContainer_2/VBoxContainer/CheckBloom")
+path_check_ssr = NodePath("MarginContainer/VBoxContainer/ScrollContainer_2/VBoxContainer/CheckSSR")
+path_check_ssao = NodePath("MarginContainer/VBoxContainer/ScrollContainer_2/VBoxContainer/CheckSSAO")
+path_check_ssil = NodePath("MarginContainer/VBoxContainer/ScrollContainer_2/VBoxContainer/CheckSSIL")
+path_check_sdfgi = NodePath("MarginContainer/VBoxContainer/ScrollContainer_2/VBoxContainer/CheckSDFGI")
+path_slider_exposure = NodePath("MarginContainer/VBoxContainer/ScrollContainer_2/VBoxContainer/SlideExposure/HBoxContainer/HSlider")
+path_slider_brightness = NodePath("MarginContainer/VBoxContainer/ScrollContainer_2/VBoxContainer/SlideBrightness/HBoxContainer/HSlider")
+path_slider_contrast = NodePath("MarginContainer/VBoxContainer/ScrollContainer_2/VBoxContainer/SlideContrast/HBoxContainer/HSlider")
+path_slider_saturation = NodePath("MarginContainer/VBoxContainer/ScrollContainer_2/VBoxContainer/SlideSaturation/HBoxContainer/HSlider")
 
-[node name="MarginContainer" type="MarginContainer" parent="GraphicsTab"]
+[node name="MarginContainer" type="MarginContainer" parent="."]
 layout_mode = 2
 theme_override_constants/margin_left = 5
 theme_override_constants/margin_top = 5
 theme_override_constants/margin_right = 5
 theme_override_constants/margin_bottom = 5
 
-[node name="VBoxContainer" type="VBoxContainer" parent="GraphicsTab/MarginContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer"]
 layout_mode = 2
+theme_override_constants/separation = 32
 
-[node name="HBoxContainer2" type="HBoxContainer" parent="GraphicsTab/MarginContainer/VBoxContainer"]
-layout_mode = 2
-
-[node name="Label" type="Label" parent="GraphicsTab/MarginContainer/VBoxContainer/HBoxContainer2"]
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 text = "Graphics Settings"
+label_settings = SubResource("LabelSettings_scsl4")
 horizontal_alignment = 1
 
-[node name="VSeparator" type="VSeparator" parent="GraphicsTab/MarginContainer/VBoxContainer/HBoxContainer2"]
+[node name="VSeparator" type="HSeparator" parent="MarginContainer/VBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_stretch_ratio = 0.1
 
-[node name="BtnApplySettings" type="Button" parent="GraphicsTab/MarginContainer/VBoxContainer/HBoxContainer2"]
+[node name="GraphicsDisplayRoot" type="MarginContainer" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_right = 10
+
+[node name="BtnApplySettings" type="Button" parent="MarginContainer/VBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 text = "Apply Graphics Settings"
 
-[node name="UIEffects" parent="GraphicsTab/MarginContainer/VBoxContainer/HBoxContainer2/BtnApplySettings" instance=ExtResource("2_u0rvq")]
+[node name="UIEffects" parent="MarginContainer/VBoxContainer/BtnApplySettings" instance=ExtResource("2_u0rvq")]
 
-[node name="HBoxContainer" type="HBoxContainer" parent="GraphicsTab/MarginContainer/VBoxContainer"]
-layout_mode = 2
-size_flags_vertical = 3
-
-[node name="MarginContainer" type="MarginContainer" parent="GraphicsTab/MarginContainer/VBoxContainer/HBoxContainer"]
-layout_mode = 2
-size_flags_horizontal = 3
-size_flags_vertical = 3
-theme_override_constants/margin_left = 32
-theme_override_constants/margin_right = 32
-
-[node name="ScrollContainer" type="ScrollContainer" parent="GraphicsTab/MarginContainer/VBoxContainer/HBoxContainer/MarginContainer"]
+[node name="ScrollContainer_2" type="ScrollContainer" parent="MarginContainer/VBoxContainer"]
 custom_minimum_size = Vector2(500, 200)
 layout_mode = 2
+size_flags_vertical = 3
 follow_focus = true
 horizontal_scroll_mode = 0
 
-[node name="PanelContainer" type="PanelContainer" parent="GraphicsTab/MarginContainer/VBoxContainer/HBoxContainer/MarginContainer/ScrollContainer"]
-layout_mode = 2
-size_flags_horizontal = 3
-size_flags_vertical = 0
-
-[node name="MarginContainer" type="MarginContainer" parent="GraphicsTab/MarginContainer/VBoxContainer/HBoxContainer/MarginContainer/ScrollContainer/PanelContainer"]
-layout_mode = 2
-theme_override_constants/margin_left = 16
-theme_override_constants/margin_right = 16
-
-[node name="VBoxContainer" type="VBoxContainer" parent="GraphicsTab/MarginContainer/VBoxContainer/HBoxContainer/MarginContainer/ScrollContainer/PanelContainer/MarginContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer/ScrollContainer_2"]
 custom_minimum_size = Vector2(720, 0)
 layout_mode = 2
 size_flags_horizontal = 4
+theme_override_constants/separation = 32
 
-[node name="HBoxContainer" type="HBoxContainer" parent="GraphicsTab/MarginContainer/VBoxContainer/HBoxContainer/MarginContainer/ScrollContainer/PanelContainer/MarginContainer/VBoxContainer"]
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer/ScrollContainer_2/VBoxContainer"]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="GraphicsTab/MarginContainer/VBoxContainer/HBoxContainer/MarginContainer/ScrollContainer/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer"]
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/ScrollContainer_2/VBoxContainer/HBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_stretch_ratio = 0.5
 text = "Window Mode"
 
-[node name="OptionFullscreenMode" type="OptionButton" parent="GraphicsTab/MarginContainer/VBoxContainer/HBoxContainer/MarginContainer/ScrollContainer/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer"]
+[node name="OptionFullscreenMode" type="OptionButton" parent="MarginContainer/VBoxContainer/ScrollContainer_2/VBoxContainer/HBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 item_count = 4
@@ -154,161 +100,92 @@ popup/item_2/id = 3
 popup/item_3/text = "Full Exclusive"
 popup/item_3/id = 4
 
-[node name="UIEffects" parent="GraphicsTab/MarginContainer/VBoxContainer/HBoxContainer/MarginContainer/ScrollContainer/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer/OptionFullscreenMode" instance=ExtResource("2_u0rvq")]
+[node name="UIEffects" parent="MarginContainer/VBoxContainer/ScrollContainer_2/VBoxContainer/HBoxContainer/OptionFullscreenMode" instance=ExtResource("2_u0rvq")]
 
-[node name="CheckBloom" type="CheckBox" parent="GraphicsTab/MarginContainer/VBoxContainer/HBoxContainer/MarginContainer/ScrollContainer/PanelContainer/MarginContainer/VBoxContainer"]
+[node name="CheckBloom" type="CheckBox" parent="MarginContainer/VBoxContainer/ScrollContainer_2/VBoxContainer"]
 layout_mode = 2
 tooltip_text = "The glowing of illuminated objects. 
 Fairly low impact on performance"
 text = "Bloom"
 
-[node name="UIEffects_5" parent="GraphicsTab/MarginContainer/VBoxContainer/HBoxContainer/MarginContainer/ScrollContainer/PanelContainer/MarginContainer/VBoxContainer/CheckBloom" instance=ExtResource("2_u0rvq")]
+[node name="UIEffects_5" parent="MarginContainer/VBoxContainer/ScrollContainer_2/VBoxContainer/CheckBloom" instance=ExtResource("2_u0rvq")]
 
-[node name="CheckSSAO" type="CheckBox" parent="GraphicsTab/MarginContainer/VBoxContainer/HBoxContainer/MarginContainer/ScrollContainer/PanelContainer/MarginContainer/VBoxContainer"]
+[node name="CheckSSAO" type="CheckBox" parent="MarginContainer/VBoxContainer/ScrollContainer_2/VBoxContainer"]
 layout_mode = 2
 tooltip_text = "The glowing of illuminated objects. 
 Fairly low impact on performance"
 text = "Screen-Space Ambient Occlusion"
 
-[node name="UIEffects_4" parent="GraphicsTab/MarginContainer/VBoxContainer/HBoxContainer/MarginContainer/ScrollContainer/PanelContainer/MarginContainer/VBoxContainer/CheckSSAO" instance=ExtResource("2_u0rvq")]
+[node name="UIEffects_4" parent="MarginContainer/VBoxContainer/ScrollContainer_2/VBoxContainer/CheckSSAO" instance=ExtResource("2_u0rvq")]
 
-[node name="CheckSSR" type="CheckBox" parent="GraphicsTab/MarginContainer/VBoxContainer/HBoxContainer/MarginContainer/ScrollContainer/PanelContainer/MarginContainer/VBoxContainer"]
+[node name="CheckSSR" type="CheckBox" parent="MarginContainer/VBoxContainer/ScrollContainer_2/VBoxContainer"]
 layout_mode = 2
 text = "Screen-Space Reflections"
 
-[node name="UIEffects_3" parent="GraphicsTab/MarginContainer/VBoxContainer/HBoxContainer/MarginContainer/ScrollContainer/PanelContainer/MarginContainer/VBoxContainer/CheckSSR" instance=ExtResource("2_u0rvq")]
+[node name="UIEffects_3" parent="MarginContainer/VBoxContainer/ScrollContainer_2/VBoxContainer/CheckSSR" instance=ExtResource("2_u0rvq")]
 
-[node name="CheckSSIL" type="CheckBox" parent="GraphicsTab/MarginContainer/VBoxContainer/HBoxContainer/MarginContainer/ScrollContainer/PanelContainer/MarginContainer/VBoxContainer"]
+[node name="CheckSSIL" type="CheckBox" parent="MarginContainer/VBoxContainer/ScrollContainer_2/VBoxContainer"]
 layout_mode = 2
 text = "Screen-Space Indirect Lighting"
 
-[node name="UIEffects_2" parent="GraphicsTab/MarginContainer/VBoxContainer/HBoxContainer/MarginContainer/ScrollContainer/PanelContainer/MarginContainer/VBoxContainer/CheckSSIL" instance=ExtResource("2_u0rvq")]
+[node name="UIEffects_2" parent="MarginContainer/VBoxContainer/ScrollContainer_2/VBoxContainer/CheckSSIL" instance=ExtResource("2_u0rvq")]
 
-[node name="CheckSDFGI" type="CheckBox" parent="GraphicsTab/MarginContainer/VBoxContainer/HBoxContainer/MarginContainer/ScrollContainer/PanelContainer/MarginContainer/VBoxContainer"]
+[node name="CheckSDFGI" type="CheckBox" parent="MarginContainer/VBoxContainer/ScrollContainer_2/VBoxContainer"]
 layout_mode = 2
 text = "SDF Global Illumination"
 
-[node name="UIEffects" parent="GraphicsTab/MarginContainer/VBoxContainer/HBoxContainer/MarginContainer/ScrollContainer/PanelContainer/MarginContainer/VBoxContainer/CheckSDFGI" instance=ExtResource("2_u0rvq")]
+[node name="UIEffects" parent="MarginContainer/VBoxContainer/ScrollContainer_2/VBoxContainer/CheckSDFGI" instance=ExtResource("2_u0rvq")]
 
-[node name="SlideExposure" parent="GraphicsTab/MarginContainer/VBoxContainer/HBoxContainer/MarginContainer/ScrollContainer/PanelContainer/MarginContainer/VBoxContainer" instance=ExtResource("2_h61vd")]
+[node name="SlideExposure" parent="MarginContainer/VBoxContainer/ScrollContainer_2/VBoxContainer" instance=ExtResource("2_h61vd")]
 layout_mode = 2
 text = "Exposure"
 max_value = 8.0
 
-[node name="Lbl" parent="GraphicsTab/MarginContainer/VBoxContainer/HBoxContainer/MarginContainer/ScrollContainer/PanelContainer/MarginContainer/VBoxContainer/SlideExposure" index="0"]
+[node name="Lbl" parent="MarginContainer/VBoxContainer/ScrollContainer_2/VBoxContainer/SlideExposure" index="0"]
 text = "Exposure"
 
-[node name="HSlider" parent="GraphicsTab/MarginContainer/VBoxContainer/HBoxContainer/MarginContainer/ScrollContainer/PanelContainer/MarginContainer/VBoxContainer/SlideExposure" index="1"]
+[node name="HSlider" parent="MarginContainer/VBoxContainer/ScrollContainer_2/VBoxContainer/SlideExposure/HBoxContainer" index="0"]
 max_value = 8.0
 
-[node name="SlideBrightness" parent="GraphicsTab/MarginContainer/VBoxContainer/HBoxContainer/MarginContainer/ScrollContainer/PanelContainer/MarginContainer/VBoxContainer" instance=ExtResource("2_h61vd")]
+[node name="SlideBrightness" parent="MarginContainer/VBoxContainer/ScrollContainer_2/VBoxContainer" instance=ExtResource("2_h61vd")]
 layout_mode = 2
 text = "Brightness"
 max_value = 2.0
 
-[node name="Lbl" parent="GraphicsTab/MarginContainer/VBoxContainer/HBoxContainer/MarginContainer/ScrollContainer/PanelContainer/MarginContainer/VBoxContainer/SlideBrightness" index="0"]
+[node name="Lbl" parent="MarginContainer/VBoxContainer/ScrollContainer_2/VBoxContainer/SlideBrightness" index="0"]
 text = "Brightness"
 
-[node name="HSlider" parent="GraphicsTab/MarginContainer/VBoxContainer/HBoxContainer/MarginContainer/ScrollContainer/PanelContainer/MarginContainer/VBoxContainer/SlideBrightness" index="1"]
+[node name="HSlider" parent="MarginContainer/VBoxContainer/ScrollContainer_2/VBoxContainer/SlideBrightness/HBoxContainer" index="0"]
 max_value = 2.0
 
-[node name="SlideContrast" parent="GraphicsTab/MarginContainer/VBoxContainer/HBoxContainer/MarginContainer/ScrollContainer/PanelContainer/MarginContainer/VBoxContainer" instance=ExtResource("2_h61vd")]
+[node name="SlideContrast" parent="MarginContainer/VBoxContainer/ScrollContainer_2/VBoxContainer" instance=ExtResource("2_h61vd")]
 layout_mode = 2
 text = "Contrast"
 max_value = 2.0
 
-[node name="Lbl" parent="GraphicsTab/MarginContainer/VBoxContainer/HBoxContainer/MarginContainer/ScrollContainer/PanelContainer/MarginContainer/VBoxContainer/SlideContrast" index="0"]
+[node name="Lbl" parent="MarginContainer/VBoxContainer/ScrollContainer_2/VBoxContainer/SlideContrast" index="0"]
 text = "Contrast"
 
-[node name="HSlider" parent="GraphicsTab/MarginContainer/VBoxContainer/HBoxContainer/MarginContainer/ScrollContainer/PanelContainer/MarginContainer/VBoxContainer/SlideContrast" index="1"]
+[node name="HSlider" parent="MarginContainer/VBoxContainer/ScrollContainer_2/VBoxContainer/SlideContrast/HBoxContainer" index="0"]
 max_value = 2.0
 
-[node name="SlideSaturation" parent="GraphicsTab/MarginContainer/VBoxContainer/HBoxContainer/MarginContainer/ScrollContainer/PanelContainer/MarginContainer/VBoxContainer" instance=ExtResource("2_h61vd")]
+[node name="SlideSaturation" parent="MarginContainer/VBoxContainer/ScrollContainer_2/VBoxContainer" instance=ExtResource("2_h61vd")]
 layout_mode = 2
 text = "Saturation"
 max_value = 2.0
 
-[node name="Lbl" parent="GraphicsTab/MarginContainer/VBoxContainer/HBoxContainer/MarginContainer/ScrollContainer/PanelContainer/MarginContainer/VBoxContainer/SlideSaturation" index="0"]
+[node name="Lbl" parent="MarginContainer/VBoxContainer/ScrollContainer_2/VBoxContainer/SlideSaturation" index="0"]
 text = "Saturation"
 
-[node name="HSlider" parent="GraphicsTab/MarginContainer/VBoxContainer/HBoxContainer/MarginContainer/ScrollContainer/PanelContainer/MarginContainer/VBoxContainer/SlideSaturation" index="1"]
+[node name="HSlider" parent="MarginContainer/VBoxContainer/ScrollContainer_2/VBoxContainer/SlideSaturation/HBoxContainer" index="0"]
 max_value = 2.0
 
-[node name="PanelContainer2" type="PanelContainer" parent="GraphicsTab/MarginContainer/VBoxContainer/HBoxContainer"]
-layout_mode = 2
-size_flags_horizontal = 3
-size_flags_vertical = 3
+[node name="SlidingPanelComponent" type="Node" parent="."]
+script = ExtResource("4_26by2")
 
-[node name="SubViewportContainer" type="SubViewportContainer" parent="GraphicsTab/MarginContainer/VBoxContainer/HBoxContainer/PanelContainer2"]
-custom_minimum_size = Vector2(256, 256)
-layout_mode = 2
-stretch = true
+[connection signal="pressed" from="MarginContainer/VBoxContainer/BtnApplySettings" to="." method="ApplyGraphicsSettings"]
 
-[node name="SubViewport" type="SubViewport" parent="GraphicsTab/MarginContainer/VBoxContainer/HBoxContainer/PanelContainer2/SubViewportContainer"]
-handle_input_locally = false
-screen_space_aa = 1
-size = Vector2i(256, 509)
-render_target_update_mode = 4
-
-[node name="Camera3D" type="Camera3D" parent="GraphicsTab/MarginContainer/VBoxContainer/HBoxContainer/PanelContainer2/SubViewportContainer/SubViewport"]
-transform = Transform3D(0.688355, -0.403523, 0.602775, 0, 0.830985, 0.556296, -0.725374, -0.382929, 0.572012, 6.225, 4.265, 5.59)
-
-[node name="DirectionalLight3D" type="DirectionalLight3D" parent="GraphicsTab/MarginContainer/VBoxContainer/HBoxContainer/PanelContainer2/SubViewportContainer/SubViewport"]
-transform = Transform3D(-0.247168, -0.688028, 0.682294, -0.0278917, 0.708902, 0.704755, -0.968571, 0.155162, -0.194408, 5.29702, 1.99542, -5.80515)
-light_energy = 0.5
-shadow_enabled = true
-
-[node name="Geometry" type="Node3D" parent="GraphicsTab/MarginContainer/VBoxContainer/HBoxContainer/PanelContainer2/SubViewportContainer/SubViewport"]
-
-[node name="MeshInstance3D" type="MeshInstance3D" parent="GraphicsTab/MarginContainer/VBoxContainer/HBoxContainer/PanelContainer2/SubViewportContainer/SubViewport/Geometry"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.955312)
-material_override = SubResource("StandardMaterial3D_li7xm")
-mesh = SubResource("BoxMesh_kt1oe")
-skeleton = NodePath("../..")
-
-[node name="MeshInstance3D2" type="MeshInstance3D" parent="GraphicsTab/MarginContainer/VBoxContainer/HBoxContainer/PanelContainer2/SubViewportContainer/SubViewport/Geometry"]
-transform = Transform3D(6.64889, 0, 4.75224, 0, 8.17261, 0, -4.75224, 0, 6.64889, -1.30394, 1.58104, -3.6235)
-material_override = SubResource("StandardMaterial3D_lic7c")
-mesh = SubResource("TextMesh_eewj2")
-skeleton = NodePath("../..")
-
-[node name="MeshInstance3D3" type="MeshInstance3D" parent="GraphicsTab/MarginContainer/VBoxContainer/HBoxContainer/PanelContainer2/SubViewportContainer/SubViewport/Geometry"]
-transform = Transform3D(1.1924, 0, 0, 0, 1.1924, 0, 0, 0, 1.1924, 0, 0.642685, 0.368834)
-material_override = SubResource("StandardMaterial3D_xadcm")
-mesh = SubResource("SphereMesh_1i7mw")
-skeleton = NodePath("../..")
-
-[node name="MeshInstance3D4" type="MeshInstance3D" parent="GraphicsTab/MarginContainer/VBoxContainer/HBoxContainer/PanelContainer2/SubViewportContainer/SubViewport/Geometry"]
-transform = Transform3D(1.1924, 0, 0, 0, 1.1924, 0, 0, 0, 1.1924, 1.80576, 0.642685, -5.03079)
-material_override = SubResource("StandardMaterial3D_xadcm")
-mesh = SubResource("SphereMesh_1i7mw")
-skeleton = NodePath("../..")
-
-[node name="MeshInstance3D5" type="MeshInstance3D" parent="GraphicsTab/MarginContainer/VBoxContainer/HBoxContainer/PanelContainer2/SubViewportContainer/SubViewport/Geometry"]
-transform = Transform3D(0.387258, 0, 0, 0, 0.387258, 0, 0, 0, 0.387258, -2.68758, 1.60068, 1.56447)
-material_override = SubResource("StandardMaterial3D_jjcou")
-mesh = SubResource("CapsuleMesh_rvuxa")
-
-[node name="OmniLight3D" type="OmniLight3D" parent="GraphicsTab/MarginContainer/VBoxContainer/HBoxContainer/PanelContainer2/SubViewportContainer/SubViewport/Geometry/MeshInstance3D5"]
-omni_range = 5.4735
-
-[node name="MeshInstance3D6" type="MeshInstance3D" parent="GraphicsTab/MarginContainer/VBoxContainer/HBoxContainer/PanelContainer2/SubViewportContainer/SubViewport/Geometry"]
-transform = Transform3D(0.606349, 0.623734, 0.49325, 0, 0.620286, -0.784376, -0.795198, 0.475606, 0.37611, -3.50609, 2.48512, -4.95832)
-material_override = SubResource("StandardMaterial3D_t31dy")
-mesh = SubResource("TorusMesh_ryoah")
-
-[node name="MeshInstance3D7" type="MeshInstance3D" parent="GraphicsTab/MarginContainer/VBoxContainer/HBoxContainer/PanelContainer2/SubViewportContainer/SubViewport/Geometry"]
-transform = Transform3D(0.687972, 1.19653, 3.50662, -0.874471, 3.51824, -1.02892, -3.60047, -0.625868, 0.919942, -6.72783, 0.984059, 1.27368)
-material_override = SubResource("StandardMaterial3D_scu24")
-mesh = SubResource("QuadMesh_jq6ow")
-
-[node name="RequestFocusOnParent" parent="." instance=ExtResource("4_6nv34")]
-layout_mode = 2
-focus_target = NodePath("../GraphicsTab/MarginContainer/VBoxContainer/HBoxContainer2/BtnApplySettings")
-
-[connection signal="pressed" from="GraphicsTab/MarginContainer/VBoxContainer/HBoxContainer2/BtnApplySettings" to="GraphicsTab" method="ApplyGraphicsSettings"]
-
-[editable path="GraphicsTab/MarginContainer/VBoxContainer/HBoxContainer/MarginContainer/ScrollContainer/PanelContainer/MarginContainer/VBoxContainer/SlideExposure"]
-[editable path="GraphicsTab/MarginContainer/VBoxContainer/HBoxContainer/MarginContainer/ScrollContainer/PanelContainer/MarginContainer/VBoxContainer/SlideBrightness"]
-[editable path="GraphicsTab/MarginContainer/VBoxContainer/HBoxContainer/MarginContainer/ScrollContainer/PanelContainer/MarginContainer/VBoxContainer/SlideContrast"]
-[editable path="GraphicsTab/MarginContainer/VBoxContainer/HBoxContainer/MarginContainer/ScrollContainer/PanelContainer/MarginContainer/VBoxContainer/SlideSaturation"]
+[editable path="MarginContainer/VBoxContainer/ScrollContainer_2/VBoxContainer/SlideExposure"]
+[editable path="MarginContainer/VBoxContainer/ScrollContainer_2/VBoxContainer/SlideBrightness"]
+[editable path="MarginContainer/VBoxContainer/ScrollContainer_2/VBoxContainer/SlideContrast"]
+[editable path="MarginContainer/VBoxContainer/ScrollContainer_2/VBoxContainer/SlideSaturation"]

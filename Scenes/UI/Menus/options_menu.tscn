@@ -1,44 +1,26 @@
-[gd_scene load_steps=9 format=3 uid="uid://qaoatrq0ufkr"]
+[gd_scene load_steps=4 format=3 uid="uid://qaoatrq0ufkr"]
 
 [ext_resource type="Script" path="res://Scenes/UI/Menus/OptionsMenu.cs" id="1_hipj7"]
-[ext_resource type="PackedScene" uid="uid://dbfdlcj7agxhj" path="res://Scenes/UI/Menus/OptionsTabs/audio_tab.tscn" id="2_x8b24"]
-[ext_resource type="PackedScene" uid="uid://5lm2kfqmwx7b" path="res://Scenes/UI/Menus/OptionsTabs/accessibility_tab.tscn" id="3_si5nr"]
-[ext_resource type="Script" path="res://Scenes/UI/Menus/TabContainerGamepadSupport.cs" id="4_uas64"]
-[ext_resource type="PackedScene" uid="uid://ceeiivirtbxx6" path="res://Scenes/UI/Menus/OptionsTabs/graphics_tab.tscn" id="5_uxrhy"]
-[ext_resource type="PackedScene" path="res://Scenes/Utility/UI_Tools/request_focus_on_parent.tscn" id="7_ucu0u"]
-[ext_resource type="PackedScene" uid="uid://ci8q8yf6jrc8n" path="res://Scenes/Utility/UI_Tools/ui_effects.tscn" id="7_wovvf"]
-[ext_resource type="PackedScene" uid="uid://btd2j8upuoh1b" path="res://Scenes/UI/Menus/OptionsTabs/controls_tab.tscn" id="8_8g037"]
+[ext_resource type="Script" path="res://Scenes/UI/Animations/SlidingPanelComponent.cs" id="2_q803b"]
 
-[node name="OptionsMenu" type="Control"]
-layout_mode = 3
-anchors_preset = 15
-anchor_right = 1.0
+[sub_resource type="LabelSettings" id="LabelSettings_cmblw"]
+font_size = 32
+
+[node name="OptionsMenu" type="PanelContainer"]
+anchors_preset = 9
 anchor_bottom = 1.0
-grow_horizontal = 2
+offset_right = 221.0
 grow_vertical = 2
 script = ExtResource("1_hipj7")
 main_menu_path = "res://Scenes/UI/Menus/main_menu.tscn"
+path_panel_graphics = "res://Scenes/UI/Menus/OptionsTabs/graphics_tab.tscn"
+path_panel_access = "res://Scenes/UI/Menus/OptionsTabs/accessibility_tab.tscn"
+path_panel_audio = "res://Scenes/UI/Menus/OptionsTabs/audio_tab.tscn"
 
-[node name="TextureRect" type="TextureRect" parent="."]
-texture_repeat = 2
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-expand_mode = 2
+[node name="SlidingRoot" type="Control" parent="."]
+layout_mode = 2
 
-[node name="VBoxContainer" type="VBoxContainer" parent="."]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-alignment = 2
-
-[node name="MarginContainer" type="MarginContainer" parent="VBoxContainer"]
+[node name="MarginContainer" type="MarginContainer" parent="."]
 layout_mode = 2
 size_flags_vertical = 3
 theme_override_constants/margin_left = 20
@@ -46,35 +28,44 @@ theme_override_constants/margin_top = 20
 theme_override_constants/margin_right = 20
 theme_override_constants/margin_bottom = 20
 
-[node name="TabContainer" type="TabContainer" parent="VBoxContainer/MarginContainer"]
-layout_mode = 2
-tab_alignment = 1
-script = ExtResource("4_uas64")
-
-[node name="Accessibility" parent="VBoxContainer/MarginContainer/TabContainer" instance=ExtResource("3_si5nr")]
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer"]
 layout_mode = 2
 
-[node name="Graphics" parent="VBoxContainer/MarginContainer/TabContainer" instance=ExtResource("5_uxrhy")]
-visible = false
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer"]
 layout_mode = 2
+text = "Options Menu"
+label_settings = SubResource("LabelSettings_cmblw")
+horizontal_alignment = 1
+vertical_alignment = 1
 
-[node name="Audio" parent="VBoxContainer/MarginContainer/TabContainer" instance=ExtResource("2_x8b24")]
-visible = false
+[node name="HSeparator" type="HSeparator" parent="MarginContainer/VBoxContainer"]
 layout_mode = 2
+theme_override_constants/separation = 64
 
-[node name="Controls" parent="VBoxContainer/MarginContainer/TabContainer" instance=ExtResource("8_8g037")]
-visible = false
+[node name="BtnGameplay" type="Button" parent="MarginContainer/VBoxContainer"]
 layout_mode = 2
+text = "Gameplay"
 
-[node name="MenuButton" type="Button" parent="VBoxContainer"]
+[node name="BtnGraphics" type="Button" parent="MarginContainer/VBoxContainer"]
 layout_mode = 2
-text = "Return to Main Menu"
+text = "Graphics
+"
 
-[node name="UIEffects" parent="VBoxContainer/MenuButton" instance=ExtResource("7_wovvf")]
+[node name="BtnAccessibility" type="Button" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+text = "Accessibility
+"
 
-[node name="RequestFocusOnParent" parent="." instance=ExtResource("7_ucu0u")]
-offset_top = 595.0
-offset_bottom = 595.0
-focus_target = NodePath("../VBoxContainer/MenuButton")
+[node name="BtnAudio" type="Button" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+text = "Audio
+"
 
-[connection signal="pressed" from="VBoxContainer/MenuButton" to="." method="OnMenuButtonPressed"]
+[node name="SlidingPanelComponent" type="Node" parent="."]
+script = ExtResource("2_q803b")
+PathSubSliding = NodePath("../SlidingRoot")
+
+[connection signal="pressed" from="MarginContainer/VBoxContainer/BtnGameplay" to="." method="OnBtnGameplay"]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/BtnGraphics" to="." method="OnBtnGraphics"]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/BtnAccessibility" to="." method="OnBtnAccess"]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/BtnAudio" to="." method="OnBtnAudio"]
