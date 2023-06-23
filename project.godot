@@ -26,7 +26,6 @@ ResourceScriptDirectories=["res://"]
 config/name="Cute Magical Farming Sim"
 run/main_scene="res://Scenes/UI/LaunchSequence/launch_sequence.tscn"
 config/features=PackedStringArray("4.1", "Forward Plus")
-boot_splash/show_image=false
 config/icon="res://icon.png"
 
 [autoload]
@@ -82,6 +81,7 @@ enabled=PackedStringArray("res://addons/dynamic-web-content/plugin.cfg")
 
 [filesystem]
 
+import/blender/enabled=false
 import/fbx/enabled=false
 
 [gui]
