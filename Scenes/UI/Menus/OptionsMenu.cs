@@ -14,6 +14,7 @@ public partial class OptionsMenu : Control
     [Export(PropertyHint.File, "*.tscn")] private string path_panel_gameplay;
     [Export(PropertyHint.File, "*.tscn")] private string path_panel_graphics;
     [Export(PropertyHint.File, "*.tscn")] private string path_panel_access;
+    [Export(PropertyHint.File, "*.tscn")] private string path_panel_controls;
     [Export(PropertyHint.File, "*.tscn")] private string path_panel_audio;
 
 
@@ -30,11 +31,13 @@ public partial class OptionsMenu : Control
     private void OnBtnGraphics() => DoPanelThing(path_panel_graphics);
     private void OnBtnAccess() => DoPanelThing(path_panel_access);
     private void OnBtnAudio() => DoPanelThing(path_panel_audio);
+    private void OnBtnControls() => DoPanelThing(path_panel_controls);
 
     private async void DoPanelThing(string file_path)
     {
         if (IsBusy) return;
-        Print.Debug($"OptionsMenu: attempting sliding in {file_path}");
+        Events.Data.TriggerSerializeAll();
+        // Print.Debug($"OptionsMenu: attempting sliding in {file_path}");
         IsBusy = true;
         var result = await ClearOldSlidingScene(file_path);
         if (result) CreateNewSlidingScene(file_path);
@@ -62,6 +65,11 @@ public partial class OptionsMenu : Control
         scene.GlobalPosition = new Vector2(Size.X, 0);
         SlidingSceneRoot.AddChild(scene);
         CurrentPopup = scene;
+    }
+
+    public override void _ExitTree()
+    {
+        Events.Data.TriggerSerializeAll();
     }
 
 }

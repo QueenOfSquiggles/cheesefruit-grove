@@ -24,6 +24,7 @@ SunIntensityCurve = SubResource("Curve_4hxry")
 MoonColour = Color(0.86707, 0.569622, 0.983205, 1)
 MoonIntensityCurve = SubResource("Curve_oslpy")
 AutoProgressCycle = true
+SecondsPerCycle = 1800.0
 PathWorldEnvironment = NodePath("WorldEnv_SettingsCompliant")
 PathLightsChunk = NodePath("LightsChunk")
 PathSun = NodePath("LightsChunk/Sun")

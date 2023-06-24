@@ -1,8 +1,14 @@
-[gd_scene load_steps=4 format=3 uid="uid://sgndh4ywb4st"]
+[gd_scene load_steps=5 format=3 uid="uid://sgndh4ywb4st"]
 
 [ext_resource type="Script" path="res://Scenes/UI/Menus/OptionsTabs/SliderCombo.gd" id="1_lok1f"]
 [ext_resource type="Script" path="res://Scenes/UI/Menus/OptionsTabs/SliderValue.gd" id="1_p7yam"]
 [ext_resource type="PackedScene" uid="uid://ci8q8yf6jrc8n" path="res://Scenes/Utility/UI_Tools/ui_effects.tscn" id="3_yxesj"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_7usro"]
+font_size = 24
+shadow_size = 3
+shadow_color = Color(0, 0, 0, 0.831373)
+shadow_offset = Vector2(2, 2)
 
 [node name="SliderCombo" type="VBoxContainer"]
 anchors_preset = 15
@@ -38,10 +44,13 @@ ticks_on_borders = true
 [node name="UISounds" parent="HBoxContainer/HSlider" instance=ExtResource("3_yxesj")]
 
 [node name="ValueLbl" type="Label" parent="HBoxContainer"]
-custom_minimum_size = Vector2(64, 0)
+custom_minimum_size = Vector2(100, 0)
 layout_mode = 2
-text = "1"
+size_flags_horizontal = 4
+text = "9999"
+label_settings = SubResource("LabelSettings_7usro")
 horizontal_alignment = 1
+vertical_alignment = 1
 clip_text = true
 text_overrun_behavior = 1
 script = ExtResource("1_p7yam")

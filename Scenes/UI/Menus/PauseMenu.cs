@@ -1,6 +1,7 @@
 using System;
 using System.Threading.Tasks;
 using Godot;
+using queen.events;
 using queen.extension;
 
 public partial class PauseMenu : Control
@@ -24,13 +25,16 @@ public partial class PauseMenu : Control
     {
         if (e.IsActionPressed("ui_cancel"))
         {
+
             ReturnToPlay();
-            GetViewport().SetInputAsHandled();
+            this.HandleInput();
         }
     }
 
-    private void ReturnToPlay()
+    private async void ReturnToPlay()
     {
+        Events.Data.TriggerSerializeAll();
+        await Task.Delay(10);
         Input.MouseMode = Input.MouseModeEnum.Captured;
         GetTree().Paused = false;
         QueueFree();

@@ -64,6 +64,8 @@ glossary/default_case_sensitive=true
 
 window/size/viewport_width=1920
 window/size/viewport_height=1080
+mouse_cursor/custom_image="res://Assets/Krita/custom_cursor/custom_staff_cursor.png"
+mouse_cursor/custom_image_hotspot=Vector2(4, 4)
 
 [dotnet]
 
@@ -234,6 +236,8 @@ locale/translations=PackedStringArray("res://Assets/Translation/translations_she
 [rendering]
 
 global_illumination/gi/use_half_resolution=true
+anti_aliasing/quality/msaa_3d=1
+anti_aliasing/quality/use_taa=true
 
 [shader_globals]
 

@@ -11,6 +11,7 @@ public partial class ControlsTab : PanelContainer
 
     [Export] private NodePath PathSliderMouseSensitive;
     [Export] private NodePath PathSliderGamepadSensitive;
+    [Export] private NodePath PathListeningPopup;
 
     private bool Listening = false;
     private string CurrentActionTarget = "";
@@ -21,7 +22,7 @@ public partial class ControlsTab : PanelContainer
 
     public override void _Ready()
     {
-        this.GetNode("ListeningPopup", out popup_listening);
+        this.GetNode(PathListeningPopup, out popup_listening);
         this.GetSafe(PathSliderMouseSensitive, out SliderMouse);
         this.GetSafe(PathSliderGamepadSensitive, out SliderGamepad);
         popup_listening.Exclusive = true;

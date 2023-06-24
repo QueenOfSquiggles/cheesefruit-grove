@@ -4,6 +4,7 @@ using System;
 using System.Threading.Tasks;
 using Godot;
 using queen.error;
+using queen.events;
 using queen.extension;
 
 public partial class MainMenu : Control
@@ -24,8 +25,10 @@ public partial class MainMenu : Control
         Input.MouseMode = Input.MouseModeEnum.Visible;
         this.GetSafe(PathButtonsControlPanel, out ButtonsPanel);
     }
-    private void OnBtnPlay()
+    private async void OnBtnPlay()
     {
+        Events.Data.TriggerSerializeAll(); // guarantees any open options menus save their data
+        await Task.Delay(10);
         Scenes.LoadSceneAsync(play_scene);
     }
 

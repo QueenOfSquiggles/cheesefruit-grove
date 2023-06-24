@@ -18,6 +18,12 @@ public partial class FarmingController : CharacterBody3D
 
     [ExportGroup("Suction Settings")]
     [Export] private Area3D.SpaceOverride ActiveSpaceOverride = Area3D.SpaceOverride.CombineReplace;
+    [Export] private float SuctionGravitySpeed = 19.6f;
+    [Export] private float SuctionGravityTweenDuration = 0.1f;
+    [ExportSubgroup("Suction VFX")]
+    [Export] private NodePath PathSuctionVFX;
+    [Export] private float SuctionVFXActiveDiscardThreshold = 0.7f;
+    [Export] private float SuctionVFXTweenDuration = 0.3f;
 
     [ExportGroup("Movement Stats")]
     [Export] protected float Acceleration = 0.3f;
@@ -53,6 +59,8 @@ public partial class FarmingController : CharacterBody3D
     protected RayCast3D CanStepCheckBottom;
     protected InteractionSensor InterSensor;
     private CharStatManager Stats;
+    private MeshInstance3D SuctionVFX;
+    private Tween SuctionVFXTween;
 
     // Values
     protected Vector2 camera_look_vector = new();
@@ -76,6 +84,11 @@ public partial class FarmingController : CharacterBody3D
         this.GetSafe(PathInteractSensor, out InterSensor);
         this.GetSafe(PathThirdPersonCam, out ThirdPersonCam);
         this.GetSafe(PathStats, out Stats);
+        this.GetSafe(PathSuctionVFX, out SuctionVFX);
+
+        var mat = SuctionVFX.GetActiveMaterial(0) as ShaderMaterial;
+        mat?.SetShaderParameter("discard_min", 1.0);
+        mat?.SetShaderParameter("length_shown", 0.0f);
 
         CanStepCheckTop.Position += new Vector3(0, StepHeight, 0);
         CanStepCheckBottom_CastLength = CanStepCheckBottom.TargetPosition.Length();
@@ -83,7 +96,7 @@ public partial class FarmingController : CharacterBody3D
 
         Events.Gameplay.RequestPlayerAbleToMove += HandleEventPlayerCanMove;
         _ItemCollector.Enabled = false;
-        _SuctionArea.GravitySpaceOverride = Area3D.SpaceOverride.Disabled;
+        //_SuctionArea.GravitySpaceOverride = Area3D.SpaceOverride.Disabled;
         Input.MouseMode = Input.MouseModeEnum.Captured;
 
         var MaxHealth = Stats.GetStat("max_health");
@@ -97,14 +110,35 @@ public partial class FarmingController : CharacterBody3D
     private bool ToggleSuction(InputEvent e)
     {
         if (!e.IsAction("suction")) return false;
+        var mat = SuctionVFX.GetActiveMaterial(0) as ShaderMaterial;
+        SuctionVFXTween?.Kill();
+        SuctionVFXTween = CreateTween().SetTrans(Tween.TransitionType.Cubic).SetEase(Tween.EaseType.Out);
         if (e.IsPressed())
         {
-            _ItemCollector.Enabled = _IsSuction = true;
+            // starting stuff
+            _SuctionArea.Gravity = 0.0f; // always start from zero
+            _IsSuction = _ItemCollector.Enabled = true;// enables pickups and suction
+            ManageSuctionSettings(); // set up properties and wake up available opbjects
+
+            // sequence
+            SuctionVFXTween.TweenProperty(mat, "shader_parameter/discard_min", SuctionVFXActiveDiscardThreshold, SuctionVFXTweenDuration);
+            SuctionVFXTween.Parallel().TweenProperty(mat, "shader_parameter/length_shown", 1.0f, SuctionVFXTweenDuration);
+            SuctionVFXTween.Parallel().TweenProperty(_SuctionArea, "gravity", SuctionGravitySpeed, SuctionGravityTweenDuration);
         }
         else
         {
+            _SuctionArea.Gravity = 0.0f; // reset to zero instantly
             _ItemCollector.Enabled = _IsSuction = false;
+            ManageSuctionSettings();
+            SuctionVFXTween.TweenProperty(mat, "shader_parameter/discard_min", 1.1f, SuctionVFXTweenDuration);
+            SuctionVFXTween.Parallel().TweenProperty(mat, "shader_parameter/length_shown", 0.0f, SuctionVFXTweenDuration);
         }
+
+        return true;
+    }
+
+    private void ManageSuctionSettings()
+    {
         _SuctionArea.GravitySpaceOverride = _IsSuction ? ActiveSpaceOverride : Area3D.SpaceOverride.Disabled;
         if (_IsSuction)
         {
@@ -116,7 +150,6 @@ public partial class FarmingController : CharacterBody3D
                 rb.Sleeping = false;
             }
         }
-        return true;
     }
 
     private void OnBodyEnterSuctionZone(Node3D node)
@@ -179,7 +212,7 @@ public partial class FarmingController : CharacterBody3D
         {
             _Items.Add(wic.ItemID, 1);
         }
-        Print.Debug($"Picked up item: {wic.ItemID}");
+        //Print.Debug($"Picked up item: {wic.ItemID}");
         node.QueueFree();
     }
 

@@ -20,6 +20,7 @@ size_flags_vertical = 3
 script = ExtResource("1_y6pcj")
 PathSliderMouseSensitive = NodePath("MarginContainer/ScrollContainer/MarginContainer/VBoxContainer/Sensitivity/MouseSensitivity/HBoxContainer/HSlider")
 PathSliderGamepadSensitive = NodePath("MarginContainer/ScrollContainer/MarginContainer/VBoxContainer/Sensitivity/GamepadSensitivity/HBoxContainer/HSlider")
+PathListeningPopup = NodePath("SlidingRoot/ListeningPopup")
 
 [node name="MarginContainer" type="MarginContainer" parent="."]
 layout_mode = 2
@@ -65,9 +66,43 @@ layout_mode = 2
 
 [node name="MouseSensitivity" parent="MarginContainer/ScrollContainer/MarginContainer/VBoxContainer/Sensitivity" instance=ExtResource("2_midyy")]
 layout_mode = 2
+text = "Mouse"
+slider_value = 400.0
+min_value = 1.0
+max_value = 1000.0
+step_value = 5.0
+
+[node name="Lbl" parent="MarginContainer/ScrollContainer/MarginContainer/VBoxContainer/Sensitivity/MouseSensitivity" index="0"]
+text = "Mouse"
+
+[node name="HSlider" parent="MarginContainer/ScrollContainer/MarginContainer/VBoxContainer/Sensitivity/MouseSensitivity/HBoxContainer" index="0"]
+min_value = 1.0
+max_value = 1000.0
+step = 5.0
+value = 400.0
+
+[node name="ValueLbl" parent="MarginContainer/ScrollContainer/MarginContainer/VBoxContainer/Sensitivity/MouseSensitivity/HBoxContainer" index="1"]
+text = "400"
 
 [node name="GamepadSensitivity" parent="MarginContainer/ScrollContainer/MarginContainer/VBoxContainer/Sensitivity" instance=ExtResource("2_midyy")]
 layout_mode = 2
+text = "Gamepad"
+slider_value = 500.0
+min_value = 1.0
+max_value = 1000.0
+step_value = 5.0
+
+[node name="Lbl" parent="MarginContainer/ScrollContainer/MarginContainer/VBoxContainer/Sensitivity/GamepadSensitivity" index="0"]
+text = "Gamepad"
+
+[node name="HSlider" parent="MarginContainer/ScrollContainer/MarginContainer/VBoxContainer/Sensitivity/GamepadSensitivity/HBoxContainer" index="0"]
+min_value = 1.0
+max_value = 1000.0
+step = 5.0
+value = 500.0
+
+[node name="ValueLbl" parent="MarginContainer/ScrollContainer/MarginContainer/VBoxContainer/Sensitivity/GamepadSensitivity/HBoxContainer" index="1"]
+text = "500"
 
 [node name="Mappings" type="VBoxContainer" parent="MarginContainer/ScrollContainer/MarginContainer/VBoxContainer"]
 layout_mode = 2
@@ -78,17 +113,23 @@ layout_mode = 2
 text = "Controls Mappings"
 horizontal_alignment = 1
 
-[node name="BtnApplyChanges" type="Button" parent="MarginContainer/ScrollContainer/MarginContainer/VBoxContainer/Mappings"]
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/ScrollContainer/MarginContainer/VBoxContainer/Mappings"]
 layout_mode = 2
+alignment = 1
+
+[node name="BtnApplyChanges" type="Button" parent="MarginContainer/ScrollContainer/MarginContainer/VBoxContainer/Mappings/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
 text = "Apply Changes"
 
-[node name="UISounds" parent="MarginContainer/ScrollContainer/MarginContainer/VBoxContainer/Mappings/BtnApplyChanges" instance=ExtResource("3_k08te")]
+[node name="UISounds" parent="MarginContainer/ScrollContainer/MarginContainer/VBoxContainer/Mappings/HBoxContainer/BtnApplyChanges" instance=ExtResource("3_k08te")]
 
-[node name="BtnResetAll" type="Button" parent="MarginContainer/ScrollContainer/MarginContainer/VBoxContainer/Mappings"]
+[node name="BtnResetAll" type="Button" parent="MarginContainer/ScrollContainer/MarginContainer/VBoxContainer/Mappings/HBoxContainer"]
 layout_mode = 2
+size_flags_horizontal = 3
 text = "Reset All Mappings"
 
-[node name="UISounds" parent="MarginContainer/ScrollContainer/MarginContainer/VBoxContainer/Mappings/BtnResetAll" instance=ExtResource("3_k08te")]
+[node name="UISounds" parent="MarginContainer/ScrollContainer/MarginContainer/VBoxContainer/Mappings/HBoxContainer/BtnResetAll" instance=ExtResource("3_k08te")]
 
 [node name="HSeparator" type="HSeparator" parent="MarginContainer/ScrollContainer/MarginContainer/VBoxContainer/Mappings"]
 layout_mode = 2
@@ -175,6 +216,7 @@ TargetAction = "ui_cycle_right"
 
 [node name="SlidingRoot" type="Control" parent="."]
 layout_mode = 2
+mouse_filter = 2
 
 [node name="ListeningPopup" type="Popup" parent="SlidingRoot"]
 disable_3d = true
@@ -201,8 +243,8 @@ vertical_alignment = 1
 [node name="SlidingPanelComponent" type="Node" parent="."]
 script = ExtResource("5_dayim")
 
-[connection signal="pressed" from="MarginContainer/ScrollContainer/MarginContainer/VBoxContainer/Mappings/BtnApplyChanges" to="." method="ApplyChanges"]
-[connection signal="pressed" from="MarginContainer/ScrollContainer/MarginContainer/VBoxContainer/Mappings/BtnResetAll" to="." method="ResetAllMappings"]
+[connection signal="pressed" from="MarginContainer/ScrollContainer/MarginContainer/VBoxContainer/Mappings/HBoxContainer/BtnApplyChanges" to="." method="ApplyChanges"]
+[connection signal="pressed" from="MarginContainer/ScrollContainer/MarginContainer/VBoxContainer/Mappings/HBoxContainer/BtnResetAll" to="." method="ResetAllMappings"]
 [connection signal="ListenForAction" from="MarginContainer/ScrollContainer/MarginContainer/VBoxContainer/Mappings/Action_MoveForward" to="." method="ListenForAction"]
 [connection signal="ListenForAction" from="MarginContainer/ScrollContainer/MarginContainer/VBoxContainer/Mappings/Action_MoveBack" to="." method="ListenForAction"]
 [connection signal="ListenForAction" from="MarginContainer/ScrollContainer/MarginContainer/VBoxContainer/Mappings/Action_MoveLeft" to="." method="ListenForAction"]

@@ -15,10 +15,12 @@ script = ExtResource("1_hipj7")
 main_menu_path = "res://Scenes/UI/Menus/main_menu.tscn"
 path_panel_graphics = "res://Scenes/UI/Menus/OptionsTabs/graphics_tab.tscn"
 path_panel_access = "res://Scenes/UI/Menus/OptionsTabs/accessibility_tab.tscn"
+path_panel_controls = "res://Scenes/UI/Menus/OptionsTabs/controls_tab.tscn"
 path_panel_audio = "res://Scenes/UI/Menus/OptionsTabs/audio_tab.tscn"
 
 [node name="SlidingRoot" type="Control" parent="."]
 layout_mode = 2
+mouse_filter = 1
 
 [node name="MarginContainer" type="MarginContainer" parent="."]
 layout_mode = 2
@@ -56,6 +58,10 @@ layout_mode = 2
 text = "Accessibility
 "
 
+[node name="BtnControls" type="Button" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+text = "Controls"
+
 [node name="BtnAudio" type="Button" parent="MarginContainer/VBoxContainer"]
 layout_mode = 2
 text = "Audio
@@ -68,4 +74,5 @@ PathSubSliding = NodePath("../SlidingRoot")
 [connection signal="pressed" from="MarginContainer/VBoxContainer/BtnGameplay" to="." method="OnBtnGameplay"]
 [connection signal="pressed" from="MarginContainer/VBoxContainer/BtnGraphics" to="." method="OnBtnGraphics"]
 [connection signal="pressed" from="MarginContainer/VBoxContainer/BtnAccessibility" to="." method="OnBtnAccess"]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/BtnControls" to="." method="OnBtnControls"]
 [connection signal="pressed" from="MarginContainer/VBoxContainer/BtnAudio" to="." method="OnBtnAudio"]
