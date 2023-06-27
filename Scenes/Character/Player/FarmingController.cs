@@ -32,7 +32,7 @@ public partial class FarmingController : CharacterBody3D
     [Export] protected float StepHeight = 0.4f;
     [Export] protected float StepStrength = 3.0f;
 
-    [ExportGroup("Node Paths")]
+    [ExportGroup("Node Paths", "Path")]
     [Export] private NodePath PathItemCollector;
     [Export] private NodePath PathSuctionArea;
 
@@ -42,14 +42,14 @@ public partial class FarmingController : CharacterBody3D
     [Export] private NodePath PathInteractSensor;
     [Export] private NodePath PathThirdPersonCam;
     [Export] private NodePath PathStats;
+    [Export] private NodePath PathInventoryManager;
 
     private bool _IsSuction = false;
     private bool _IsShooting = false;
     private ItemCollector _ItemCollector;
     private Area3D _SuctionArea;
 
-    private Dictionary<string, int> _Items = new();
-
+    private InventoryManager _Inventory;
 
 
     // References
@@ -85,6 +85,7 @@ public partial class FarmingController : CharacterBody3D
         this.GetSafe(PathThirdPersonCam, out ThirdPersonCam);
         this.GetSafe(PathStats, out Stats);
         this.GetSafe(PathSuctionVFX, out SuctionVFX);
+        this.GetSafe(PathInventoryManager, out _Inventory);
 
         var mat = SuctionVFX.GetActiveMaterial(0) as ShaderMaterial;
         mat?.SetShaderParameter("discard_min", 1.0);
@@ -104,6 +105,14 @@ public partial class FarmingController : CharacterBody3D
         Stats.CreateDynamicStat("health", MaxHealth, MaxHealth, 0f, "max_health", "health_regen_factor");
         Stats.CreateDynamicStat("energy", MaxEnergy, MaxEnergy, 0f, "max_energy", "energy_regen_factor");
         Events.Gameplay.TriggerPlayerStatsUpdated(Stats.GetStat("health"), Stats.GetStat("max_health"), Stats.GetStat("energy"), Stats.GetStat("max_energy"));
+
+        _Inventory.SlotUpdate += Events.GUI.TriggerUpdatePlayeInventoryDisplay;
+        _Inventory.SlotSelect += Events.GUI.TriggerPlayerInventorySelect;
+        int slots = (int)Stats.GetStat("inventory_size");
+        _Inventory.ResizeInventory(slots);
+        Events.GUI.TriggerInventoryResized(slots);
+        _Inventory.UpdateGUICall(Events.GUI.TriggerUpdatePlayeInventoryDisplay);
+        // Events.GUI.TriggerPlayerInventorySelect(_Inventory.Selected);
     }
 
 
@@ -164,7 +173,8 @@ public partial class FarmingController : CharacterBody3D
         if (e.IsPressed())
         {
             _IsShooting = true;
-            if (_Items.Count > 0) ShootItem(_Items.Keys.First());
+            var item_id = _Inventory.GetSelectedItem();
+            if (_Inventory.RemoveItem()) ShootItem(item_id);
         }
         else
         {
@@ -175,7 +185,7 @@ public partial class FarmingController : CharacterBody3D
 
     private void ShootItem(string itemID)
     {
-        var itemDef = RegistrationManager.Instance.Entities.GetValueOrDefault(itemID);
+        var itemDef = RegistrationManager.Entities.GetValueOrDefault(itemID);
         if (itemDef is null) Print.Debug($"Registry for '{itemID}' was null");
         if (itemDef?.WorldScene is null) Print.Debug($"WorldEntity:WorldScene for '{itemID}' was null");
         if (itemDef?.WorldScene?.Instantiate() is not Node3D scene)
@@ -190,30 +200,13 @@ public partial class FarmingController : CharacterBody3D
 
         // If valid item scene is Rigid Body, apply force
         if (scene is RigidBody3D rb) rb.ApplyCentralImpulse(-VCamRoot.GlobalTransform.Basis.Z * ShootImpulseForce);
-
-        // Remove item from inventory
-        // TODO split responsibility of inventory management to different node
-        if (_Items.ContainsKey(itemID))
-        {
-            _Items[itemID] -= 1;
-            if (_Items[itemID] <= 0) _Items.Remove(itemID); // clear out zeroed items;
-        }
-
     }
 
     private void OnPickupItem(Node3D node)
     {
         if (node.GetComponent<WorldItemComponent>() is not WorldItemComponent wic) return;
-        if (_Items.ContainsKey(wic.ItemID))
-        {
-            _Items[wic.ItemID] += 1;
-        }
-        else
-        {
-            _Items.Add(wic.ItemID, 1);
-        }
-        //Print.Debug($"Picked up item: {wic.ItemID}");
-        node.QueueFree();
+
+        if (_Inventory.TryAddItem(wic.ItemID)) node.QueueFree();
     }
 
 
@@ -339,6 +332,7 @@ public partial class FarmingController : CharacterBody3D
             handled |= ToggleFiring(e);
             handled |= InputToggleThirdPerson(e);
             handled |= AddTestBuff(e);
+            handled |= InputSelectItems(e);
         }
         if (handled) GetViewport().SetInputAsHandled();
     }
@@ -375,5 +369,21 @@ public partial class FarmingController : CharacterBody3D
         Print.Debug("Adding energy regen buff");
         Stats.AddStatMod("energy_regen_factor", 50.0f, CharStatFloat.Modifier.ADD, 1.0f);
         return true;
+    }
+
+    private bool InputSelectItems(InputEvent e)
+    {
+        if (!e.IsPressed()) return false;
+        if (e.IsAction("item_select_next"))
+        {
+            _Inventory.SelectNext();
+            return true;
+        }
+        if (e.IsAction("item_select_previous"))
+        {
+            _Inventory.SelectPrevious();
+            return true;
+        }
+        return false;
     }
 }

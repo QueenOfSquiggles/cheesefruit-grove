@@ -10,7 +10,6 @@ wind_source_path = NodePath("Marker3D")
 script = ExtResource("1_4funw")
 
 [node name="Marker3D" type="Marker3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
 gizmo_extents = 4.0
 
 [node name="HelperEditorOnlyMesh3D" type="MeshInstance3D" parent="Marker3D"]

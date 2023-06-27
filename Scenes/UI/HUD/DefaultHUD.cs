@@ -12,61 +12,69 @@ public partial class DefaultHUD : Control
     [ExportGroup("Reticle Settings")]
     [Export] private float TransitionTime = 0.2f;
 
+    [ExportGroup("Inventory Stuff")]
+    [Export] private PackedScene InventorySlotPacked;
 
     [ExportGroup("Paths")]
-    [Export] private NodePath path_label_subtitle;
-    [Export] private NodePath path_label_alert;
+    [Export] private NodePath PathLabelSubtitle;
+    [Export] private NodePath PathLabelAlert;
 
-    [Export] private NodePath path_root_subtitle;
-    [Export] private NodePath path_root_alert;
-    [Export] private NodePath path_reticle;
-    [Export] private NodePath path_interaction_prompt;
-    [Export] private NodePath path_generic_gui_root;
-    [Export] private NodePath path_player_stats_health_bar;
-    [Export] private NodePath path_player_stats_health_label;
-    [Export] private NodePath path_player_stats_energy_bar;
-    [Export] private NodePath path_player_stats_energy_label;
+    [Export] private NodePath PathRootSubtitle;
+    [Export] private NodePath PathRootAlert;
+    [Export] private NodePath PathReticle;
+    [Export] private NodePath PathInteractionPrompt;
+    [Export] private NodePath PathGenericGuiRoot;
+    [Export] private NodePath PathPlayerStatsHealthBar;
+    [Export] private NodePath PathPlayerStatsHealthLabel;
+    [Export] private NodePath PathPlayerStatsEnergyBar;
+    [Export] private NodePath PathPlayerStatsEnergyLabel;
+    [Export] private NodePath PathPlayerInventory;
 
 
-    private Label lbl_subtitle;
-    private Label lbl_alert;
-    private Control root_subtitle;
-    private Control root_alert;
-    private TextureRect reticle;
-    private Label interaction_prompt;
-    private Control generic_gui_root;
-    private TextureProgressBar player_stats_health_bar;
-    private Label player_stats_health_label;
-    private TextureProgressBar player_stats_energy_bar;
-    private Label player_stats_energy_label;
+
+    private Label _LblSubtitle;
+    private Label _LblAlert;
+    private Control _RootSubtitle;
+    private Control _RootAlert;
+    private TextureRect _Reticle;
+    private Label _InteractionPrompt;
+    private Control _GenericGUIRoot;
+    private TextureProgressBar _PlayerStatsHealthBar;
+    private Label _PlayerStatsHealthLabel;
+    private TextureProgressBar _PlayerStatsEnergyBar;
+    private Label _PlayerStatsEnergyLabel;
+    private Control _PlayerInventory;
 
 
     private Color COLOUR_TRANSPARENT = Color.FromString("#FFFFFF00", Colors.White);
     private Color COLOUR_VISIBLE = Colors.White;
-    private Tween prompt_tween;
+    private Tween _PromptTween;
+
+    private int _PreviousSelectSlot = 0;
     public override void _Ready()
     {
-        this.GetNode(path_label_subtitle, out lbl_subtitle);
-        this.GetNode(path_label_alert, out lbl_alert);
-        this.GetNode(path_root_subtitle, out root_subtitle);
-        this.GetNode(path_root_alert, out root_alert);
-        this.GetNode(path_reticle, out reticle);
-        this.GetNode(path_interaction_prompt, out interaction_prompt);
-        this.GetSafe(path_generic_gui_root, out generic_gui_root);
-        this.GetSafe(path_player_stats_health_bar, out player_stats_health_bar);
-        this.GetSafe(path_player_stats_health_label, out player_stats_health_label);
-        this.GetSafe(path_player_stats_energy_bar, out player_stats_energy_bar);
-        this.GetSafe(path_player_stats_energy_label, out player_stats_energy_label);
+        this.GetNode(PathLabelSubtitle, out _LblSubtitle);
+        this.GetNode(PathLabelAlert, out _LblAlert);
+        this.GetNode(PathRootSubtitle, out _RootSubtitle);
+        this.GetNode(PathRootAlert, out _RootAlert);
+        this.GetNode(PathReticle, out _Reticle);
+        this.GetNode(PathInteractionPrompt, out _InteractionPrompt);
+        this.GetSafe(PathGenericGuiRoot, out _GenericGUIRoot);
+        this.GetSafe(PathPlayerStatsHealthBar, out _PlayerStatsHealthBar);
+        this.GetSafe(PathPlayerStatsHealthLabel, out _PlayerStatsHealthLabel);
+        this.GetSafe(PathPlayerStatsEnergyBar, out _PlayerStatsEnergyBar);
+        this.GetSafe(PathPlayerStatsEnergyLabel, out _PlayerStatsEnergyLabel);
+        this.GetSafe(PathPlayerInventory, out _PlayerInventory);
 
-        lbl_subtitle.Text = "";
-        lbl_alert.Text = "";
+        _LblSubtitle.Text = "";
+        _LblAlert.Text = "";
 
 
-        root_subtitle.Modulate = COLOUR_TRANSPARENT;
-        root_alert.Modulate = COLOUR_TRANSPARENT;
+        _RootSubtitle.Modulate = COLOUR_TRANSPARENT;
+        _RootAlert.Modulate = COLOUR_TRANSPARENT;
 
-        reticle.Scale = Vector2.One * Access.Instance.ReticleHiddenScale;
-        interaction_prompt.Text = "";
+        _Reticle.Scale = Vector2.One * Access.Instance.ReticleHiddenScale;
+        _InteractionPrompt.Text = "";
 
 
         Events.GUI.RequestSubtitle += ShowSubtitle;
@@ -76,6 +84,9 @@ public partial class DefaultHUD : Control
         Events.GUI.RequestGUI += OnRequestGenericGUI;
         Events.GUI.RequestCloseGUI += OnRequestCloseGUI;
         Events.Gameplay.OnPlayerStatsUpdated += OnPlayerStatsUpdated;
+        Events.GUI.UpdatePlayerInventoryDisplay += OnInventorySlotUpdate;
+        Events.GUI.PlayerInventorySelectIndex += OnInventorySelect;
+        Events.GUI.PlayerInventorySizeChange += EnsureInventorySlots;
     }
 
     public override void _ExitTree()
@@ -87,18 +98,22 @@ public partial class DefaultHUD : Control
         Events.GUI.RequestGUI -= OnRequestGenericGUI;
         Events.GUI.RequestCloseGUI -= OnRequestCloseGUI;
         Events.Gameplay.OnPlayerStatsUpdated -= OnPlayerStatsUpdated;
+        Events.GUI.UpdatePlayerInventoryDisplay -= OnInventorySlotUpdate;
+        Events.GUI.UpdatePlayerInventoryDisplay -= OnInventorySlotUpdate;
+        Events.GUI.PlayerInventorySelectIndex -= OnInventorySelect;
+        Events.GUI.PlayerInventorySizeChange -= EnsureInventorySlots;
     }
 
     public void ShowSubtitle(string text)
     {
-        lbl_subtitle.Text = text;
-        HandleAnimation(root_subtitle, text.Length > 0);
+        _LblSubtitle.Text = text;
+        HandleAnimation(_RootSubtitle, text.Length > 0);
     }
 
     public void ShowAlert(string text)
     {
-        lbl_alert.Text = text;
-        HandleAnimation(root_alert, text.Length > 0);
+        _LblAlert.Text = text;
+        HandleAnimation(_RootAlert, text.Length > 0);
     }
 
     private void HandleAnimation(Control control, bool isVisible)
@@ -110,45 +125,66 @@ public partial class DefaultHUD : Control
 
     private void OnCanInteract(string text)
     {
-        prompt_tween?.Kill();
-        prompt_tween = GetTree().CreateTween().SetDefaultStyle();
-        prompt_tween.SetTrans(Tween.TransitionType.Bounce);
-        interaction_prompt.VisibleRatio = 0.0f;
-        interaction_prompt.Text = text;
+        _PromptTween?.Kill();
+        _PromptTween = GetTree().CreateTween().SetDefaultStyle();
+        _PromptTween.SetTrans(Tween.TransitionType.Bounce);
+        _InteractionPrompt.VisibleRatio = 0.0f;
+        _InteractionPrompt.Text = text;
 
-        prompt_tween.TweenProperty(reticle, "scale", Vector2.One * Access.Instance.ReticleShownScale, 0.3f);
-        prompt_tween.TweenProperty(interaction_prompt, "visible_ratio", 1.0f, 0.3f);
+        _PromptTween.TweenProperty(_Reticle, "scale", Vector2.One * Access.Instance.ReticleShownScale, 0.3f);
+        _PromptTween.TweenProperty(_InteractionPrompt, "visible_ratio", 1.0f, 0.3f);
     }
 
     private void OnCannotInteract()
     {
-        prompt_tween?.Kill();
-        prompt_tween = GetTree().CreateTween().SetDefaultStyle();
-        prompt_tween.SetTrans(Tween.TransitionType.Bounce);
+        _PromptTween?.Kill();
+        _PromptTween = GetTree().CreateTween().SetDefaultStyle();
+        _PromptTween.SetTrans(Tween.TransitionType.Bounce);
 
-        prompt_tween.TweenProperty(reticle, "scale", Vector2.One * Access.Instance.ReticleHiddenScale, 0.3f);
-        prompt_tween.TweenProperty(interaction_prompt, "visible_ratio", 0.0f, 0.1f);
+        _PromptTween.TweenProperty(_Reticle, "scale", Vector2.One * Access.Instance.ReticleHiddenScale, 0.3f);
+        _PromptTween.TweenProperty(_InteractionPrompt, "visible_ratio", 0.0f, 0.1f);
     }
 
     private void OnRequestGenericGUI(Control gui)
     {
-        generic_gui_root.RemoveAllChildren();
-        generic_gui_root.AddChild(gui);
+        _GenericGUIRoot.RemoveAllChildren();
+        _GenericGUIRoot.AddChild(gui);
     }
 
     private void OnRequestCloseGUI()
     {
-        generic_gui_root.RemoveAllChildren();
+        _GenericGUIRoot.RemoveAllChildren();
     }
 
     private void OnPlayerStatsUpdated(float health, float max_health, float energy, float max_energy)
     {
         var health_percent = health / max_health;
         var energy_percent = energy / max_energy;
-        player_stats_health_bar.Value = health_percent;
-        player_stats_energy_bar.Value = energy_percent;
-        player_stats_health_label.Text = health.ToString("0");
-        player_stats_energy_label.Text = energy.ToString("0");
+        _PlayerStatsHealthBar.Value = health_percent;
+        _PlayerStatsEnergyBar.Value = energy_percent;
+        _PlayerStatsHealthLabel.Text = health.ToString("0");
+        _PlayerStatsEnergyLabel.Text = energy.ToString("0");
+    }
+
+    private void OnInventorySlotUpdate(int index, string item, int qty)
+    {
+        (_PlayerInventory.GetChild(index) as ItemSlotDisplay)?.UpdateItem(item, qty);
+    }
+
+    private void OnInventorySelect(int index)
+    {
+        (_PlayerInventory.GetChild(_PreviousSelectSlot) as ItemSlotDisplay)?.OnDeselect();
+        (_PlayerInventory.GetChild(index) as ItemSlotDisplay)?.OnSelect();
+        _PreviousSelectSlot = index;
+    }
+
+    private void EnsureInventorySlots(int index)
+    {
+        while (index > _PlayerInventory.GetChildCount())
+        {
+            var slot = InventorySlotPacked.Instantiate();
+            _PlayerInventory.AddChild(slot);
+        }
     }
 
     public override void _Input(InputEvent e)

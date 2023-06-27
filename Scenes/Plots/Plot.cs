@@ -1,7 +1,7 @@
 using System;
 using Godot;
 
-[GlobalClass]
+[GlobalClass, Icon("res://Assets/UsefulEditorIcons/plot_resource.svg")]
 public partial class Plot : Resource
 {
 

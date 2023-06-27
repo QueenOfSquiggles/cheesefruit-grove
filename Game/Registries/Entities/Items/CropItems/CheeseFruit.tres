@@ -1,0 +1,21 @@
+[gd_resource type="Resource" script_class="ItemCrop" load_steps=9 format=3 uid="uid://beqpeoi5jkgyx"]
+
+[ext_resource type="ArrayMesh" uid="uid://cbbiesk8deom5" path="res://Assets/Blender/crops/cheese_fruit_meshes/cheese_fruit_crop_Stage0.res" id="1_21enk"]
+[ext_resource type="Script" path="res://Scenes/ItemSystems/ResourceTypes/ItemCrop.cs" id="1_i21qu"]
+[ext_resource type="ArrayMesh" uid="uid://en2rw4mdbo3l" path="res://Assets/Blender/crops/cheese_fruit_meshes/cheese_fruit_crop_Stage1.res" id="2_tpfxy"]
+[ext_resource type="ArrayMesh" uid="uid://j402musxngbt" path="res://Assets/Blender/crops/cheese_fruit_meshes/cheese_fruit_crop_Stage2.res" id="3_xkyxq"]
+[ext_resource type="ArrayMesh" uid="uid://x13ajevnk2lh" path="res://Assets/Blender/crops/cheese_fruit_meshes/cheese_fruit_crop_Stage3.res" id="4_175al"]
+[ext_resource type="ArrayMesh" uid="uid://bksn4fbu573qh" path="res://Assets/Blender/crops/cheese_fruit_meshes/cheese_fruit_crop_Stage4.res" id="5_bqekh"]
+[ext_resource type="Texture2D" uid="uid://dcqhu5nm1q7xu" path="res://Assets/Blender/items/cheese_fruit_icon.png" id="6_anatc"]
+[ext_resource type="PackedScene" uid="uid://bifp7sx6ikykb" path="res://Game/Registries/Entities/Items/_ItemScenes/cheese_fruit_item.tscn" id="7_iqwa6"]
+
+[resource]
+script = ExtResource("1_i21qu")
+FinalGrowthStage = 0
+OnHarvestReturnStage = 0
+GrowthStages = Array[Mesh]([ExtResource("1_21enk"), ExtResource("2_tpfxy"), ExtResource("3_xkyxq"), ExtResource("4_175al"), ExtResource("5_bqekh")])
+GrowthStageDuration = PackedFloat32Array(15, 15, 15, 15, 30)
+ID = "items.cheese_fruit"
+CanCollect = true
+InventoryIcon = ExtResource("6_anatc")
+WorldScene = ExtResource("7_iqwa6")

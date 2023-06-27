@@ -3,7 +3,7 @@
 [ext_resource type="PackedScene" uid="uid://c8ibcins4j7c" path="res://Assets/Blender/potion_bottle_sphere.glb" id="1_mkito"]
 [ext_resource type="Material" uid="uid://dpoxtkeu8fd6" path="res://Assets/Materials/Item/Potions/PotionBottleMaterial.tres" id="2_rklkd"]
 [ext_resource type="PackedScene" uid="uid://3w0fw3mkyeu6" path="res://Scenes/ItemSystems/Components/world_item_component.tscn" id="2_umsp2"]
-[ext_resource type="Script" path="res://Game/Registries/Entities/_ItemScenes/PotionLiquidEffect.cs" id="3_xghg3"]
+[ext_resource type="Script" path="res://Game/Registries/Entities/Items/_ItemScenes/PotionLiquidEffect.cs" id="3_xghg3"]
 
 [sub_resource type="SphereShape3D" id="SphereShape3D_jl8r7"]
 radius = 0.2

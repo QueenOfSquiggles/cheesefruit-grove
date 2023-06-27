@@ -1,4 +1,4 @@
-[gd_scene load_steps=18 format=3 uid="uid://djvlmhr2jxix4"]
+[gd_scene load_steps=19 format=3 uid="uid://djvlmhr2jxix4"]
 
 [ext_resource type="Script" path="res://Scenes/Character/Player/FarmingController.cs" id="2_bvbvy"]
 [ext_resource type="PackedScene" uid="uid://cp1dbwc5bgdui" path="res://Scenes/Interactables/interaction_sensor.tscn" id="2_qjoep"]
@@ -10,6 +10,7 @@
 [ext_resource type="Material" uid="uid://bsq165wwc2dsj" path="res://Assets/Materials/VFX/suction_spell_vfx/suction_spell_vfx_material.tres" id="5_b2qvm"]
 [ext_resource type="PackedScene" uid="uid://dg7138iwmapsx" path="res://Scenes/Character/Components/footstep_sounds_component.tscn" id="5_plq7p"]
 [ext_resource type="ArrayMesh" uid="uid://brr8xlpyg0l6q" path="res://Assets/Blender/vfx/suction_vfx_mesh/suction_vfx_mesh_object.res" id="5_ucvjg"]
+[ext_resource type="PackedScene" uid="uid://bfhnnq6qcwafo" path="res://Scenes/Character/Player/inventory_manager.tscn" id="9_kyrbt"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_ltvba"]
 
@@ -21,14 +22,14 @@
 height = 3.0
 radius = 2.0
 
-[sub_resource type="SphereShape3D" id="SphereShape3D_cayxk"]
-radius = 0.2
-
 [sub_resource type="SphereShape3D" id="SphereShape3D_5lf0f"]
 
 [sub_resource type="CylinderShape3D" id="CylinderShape3D_s2n37"]
 height = 7.5152
 radius = 0.7
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_cayxk"]
+radius = 0.2
 
 [node name="Farming Controller" type="CharacterBody3D"]
 input_ray_pickable = false
@@ -47,8 +48,9 @@ PathVCamRoot = NodePath("CamRoot")
 PathStepCheckTop = NodePath("StepRayTop")
 PathStepCheckBottom = NodePath("StepRayBottom")
 PathInteractSensor = NodePath("InteractionSensor")
-PathThirdPersonCam = NodePath("SpringArm3D/ThirdPersonCamera")
+PathThirdPersonCam = NodePath("CamRoot/SpringArm3D/ThirdPersonCamera")
 PathStats = NodePath("CharStatManager")
+PathInventoryManager = NodePath("InventoryManager")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
@@ -81,18 +83,6 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0150951, 0)
 target_position = Vector3(0, 0, -0.5)
 debug_shape_custom_color = Color(0, 1, 0, 1)
 
-[node name="SpringArm3D" type="SpringArm3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 0.969697, 0.244309, 0, -0.244309, 0.969697, 1.0558, 2.62794, 0.178042)
-shape = SubResource("SphereShape3D_cayxk")
-spring_length = 6.0
-
-[node name="ThirdPersonCamera" parent="SpringArm3D" instance=ExtResource("2_wdgcp")]
-transform = Transform3D(1, 0, 0, 0, 0.987041, -0.160467, 0, 0.160467, 0.987041, 0, 0, 0)
-LerpDuration = 0.4
-Adv_LerpRotX = false
-Adv_LerpRotY = false
-Adv_LerpRotZ = false
-
 [node name="CamRoot" type="Node3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5, 0)
 
@@ -117,11 +107,10 @@ collision_mask = 2
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.48552)
 shape = SubResource("SphereShape3D_5lf0f")
 
-[node name="SuctionForceField" type="Area3D" parent="CamRoot/CameraSway/VirtualCamera"]
+[node name="SuctionForceField" type="Area3D" parent="CamRoot/CameraSway/VirtualCamera" groups=["suction_area"]]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -1.475)
 collision_layer = 2
 collision_mask = 2
-monitorable = false
 gravity_space_override = 2
 gravity_point = true
 gravity_point_unit_distance = 4.0
@@ -139,10 +128,24 @@ material_override = ExtResource("5_b2qvm")
 mesh = ExtResource("5_ucvjg")
 skeleton = NodePath("../..")
 
+[node name="SpringArm3D" type="SpringArm3D" parent="CamRoot"]
+transform = Transform3D(1, 0, 0, 0, 0.969697, 0.244309, 0, -0.244309, 0.969697, 1.0558, 1.12794, 0.178042)
+shape = SubResource("SphereShape3D_cayxk")
+spring_length = 6.0
+
+[node name="ThirdPersonCamera" parent="CamRoot/SpringArm3D" instance=ExtResource("2_wdgcp")]
+transform = Transform3D(1, 0, 0, 0, 0.987041, -0.160467, 0, 0.160467, 0.987041, 0, 0, 0)
+LerpDuration = 0.4
+Adv_LerpRotX = false
+Adv_LerpRotY = false
+Adv_LerpRotZ = false
+
 [node name="SetShaderGlobalPosition" parent="." instance=ExtResource("4_hlkr2")]
 uniform_name = "player_position"
 
 [node name="FootstepSoundsComponent" parent="." instance=ExtResource("5_plq7p")]
+
+[node name="InventoryManager" parent="." instance=ExtResource("9_kyrbt")]
 
 [node name="CharStatManager" parent="." instance=ExtResource("2_sto53")]
 
@@ -166,6 +169,9 @@ StoredValue = 5.0
 
 [node name="sprint_speed_factor" parent="CharStatManager" instance=ExtResource("3_dxb1m")]
 StoredValue = 2.0
+
+[node name="inventory_size" parent="CharStatManager" instance=ExtResource("3_dxb1m")]
+StoredValue = 3.0
 
 [connection signal="OnItemPickup" from="CamRoot/CameraSway/VirtualCamera/ItemCollector" to="." method="OnPickupItem"]
 [connection signal="body_entered" from="CamRoot/CameraSway/VirtualCamera/SuctionForceField" to="." method="OnBodyEnterSuctionZone"]

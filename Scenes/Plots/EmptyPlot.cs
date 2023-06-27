@@ -24,7 +24,7 @@ public partial class EmptyPlot : Node3D
         this.GetSafe(PathPlotLabel, out PlotLabel);
         this.GetSafe(PathPromptNewPlot, out MenuPromptNewPlot);
         this.GetSafe(PathInteractionTrigger, out InteractTrigger);
-        var plot_types = RegistrationManager.Instance.Plots.Values.ToList();
+        var plot_types = RegistrationManager.Plots.Values.ToList();
         foreach (var plot in plot_types)
         {
             MenuPromptNewPlot.AddIconItem(plot.Icon, plot.ID);
@@ -50,7 +50,7 @@ public partial class EmptyPlot : Node3D
     private void OnMenuIndexPressed(int idx)
     {
         var plot_id = MenuPromptNewPlot.GetItemText(idx);
-        var plot_types = RegistrationManager.Instance.Plots.Values.ToList();
+        var plot_types = RegistrationManager.Plots.Values.ToList();
         foreach (var plot in plot_types)
         {
             if (plot.ID == plot_id) MakeNewPlot(plot);

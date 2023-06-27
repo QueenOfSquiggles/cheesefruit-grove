@@ -49,6 +49,9 @@ public class EventsUI
     public event Action<string> MarkAbleToInteract;
     public event Action MarkUnableToInteract;
     public event Action<object?, object?> RequestInventory;
+    public event Action<int, string, int> UpdatePlayerInventoryDisplay;
+    public event Action<int> PlayerInventorySelectIndex;
+    public event Action<int> PlayerInventorySizeChange;
 
     public void TriggerRequestGUI(Control gui_node) => RequestGUI?.Invoke(gui_node);
     public void TriggerRequestCloseGUI() => RequestCloseGUI?.Invoke();
@@ -59,6 +62,10 @@ public class EventsUI
     public void TriggerUnableToInteract() => MarkUnableToInteract?.Invoke();
     public void TriggerRequestInventory(object? PlayerContainer, object? SecondaryContainer = null) => RequestInventory?.Invoke(PlayerContainer, SecondaryContainer);
 
+    public void TriggerUpdatePlayeInventoryDisplay(int index, string item, int qty) => UpdatePlayerInventoryDisplay?.Invoke(index, item, qty);
+    public void TriggerPlayerInventorySelect(int index) => PlayerInventorySelectIndex?.Invoke(index);
+
+    public void TriggerInventoryResized(int slots) => PlayerInventorySizeChange?.Invoke(slots);
 }
 
 public class EventsInventory

@@ -13,11 +13,18 @@ public partial class RegistrationManager : Node
     public static RegistrationManager Instance = null;
 
     // TODO create a unique dictionary for each registered type
-    public Dictionary<string, Plot> Plots { get; private set; } = new();
-    public Dictionary<string, WorldEntity> Entities { get; private set; } = new();
+    public static Dictionary<string, Plot> Plots { get; private set; } = new();
+    public static Dictionary<string, WorldEntity> Entities { get; private set; } = new();
 
     private const string REGISTRY_PATH_PLOTS = "res://Game/Registries/Plots/";
     private const string REGISTRY_PATH_ENTITIES = "res://Game/Registries/Entities/";
+
+    public static T GetResource<T>(string id) where T : Resource
+    {
+        if (Plots.ContainsKey(id)) return Plots[id] as T;
+        if (Entities.ContainsKey(id)) return Entities[id] as T;
+        return null;
+    }
 
     public override void _Ready()
     {

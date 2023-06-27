@@ -1,8 +1,8 @@
-[gd_resource type="Resource" load_steps=4 format=3 uid="uid://dpt00op2o1vpm"]
+[gd_resource type="Resource" script_class="WorldEntity" load_steps=4 format=3 uid="uid://dpt00op2o1vpm"]
 
 [ext_resource type="Script" path="res://Modules/WorldEntity/WorldEntity.cs" id="1_e04br"]
 [ext_resource type="Texture2D" uid="uid://dg4dlinjntkaf" path="res://icon.png" id="1_khorx"]
-[ext_resource type="PackedScene" uid="uid://cbu5y4kcdfiyk" path="res://Game/Registries/Entities/_ItemScenes/test_item.tscn" id="2_ku1vh"]
+[ext_resource type="PackedScene" uid="uid://cbu5y4kcdfiyk" path="res://Game/Registries/Entities/Items/_ItemScenes/test_item.tscn" id="2_ku1vh"]
 
 [resource]
 script = ExtResource("1_e04br")
