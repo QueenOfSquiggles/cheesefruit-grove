@@ -168,11 +168,13 @@ public partial class DefaultHUD : Control
 
     private void OnInventorySlotUpdate(int index, string item, int qty)
     {
+        if (_PlayerInventory.GetChildCount() <= index || index < 0) return;
         (_PlayerInventory.GetChild(index) as ItemSlotDisplay)?.UpdateItem(item, qty);
     }
 
     private void OnInventorySelect(int index)
     {
+        if (_PlayerInventory.GetChildCount() <= index || index < 0) return;
         (_PlayerInventory.GetChild(_PreviousSelectSlot) as ItemSlotDisplay)?.OnDeselect();
         (_PlayerInventory.GetChild(index) as ItemSlotDisplay)?.OnSelect();
         _PreviousSelectSlot = index;

@@ -7,6 +7,10 @@ using queen.error;
 public partial class CharStatManager : Node
 {
 
+    [Signal] public delegate void OnStatChangeEventHandler(string statName, float value);
+    [Signal] public delegate void OnStatModAddedEventHandler(string statName, float value, CharStatFloat.Modifier modifier);
+    [Signal] public delegate void OnStatModRemovedEventHandler(string statName, float value, CharStatFloat.Modifier modifier);
+
     [Export] private PackedScene SceneFloatStat;
     [Export] private PackedScene SceneStatMod;
 

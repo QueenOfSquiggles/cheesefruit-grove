@@ -64,10 +64,10 @@ PathRootAlert = NodePath("AlertPanel")
 PathReticle = NodePath("Reticle")
 PathInteractionPrompt = NodePath("InteractionPrompt")
 PathGenericGuiRoot = NodePath("GenericUIContainer")
-PathPlayerStatsHealthBar = NodePath("Control/VBoxContainer/PlayerHealth")
-PathPlayerStatsHealthLabel = NodePath("Control/VBoxContainer/Label")
-PathPlayerStatsEnergyBar = NodePath("Control/VBoxContainer_2/PlayerEnergy")
-PathPlayerStatsEnergyLabel = NodePath("Control/VBoxContainer_2/Label")
+PathPlayerStatsHealthBar = NodePath("Control/Panel/PlayerHealth")
+PathPlayerStatsHealthLabel = NodePath("Control/Panel/PlayerHealth/Label")
+PathPlayerStatsEnergyBar = NodePath("Control/Panel_2/PlayerEnergy")
+PathPlayerStatsEnergyLabel = NodePath("Control/Panel_2/PlayerEnergy/Label")
 PathPlayerInventory = NodePath("PlayerInventorySlots")
 
 [node name="Reticle" type="TextureRect" parent="DefaultHUD"]
@@ -187,15 +187,18 @@ mouse_filter = 1
 
 [node name="Control" type="VBoxContainer" parent="DefaultHUD"]
 layout_mode = 1
-offset_right = 260.0
-offset_bottom = 183.0
+offset_right = 185.0
+offset_bottom = 260.0
 
-[node name="VBoxContainer" type="VBoxContainer" parent="DefaultHUD/Control"]
+[node name="Panel" type="Control" parent="DefaultHUD/Control"]
+custom_minimum_size = Vector2(0, 128)
 layout_mode = 2
-alignment = 1
 
-[node name="PlayerHealth" type="TextureProgressBar" parent="DefaultHUD/Control/VBoxContainer"]
+[node name="PlayerHealth" type="TextureProgressBar" parent="DefaultHUD/Control/Panel"]
 layout_mode = 2
+offset_top = 8.0
+offset_right = 128.0
+offset_bottom = 136.0
 max_value = 1.0
 step = 0.0
 value = 0.657
@@ -205,17 +208,27 @@ texture_over = ExtResource("5_ex4f1")
 texture_progress = ExtResource("6_64rf5")
 tint_progress = Color(1, 0.356863, 0.419608, 1)
 
-[node name="Label" type="Label" parent="DefaultHUD/Control/VBoxContainer"]
-layout_mode = 2
+[node name="Label" type="Label" parent="DefaultHUD/Control/Panel/PlayerHealth"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
 text = "999"
 label_settings = SubResource("LabelSettings_ervri")
-vertical_alignment = 1
+horizontal_alignment = 2
+vertical_alignment = 2
 
-[node name="VBoxContainer_2" type="VBoxContainer" parent="DefaultHUD/Control"]
+[node name="Panel_2" type="Control" parent="DefaultHUD/Control"]
+custom_minimum_size = Vector2(0, 128)
 layout_mode = 2
 
-[node name="PlayerEnergy" type="TextureProgressBar" parent="DefaultHUD/Control/VBoxContainer_2"]
+[node name="PlayerEnergy" type="TextureProgressBar" parent="DefaultHUD/Control/Panel_2"]
 layout_mode = 2
+offset_top = 8.0
+offset_right = 128.0
+offset_bottom = 136.0
 max_value = 1.0
 step = 0.0
 value = 1.0
@@ -225,8 +238,14 @@ texture_over = ExtResource("5_ex4f1")
 texture_progress = ExtResource("6_64rf5")
 tint_progress = Color(0, 1, 0.152941, 1)
 
-[node name="Label" type="Label" parent="DefaultHUD/Control/VBoxContainer_2"]
-layout_mode = 2
+[node name="Label" type="Label" parent="DefaultHUD/Control/Panel_2/PlayerEnergy"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
 text = "999"
 label_settings = SubResource("LabelSettings_ervri")
-vertical_alignment = 1
+horizontal_alignment = 2
+vertical_alignment = 2

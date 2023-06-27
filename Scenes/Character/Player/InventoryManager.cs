@@ -95,15 +95,23 @@ public partial class InventoryManager : Node
         return _InventorySlots[_Selected]?.Item;
     }
 
+    public void SetSelection(int select)
+    {
+        if (select < 0 || select >= _InventorySlots.Length) return;
+        _Selected = select;
+        EmitSignal(nameof(SlotSelect), _Selected);
+    }
+
 
     public void SelectNext()
     {
-        _Selected = (_Selected + 1) % _InventorySlots.Length;
+        _Selected = Mathf.PosMod(_Selected + 1, _InventorySlots.Length);
         EmitSignal(nameof(SlotSelect), _Selected);
     }
     public void SelectPrevious()
     {
-        _Selected = (_Selected - 1) % _InventorySlots.Length;
+        _Selected = Mathf.PosMod(_Selected - 1, _InventorySlots.Length);
+
         EmitSignal(nameof(SlotSelect), _Selected);
     }
 

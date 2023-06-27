@@ -1,6 +1,6 @@
-[gd_resource type="Resource" load_steps=4 format=3 uid="uid://bsx7g8ofl5nqr"]
+[gd_resource type="Resource" script_class="WorldEntity" load_steps=4 format=3 uid="uid://bsx7g8ofl5nqr"]
 
-[ext_resource type="Texture2D" uid="uid://b1eilo618sjbc" path="res://Assets/Krita/potion_sphere_generic/BG.PNG" id="1_uqp83"]
+[ext_resource type="Texture2D" uid="uid://b8vhkli17gvii" path="res://Assets/Blender/items/potion_icon.png" id="1_0mim0"]
 [ext_resource type="PackedScene" uid="uid://dh11g1eda6cth" path="res://Game/Registries/Entities/Items/_ItemScenes/base_potion_bottle.tscn" id="2_bomyi"]
 [ext_resource type="Script" path="res://Modules/WorldEntity/WorldEntity.cs" id="3_76n64"]
 
@@ -8,5 +8,5 @@
 script = ExtResource("3_76n64")
 ID = "items.base_potion"
 CanCollect = true
-InventoryIcon = ExtResource("1_uqp83")
+InventoryIcon = ExtResource("1_0mim0")
 WorldScene = ExtResource("2_bomyi")

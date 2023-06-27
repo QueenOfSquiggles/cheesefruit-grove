@@ -1,4 +1,4 @@
-[gd_scene load_steps=19 format=3 uid="uid://djvlmhr2jxix4"]
+[gd_scene load_steps=20 format=3 uid="uid://djvlmhr2jxix4"]
 
 [ext_resource type="Script" path="res://Scenes/Character/Player/FarmingController.cs" id="2_bvbvy"]
 [ext_resource type="PackedScene" uid="uid://cp1dbwc5bgdui" path="res://Scenes/Interactables/interaction_sensor.tscn" id="2_qjoep"]
@@ -11,6 +11,10 @@
 [ext_resource type="PackedScene" uid="uid://dg7138iwmapsx" path="res://Scenes/Character/Components/footstep_sounds_component.tscn" id="5_plq7p"]
 [ext_resource type="ArrayMesh" uid="uid://brr8xlpyg0l6q" path="res://Assets/Blender/vfx/suction_vfx_mesh/suction_vfx_mesh_object.res" id="5_ucvjg"]
 [ext_resource type="PackedScene" uid="uid://bfhnnq6qcwafo" path="res://Scenes/Character/Player/inventory_manager.tscn" id="9_kyrbt"]
+
+[sub_resource type="Curve" id="Curve_qd2hf"]
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(0.2, 0.3), 0.0, 0.0, 0, 0, Vector2(1, 0.05), 0.0, 0.0, 0, 0]
+point_count = 3
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_ltvba"]
 
@@ -37,6 +41,8 @@ axis_lock_angular_x = true
 axis_lock_angular_y = true
 axis_lock_angular_z = true
 script = ExtResource("2_bvbvy")
+ShootRateCurveMax = 0.75
+ShootRateCurve = SubResource("Curve_qd2hf")
 SuctionGravitySpeed = 9.8
 SuctionGravityTweenDuration = 0.5
 PathSuctionVFX = NodePath("CamRoot/CameraSway/SuctionVFX")
@@ -172,6 +178,11 @@ StoredValue = 2.0
 
 [node name="inventory_size" parent="CharStatManager" instance=ExtResource("3_dxb1m")]
 StoredValue = 3.0
+
+[node name="inventory_slot_capacity" parent="CharStatManager" instance=ExtResource("3_dxb1m")]
+StoredValue = 20.0
+
+[node name="money" parent="CharStatManager" instance=ExtResource("3_dxb1m")]
 
 [connection signal="OnItemPickup" from="CamRoot/CameraSway/VirtualCamera/ItemCollector" to="." method="OnPickupItem"]
 [connection signal="body_entered" from="CamRoot/CameraSway/VirtualCamera/SuctionForceField" to="." method="OnBodyEnterSuctionZone"]

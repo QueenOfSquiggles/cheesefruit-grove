@@ -16,11 +16,15 @@ public partial class FarmingController : CharacterBody3D
     [ExportGroup("Shoot Settings")]
     [Export] private float ShootImpulseForce = 9.8f;
 
+    [Export] private float ShootRateCurveMax = 1.5f;
+    [Export] private float ShootRateCurveDuration = 1.5f;
+    [Export] private Curve ShootRateCurve;
+
     [ExportGroup("Suction Settings")]
     [Export] private Area3D.SpaceOverride ActiveSpaceOverride = Area3D.SpaceOverride.CombineReplace;
     [Export] private float SuctionGravitySpeed = 19.6f;
     [Export] private float SuctionGravityTweenDuration = 0.1f;
-    [ExportSubgroup("Suction VFX")]
+    [ExportSubgroup("Suction VFX", "SuctionVFX")]
     [Export] private NodePath PathSuctionVFX;
     [Export] private float SuctionVFXActiveDiscardThreshold = 0.7f;
     [Export] private float SuctionVFXTweenDuration = 0.3f;
@@ -44,15 +48,13 @@ public partial class FarmingController : CharacterBody3D
     [Export] private NodePath PathStats;
     [Export] private NodePath PathInventoryManager;
 
-    private bool _IsSuction = false;
-    private bool _IsShooting = false;
+
+
+    // References
     private ItemCollector _ItemCollector;
     private Area3D _SuctionArea;
 
     private InventoryManager _Inventory;
-
-
-    // References
     protected VirtualCamera ThirdPersonCam;
     protected Node3D VCamRoot;
     protected RayCast3D CanStepCheckTop;
@@ -70,6 +72,10 @@ public partial class FarmingController : CharacterBody3D
     protected float CanStepCheckTop_CastLength = 1.0f;
     private float CanStepCheckBottom_CastLength = 1.0f;
     protected Vector2 InputVector = new();
+    private float _ShootTimer = 0.0f;
+    private bool _IsSuction = false;
+    private bool _IsShooting = false;
+    private float _ShootDuration = 0.0f;
 
     protected float gravity = ProjectSettings.GetSetting("physics/3d/default_gravity").AsSingle();
 
@@ -110,9 +116,12 @@ public partial class FarmingController : CharacterBody3D
         _Inventory.SlotSelect += Events.GUI.TriggerPlayerInventorySelect;
         int slots = (int)Stats.GetStat("inventory_size");
         _Inventory.ResizeInventory(slots);
+        _Inventory.MaxItemsPerSlot = (int)Stats.GetStat("inventory_slot_capacity");
         Events.GUI.TriggerInventoryResized(slots);
         _Inventory.UpdateGUICall(Events.GUI.TriggerUpdatePlayeInventoryDisplay);
-        // Events.GUI.TriggerPlayerInventorySelect(_Inventory.Selected);
+        Events.GUI.TriggerPlayerInventorySelect(_Inventory.Selected);
+
+        Stats.GetStat("money");
     }
 
 
@@ -173,8 +182,8 @@ public partial class FarmingController : CharacterBody3D
         if (e.IsPressed())
         {
             _IsShooting = true;
-            var item_id = _Inventory.GetSelectedItem();
-            if (_Inventory.RemoveItem()) ShootItem(item_id);
+            _ShootTimer = 0.0f;
+            _ShootDuration = 0.0f;
         }
         else
         {
@@ -226,6 +235,19 @@ public partial class FarmingController : CharacterBody3D
         MoveAndSlide();
 
         Events.Gameplay.TriggerPlayerStatsUpdated(Stats.GetStat("health"), Stats.GetStat("max_health"), Stats.GetStat("energy"), Stats.GetStat("max_energy"));
+
+        if (_IsShooting)
+        {
+            _ShootTimer -= (float)delta;
+            _ShootDuration += (float)delta;
+            if (_ShootTimer <= 0)
+            {
+                var item_id = _Inventory.GetSelectedItem();
+                if (_Inventory.RemoveItem()) ShootItem(item_id);
+                _ShootTimer = ShootRateCurve.SampleBaked(Mathf.Min(_ShootDuration / ShootRateCurveDuration, 1.0f)) * ShootRateCurveMax;
+            }
+        }
+
     }
 
     private void JumpLogic(ref Vector3 velocity, double delta)
@@ -382,6 +404,48 @@ public partial class FarmingController : CharacterBody3D
         if (e.IsAction("item_select_previous"))
         {
             _Inventory.SelectPrevious();
+            return true;
+        }
+        int sel = -1;
+        if (e is InputEventKey key)
+        {
+            switch (key.Keycode)
+            {
+                case Key.Key0:
+                    sel = 9;
+                    break;
+                case Key.Key1:
+                    sel = 0;
+                    break;
+                case Key.Key2:
+                    sel = 1;
+                    break;
+                case Key.Key3:
+                    sel = 2;
+                    break;
+                case Key.Key4:
+                    sel = 3;
+                    break;
+                case Key.Key5:
+                    sel = 4;
+                    break;
+                case Key.Key6:
+                    sel = 5;
+                    break;
+                case Key.Key7:
+                    sel = 6;
+                    break;
+                case Key.Key8:
+                    sel = 7;
+                    break;
+                case Key.Key9:
+                    sel = 8;
+                    break;
+            }
+        }
+        if (sel >= 0)
+        {
+            _Inventory.SetSelection(sel);
             return true;
         }
         return false;
