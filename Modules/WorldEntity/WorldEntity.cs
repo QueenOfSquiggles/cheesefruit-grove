@@ -9,5 +9,7 @@ public partial class WorldEntity : Resource
     [Export] public bool CanCollect = true;
     [Export] public Texture InventoryIcon;
     [Export] public PackedScene WorldScene;
+    [Export] public int MarketValue = 1;
+    [Export] public float MarketValueRange = 2.5f;
 
 }

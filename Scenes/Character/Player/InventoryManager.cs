@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using Godot;
+using queen.data;
 using queen.error;
 using queen.events;
 
@@ -127,6 +128,42 @@ public partial class InventoryManager : Node
         });
     }
 
+    public void SaveToData(ref SaveDataBuilder build)
+    {
+        build.PutInt("Inv_SlotCount", _InventorySlots.Length);
+        build.PutInt("Inv_Select", _Selected);
+        build.PutInt("Inv_MaxCount", MaxItemsPerSlot);
+        for (int i = 0; i < _InventorySlots.Length; i++)
+        {
+            var slot = _InventorySlots[i];
+            string item = slot is null ? "" : slot.Item;
+            int qty = slot is null ? 0 : slot.Qty;
+            build.PutString($"Inv_Slot{i}", $"{item}::{qty}");
+        }
+    }
+
+    public void LoadFromData(SaveDataBuilder build)
+    {
+
+        if (!build.GetInt("Inv_SlotCount", out int slots)) return;
+        if (!build.GetInt("Inv_Select", out int sel)) return;
+        _InventorySlots = new Slot[slots];
+        _Selected = sel;
+
+        MaxItemsPerSlot = build.GetInt("Inv_MaxCount");
+        for (int i = 0; i < slots; i++)
+        {
+            if (!build.GetString($"Inv_Slot{i}", out string s) || s == "") continue;
+            var parts = s.Split("::");
+            if (parts.Length != 2) continue;
+            string item = parts[0];
+            int qty = int.Parse(parts[1]);
+            _InventorySlots[i] = item == "" ? null : new Slot(item, qty);
+            EmitSignal(nameof(SlotUpdate), i, item, qty);
+        }
+        EmitSignal(nameof(SlotSelect), _Selected);
+    }
+
     public void UpdateGUICall(Action<int, string, int> triggerUpdatePlayeInventoryDisplay)
     {
         DoForSlots((index, item, qty) => triggerUpdatePlayeInventoryDisplay(index, item, qty));
@@ -141,6 +178,8 @@ public partial class InventoryManager : Node
             action(i, slot is null ? "" : slot.Item, slot is null ? 0 : slot.Qty);
         }
     }
+
+
 
     public class Slot
     {

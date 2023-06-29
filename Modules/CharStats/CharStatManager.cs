@@ -2,14 +2,15 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Godot;
+using queen.data;
 using queen.error;
 
 public partial class CharStatManager : Node
 {
 
     [Signal] public delegate void OnStatChangeEventHandler(string statName, float value);
-    [Signal] public delegate void OnStatModAddedEventHandler(string statName, float value, CharStatFloat.Modifier modifier);
-    [Signal] public delegate void OnStatModRemovedEventHandler(string statName, float value, CharStatFloat.Modifier modifier);
+    [Signal] public delegate void OnStatModAddedEventHandler(string statName, float value, int modifier);
+    [Signal] public delegate void OnStatModRemovedEventHandler(string statName, float value, int modifier);
 
     [Export] private PackedScene SceneFloatStat;
     [Export] private PackedScene SceneStatMod;
@@ -70,10 +71,27 @@ public partial class CharStatManager : Node
                 break;
             }
         }
+        node.TreeExiting += () => { EmitSignal(nameof(OnStatModAdded), targetStat, value, (int)mod); };
         node.TreeExiting += DelayedRebuild;
+        node.TreeExiting += () => { EmitSignal(nameof(OnStatModRemoved), targetStat, value, (int)mod); };
         RebuildStatDict();
         // SceneStatMod
     }
+
+    public void ModifyStaticStat(string target, float delta_value)
+    {
+        var n_val = GetStat(target) + delta_value;
+        SetStaticStat(target, n_val);
+    }
+    public void SetStaticStat(string target, float n_value)
+    {
+        var stat_node = GetNode<CharStatFloat>(target);
+        if (stat_node is null) return;
+        stat_node.StoredValue = n_value;
+        RebuildStatDict();
+        EmitSignal(nameof(OnStatChange), target, GetStat(target));
+    }
+
 
     public override void _Process(double delta)
     {
@@ -148,5 +166,47 @@ public partial class CharStatManager : Node
             Print.Debug($"(){pair.Key} = {pair.Value}");
         }
         Print.Debug($"End Stats Manager: {Name}");
+    }
+
+    public void SaveToData(ref SaveDataBuilder build)
+    {
+        foreach (var stat in Stats)
+        {
+            build.PutFloat($"StatS_{stat.Key}", stat.Value);
+        }
+        foreach (var stat in DynamicStats)
+        {
+            build.PutFloat($"StatS_{stat.Key}_Value", stat.Value.Value);
+            build.PutFloat($"StatS_{stat.Key}_Max", stat.Value.MaxValue);
+            build.PutFloat($"StatS_{stat.Key}_Regen", stat.Value.RegenRate);
+        }
+    }
+
+    public void LoadFromData(SaveDataBuilder build)
+    {
+        foreach (var stat in Stats)
+        {
+            if (!build.GetFloat($"StatS_{stat.Key}", out float val)) continue;
+            if (GetNode(stat.Key) is CharStatFloat csf)
+            {
+                csf.StoredValue = val;
+                EmitSignal(nameof(OnStatChange), stat.Key, val);
+            }
+        }
+        foreach (var stat in DynamicStats)
+        {
+            if (!build.GetFloat($"StatS_{stat.Key}_Value", out float val)) continue;
+            if (!build.GetFloat($"StatS_{stat.Key}_Max", out float max)) continue;
+            if (!build.GetFloat($"StatS_{stat.Key}_Regen", out float regen)) continue;
+            DynamicStats[stat.Key] = new DynStat
+            {
+                Value = val,
+                MaxValue = max,
+                RegenRate = regen,
+                ReferenceMaxVal = stat.Value.ReferenceMaxVal,
+                ReferenceRegenRate = stat.Value.ReferenceRegenRate
+            };
+        }
+        RebuildStatDict();
     }
 }

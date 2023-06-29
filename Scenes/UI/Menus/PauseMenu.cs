@@ -40,8 +40,10 @@ public partial class PauseMenu : Control
         QueueFree();
     }
 
-    private void ExitToMainMenu()
+    private async void ExitToMainMenu()
     {
+        Events.Data.TriggerSerializeAll();
+        await Task.Delay(10);
         GetTree().Paused = false;
         Scenes.LoadSceneAsync(main_menu_file);
     }
@@ -57,6 +59,15 @@ public partial class PauseMenu : Control
             CurrentPopup?.GetComponent<SlidingPanelComponent>()?.RemoveScene();
         }
 
+    }
+    private void OnBtnSave()
+    {
+        Events.Data.TriggerSerializeAll();
+    }
+
+    private void OnBtnReloadLastSave()
+    {
+        Events.Data.TriggerReload();
     }
 
     private void CreateNewSlidingScene(string scene_file)

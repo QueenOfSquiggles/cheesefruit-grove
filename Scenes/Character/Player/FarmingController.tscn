@@ -35,7 +35,7 @@ radius = 0.7
 [sub_resource type="SphereShape3D" id="SphereShape3D_cayxk"]
 radius = 0.2
 
-[node name="Farming Controller" type="CharacterBody3D"]
+[node name="Farming Controller" type="CharacterBody3D" groups=["player"]]
 input_ray_pickable = false
 axis_lock_angular_x = true
 axis_lock_angular_y = true

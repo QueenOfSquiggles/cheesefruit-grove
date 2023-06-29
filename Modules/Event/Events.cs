@@ -55,6 +55,7 @@ public class EventsUI
     public event Action<int, string, int> UpdatePlayerInventoryDisplay;
     public event Action<int> PlayerInventorySelectIndex;
     public event Action<int> PlayerInventorySizeChange;
+    public event Action<int> PlayerMoneyChange;
 
     public void TriggerRequestGUI(Control gui_node) => RequestGUI?.Invoke(gui_node);
     public void TriggerRequestCloseGUI() => RequestCloseGUI?.Invoke();
@@ -69,6 +70,7 @@ public class EventsUI
     public void TriggerPlayerInventorySelect(int index) => PlayerInventorySelectIndex?.Invoke(index);
 
     public void TriggerInventoryResized(int slots) => PlayerInventorySizeChange?.Invoke(slots);
+
 }
 
 public class EventsInventory
@@ -87,7 +89,9 @@ public class EventsData
     public event Action OnModsLoaded;
 
     public event Action SerializeAll;
+    public event Action Reload;
 
+    public void TriggerReload() => Reload?.Invoke();
     public void TriggerSerializeAll() => SerializeAll?.Invoke();
 
     public void TriggerOnModsLoaded() => OnModsLoaded?.Invoke();

@@ -121,7 +121,23 @@ public partial class FarmingController : CharacterBody3D
         _Inventory.UpdateGUICall(Events.GUI.TriggerUpdatePlayeInventoryDisplay);
         Events.GUI.TriggerPlayerInventorySelect(_Inventory.Selected);
 
-        Stats.GetStat("money");
+        Events.Gameplay.TriggerPlayerMoneyChange((int)Stats.GetStat("money"));
+        Stats.OnStatChange += (stat, val) =>
+        {
+            if (stat == "money") Events.Gameplay.TriggerPlayerMoneyChange((int)val);
+        };
+
+        Events.Data.SerializeAll += SaveToData;
+        Events.Data.Reload += LoadFromData;
+        LoadFromData();
+
+    }
+
+    public override void _ExitTree()
+    {
+        Events.Gameplay.RequestPlayerAbleToMove -= HandleEventPlayerCanMove;
+        Events.Data.SerializeAll -= SaveToData;
+        Events.Data.Reload -= LoadFromData;
     }
 
 
@@ -353,7 +369,7 @@ public partial class FarmingController : CharacterBody3D
             handled |= ToggleSuction(e);
             handled |= ToggleFiring(e);
             handled |= InputToggleThirdPerson(e);
-            handled |= AddTestBuff(e);
+            handled |= DebugStuff(e);
             handled |= InputSelectItems(e);
         }
         if (handled) GetViewport().SetInputAsHandled();
@@ -384,13 +400,39 @@ public partial class FarmingController : CharacterBody3D
         return true;
     }
 
-    private bool AddTestBuff(InputEvent e)
+    private bool DebugStuff(InputEvent e)
     {
+#if DEBUG
+        if (!e.IsPressed()) return false;
         if (e is not InputEventKey key) return false;
-        if (key.Keycode != Key.KpAdd) return false;
-        Print.Debug("Adding energy regen buff");
-        Stats.AddStatMod("energy_regen_factor", 50.0f, CharStatFloat.Modifier.ADD, 1.0f);
-        return true;
+        if (key.Keycode == Key.KpAdd)
+        {
+            Print.Debug("Adding energy regen buff");
+            Stats.AddStatMod("energy_regen_factor", 50.0f, CharStatFloat.Modifier.ADD, 1.0f);
+            return true;
+        }
+        if (key.Keycode == Key.Kp7)
+        {
+            Stats.ModifyStaticStat("money", 99.0f);
+            return true;
+        }
+        if (key.Keycode == Key.Kp8)
+        {
+            Stats.ModifyStaticStat("money", -99.0f);
+            return true;
+        }
+        if (key.Keycode == Key.Kp4)
+        {
+            Stats.ModifyStaticStat("money", 9999.0f);
+            return true;
+        }
+        if (key.Keycode == Key.Kp5)
+        {
+            Stats.ModifyStaticStat("money", -9999.0f);
+            return true;
+        }
+#endif
+        return false;
     }
 
     private bool InputSelectItems(InputEvent e)
@@ -450,4 +492,30 @@ public partial class FarmingController : CharacterBody3D
         }
         return false;
     }
+
+
+    private const string SAVE_FILE = "player.json";
+
+    private void SaveToData()
+    {
+        var build = new SaveDataBuilder(SAVE_FILE);
+
+        build.PutVector3(nameof(GlobalPosition), GlobalPosition);
+        build.PutVector3(nameof(GlobalRotation), GlobalRotation);
+        _Inventory.SaveToData(ref build);
+        Stats.SaveToData(ref build);
+
+        build.SaveToFile();
+    }
+
+    private void LoadFromData()
+    {
+        var builder = new SaveDataBuilder(SAVE_FILE).LoadFromFile();
+
+        GlobalPosition = builder.GetVector3(nameof(GlobalPosition));
+        GlobalRotation = builder.GetVector3(nameof(GlobalRotation));
+        _Inventory.LoadFromData(builder);
+        Stats.LoadFromData(builder);
+    }
+
 }

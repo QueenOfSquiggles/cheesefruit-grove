@@ -1,6 +1,8 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using Godot;
+using queen.data;
 using queen.events;
 using queen.extension;
 
@@ -12,8 +14,8 @@ public partial class EmptyPlot : Node3D
     [Export] private NodePath PathInteractionTrigger;
     [Export] private NodePath PathPlotLabel;
 
-    private Node3D? PlotRoot;
-    private Label3D? PlotLabel;
+    private Node3D PlotRoot;
+    private Label3D PlotLabel;
     private PopupMenu MenuPromptNewPlot;
     private InteractiveTrigger InteractTrigger;
 
@@ -30,7 +32,16 @@ public partial class EmptyPlot : Node3D
             MenuPromptNewPlot.AddIconItem(plot.Icon, plot.ID);
         }
         MenuPromptNewPlot.Hide();
-        // MenuPromptNewPlot.IndexPressed += OnMenuIndexPressed;
+
+        Events.Data.SerializeAll += SaveToData;
+        Events.Data.Reload += LoadFromData;
+        LoadFromData();
+    }
+
+    public override void _ExitTree()
+    {
+        Events.Data.SerializeAll -= SaveToData;
+        Events.Data.Reload -= LoadFromData;
     }
 
     private void OnInteract()
@@ -76,10 +87,43 @@ public partial class EmptyPlot : Node3D
         if (PlotLabel is not null) PlotLabel.Text = PlotType.ID;
     }
 
+
+    private const string KEY_PLOT = "plot_type";
     private void ModifyExistingPlot()
     {
         if (PlotRoot?.GetChild(0) is not PlotInterface plot) return;
         plot.CreateModifyPrompt();
+    }
+
+    private void SaveToData()
+    {
+        var builder = new SaveDataBuilder(GetFile());
+
+        if (PlotRoot.GetChildCount() > 0)
+        {
+            if (PlotRoot.GetChild(0) is PlotInterface plot)
+            {
+                builder.PutString(KEY_PLOT, plot.PlotType is null ? "" : plot.PlotType.ID);
+                plot.SavePlotData(ref builder);
+            }
+        }
+        builder.SaveToFile();
+    }
+    private void LoadFromData()
+    {
+        var builder = new SaveDataBuilder(GetFile()).LoadFromFile();
+        if (builder.GetString(KEY_PLOT) != "")
+        {
+            var plot = RegistrationManager.GetResource<Plot>(builder.GetString(KEY_PLOT));
+            if (plot is null) return;
+            MakeNewPlot(plot);
+            (PlotRoot.GetChild(0) as PlotInterface)?.LoadPlotData(builder);
+        }
+    }
+
+    private string GetFile()
+    {
+        return $"{GetTree().CurrentScene.Name}/plot__{Name}.json";
     }
 
 }

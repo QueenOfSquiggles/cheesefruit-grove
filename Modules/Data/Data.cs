@@ -15,7 +15,7 @@ public static class Data
     private static DataPath DEFAULT_DATA_PATH = new DataPath("user://", false); // disallow deletion just in case bad code
 
     /// <summary>
-    /// An alternate save path pointing towards the current save slot. This can be altered with SetSaveSlot. 
+    /// An alternate save path pointing towards the current save slot. This can be altered with SetSaveSlot.
     /// See also: <seealso cref="SetSaveSlot"/>
     /// </summary>
     public static DataPath CurrentSaveSlot { get; private set; } = new(SAVE_SLOT_ROOT + "default/");
@@ -27,7 +27,7 @@ public static class Data
     public static string[] GetKnownSaveSlots()
     {
         using var dir = DirAccess.Open(SAVE_SLOT_ROOT);
-        if (dir == null) return new string[0];
+        if (dir == null) return Array.Empty<string>();
         dir.IncludeHidden = false;
         dir.IncludeNavigational = false;
         return dir.GetDirectories();
@@ -48,6 +48,34 @@ public static class Data
         var path = $"{SAVE_SLOT_ROOT}{slot_name}";
         if (!path.EndsWith('/')) path += '/';
         CurrentSaveSlot = new DataPath(path);
+    }
+
+    public static void LoadDefaultSaveSlot()
+    {
+        SetSaveSlot("default");
+    }
+
+    public static bool HasSaveData()
+    {
+        return GetKnownSaveSlots().Length > 1;
+    }
+
+    public static void LoadMostRecentSaveSlot()
+    {
+        var slots = GetKnownSaveSlots();
+        string most_recent = "default"; // default to default slot just in case no valid extra ones are found
+        long recent_time = 0;
+        foreach (var slot in slots)
+        {
+            if (slot == "default") continue;
+            var date = ParseSaveSlotName(slot);
+            var time = date.ToFileTimeUtc();
+            if (time <= recent_time) continue;
+            most_recent = slot;
+            recent_time = time;
+        };
+        if (most_recent == "") return;
+        SetSaveSlot(most_recent);
     }
 
     /// <summary>
@@ -175,7 +203,7 @@ public class DataPath
     /// <typeparam name="T">data type to load. Must be specified when it cannot be inferred.</typeparam>
     /// <param name="path">The path of a json file relative to the assigned path (likely a save slot)</param>
     /// <returns>The data of type T that was loaded from file. </returns>
-    public T? Load<T>(string path, bool print_errors) where T : class
+    public T? Load<T>(string path, bool print_errors = true) where T : class
     {
         if (JsonSettings == null) LoadDefaultJsonSettings();
         try

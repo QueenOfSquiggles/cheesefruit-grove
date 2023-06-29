@@ -21,9 +21,10 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_ef7d4")
-play_scene = "res://Game/testing_level_custom_mesh.tscn"
-options_scene = "res://Scenes/UI/Menus/options_menu.tscn"
-credits_scene = "res://Scenes/UI/Menus/credits_scene.tscn"
+LevelScene = "res://Game/testing_level_custom_mesh.tscn"
+PlayMenuScene = "res://Scenes/UI/Menus/play_menu.tscn"
+Options = "res://Scenes/UI/Menus/options_menu.tscn"
+CreditsScene = "res://Scenes/UI/Menus/credits_scene.tscn"
 PathButtonsControlPanel = NodePath("ControlButtons")
 
 [node name="TextureRect" type="TextureRect" parent="."]
@@ -84,12 +85,10 @@ theme_override_constants/margin_bottom = 32
 
 [node name="VBoxContainer" type="VBoxContainer" parent="ControlButtons/MarginContainer"]
 layout_mode = 2
-theme_override_constants/separation = 128
-alignment = 2
+alignment = 1
 
 [node name="TitleTexture" type="TextureRect" parent="ControlButtons/MarginContainer/VBoxContainer"]
 layout_mode = 2
-size_flags_vertical = 3
 texture = ExtResource("5_scqaj")
 expand_mode = 5
 stretch_mode = 5
@@ -130,6 +129,10 @@ size_flags_vertical = 3
 text = "main_menu.quit"
 
 [node name="UISounds" parent="ControlButtons/MarginContainer/VBoxContainer/CenterContainer/VBoxContainer/BtnQuit" instance=ExtResource("4_geber")]
+
+[node name="Control" type="Control" parent="ControlButtons/MarginContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
 
 [node name="LinkButton" type="LinkButton" parent="ControlButtons/MarginContainer/VBoxContainer"]
 layout_mode = 2

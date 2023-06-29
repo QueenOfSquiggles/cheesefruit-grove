@@ -1,0 +1,112 @@
+[gd_scene load_steps=9 format=3 uid="uid://bg05xyf132g6y"]
+
+[ext_resource type="Script" path="res://Scenes/ItemSystems/Storage/ItemStorage.cs" id="1_skthd"]
+[ext_resource type="Texture2D" uid="uid://dg4dlinjntkaf" path="res://icon.png" id="3_f5tvr"]
+[ext_resource type="PackedScene" uid="uid://bqwng1o8by3wt" path="res://Scenes/ItemSystems/Collection/item_collector.tscn" id="4_qs332"]
+
+[sub_resource type="Curve" id="Curve_w8s4j"]
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(0.25, 0.4), 0.0, 0.0, 0, 0, Vector2(1, 0.1), -0.406451, 0.0, 0, 0]
+point_count = 3
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_4qimo"]
+radius = 0.44297
+
+[sub_resource type="Animation" id="Animation_8fwhj"]
+resource_name = "idle"
+length = 5.0
+loop_mode = 1
+step = 0.25
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("ItemCollector/Sprite3D:rotation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 5),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector3(0, 0, 0), Vector3(0, 6.28319, 0)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("ItemCollector/Sprite3D:position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 1.25, 2.5, 3.75, 5),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1),
+"update": 0,
+"values": [Vector3(0, 0, 0), Vector3(0, -0.1, 0), Vector3(0, 0, 0), Vector3(0, 0.1, 0), Vector3(0, 0, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_pk5or"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("ItemCollector/Sprite3D:rotation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(0, 0, 0)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("ItemCollector/Sprite3D:position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(0, 0, 0)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_s7gx5"]
+_data = {
+"RESET": SubResource("Animation_pk5or"),
+"idle": SubResource("Animation_8fwhj")
+}
+
+[node name="ItemStorageGeneric" type="Node3D"]
+script = ExtResource("1_skthd")
+DropRateMaxTime = 0.75
+DropRateCurveDuration = 5.0
+DropRateCurve = SubResource("Curve_w8s4j")
+PathItemCollector = NodePath("ItemCollector")
+PathItemTextureDisplay = NodePath("ItemCollector/Sprite3D")
+PathItemQuantityDisplay = NodePath("ItemCollector/Label3D")
+
+[node name="ItemCollector" parent="." instance=ExtResource("4_qs332")]
+collision_layer = 0
+collision_mask = 3
+GroupFilters = PackedStringArray("item")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="ItemCollector"]
+shape = SubResource("SphereShape3D_4qimo")
+
+[node name="Sprite3D" type="Sprite3D" parent="ItemCollector"]
+transform = Transform3D(0.33556, 0, 0, 0, 0.33556, 0, 0, 0, 0.33556, 0, 0, 0)
+alpha_cut = 1
+texture = ExtResource("3_f5tvr")
+
+[node name="Label3D" type="Label3D" parent="ItemCollector"]
+transform = Transform3D(-0.241089, 0, 0.970503, 0, 1, 0, -0.970503, 0, -0.241089, 0, 0.54187, 0)
+billboard = 1
+text = "999
+"
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+autoplay = "idle"
+libraries = {
+"": SubResource("AnimationLibrary_s7gx5")
+}
+
+[connection signal="area_entered" from="ItemCollector" to="." method="OnAreaEnter" flags=18]
+[connection signal="area_exited" from="ItemCollector" to="." method="OnAreaExit" flags=18]

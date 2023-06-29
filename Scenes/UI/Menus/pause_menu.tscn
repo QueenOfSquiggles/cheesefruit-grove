@@ -122,12 +122,29 @@ layout_mode = 1
 
 [node name="UISounds" parent="PanelContainer/MarginContainer/VBoxContainer/BtnContinue" instance=ExtResource("3_b8rfi")]
 
+[node name="BtnSave" type="Button" parent="PanelContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+text = "Save"
+
+[node name="UISounds" parent="PanelContainer/MarginContainer/VBoxContainer/BtnSave" instance=ExtResource("3_b8rfi")]
+
 [node name="BtnOptions" type="Button" parent="PanelContainer/MarginContainer/VBoxContainer"]
 layout_mode = 2
 tooltip_text = "Warning!: You will lose all progress"
 text = "Options"
 
 [node name="UISounds" parent="PanelContainer/MarginContainer/VBoxContainer/BtnOptions" instance=ExtResource("3_b8rfi")]
+
+[node name="HSeparator_2" type="HSeparator" parent="PanelContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/separation = 64
+
+[node name="BtnLoadLastSave" type="Button" parent="PanelContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+tooltip_text = "Warning!: You will lose all progress"
+text = "Reload Last Save"
+
+[node name="UISounds" parent="PanelContainer/MarginContainer/VBoxContainer/BtnLoadLastSave" instance=ExtResource("3_b8rfi")]
 
 [node name="BtnMainMenu" type="Button" parent="PanelContainer/MarginContainer/VBoxContainer"]
 layout_mode = 2
@@ -143,5 +160,7 @@ libraries = {
 }
 
 [connection signal="pressed" from="PanelContainer/MarginContainer/VBoxContainer/BtnContinue" to="." method="ReturnToPlay"]
+[connection signal="pressed" from="PanelContainer/MarginContainer/VBoxContainer/BtnSave" to="." method="OnBtnSave"]
 [connection signal="pressed" from="PanelContainer/MarginContainer/VBoxContainer/BtnOptions" to="." method="OnBtnOptions"]
+[connection signal="pressed" from="PanelContainer/MarginContainer/VBoxContainer/BtnLoadLastSave" to="." method="OnBtnReloadLastSave"]
 [connection signal="pressed" from="PanelContainer/MarginContainer/VBoxContainer/BtnMainMenu" to="." method="ExitToMainMenu"]

@@ -14,8 +14,11 @@ public partial class DefaultHUD : Control
 
     [ExportGroup("Inventory Stuff")]
     [Export] private PackedScene InventorySlotPacked;
+    [ExportGroup("Player Money", "PlayerMoney")]
+    [Export] private Color PlayerMoneyIncreaseCol = Colors.Lime;
+    [Export] private Color PlayerMoneyDecreaseCol = Colors.Red;
 
-    [ExportGroup("Paths")]
+    [ExportGroup("Paths", "Path")]
     [Export] private NodePath PathLabelSubtitle;
     [Export] private NodePath PathLabelAlert;
 
@@ -29,6 +32,9 @@ public partial class DefaultHUD : Control
     [Export] private NodePath PathPlayerStatsEnergyBar;
     [Export] private NodePath PathPlayerStatsEnergyLabel;
     [Export] private NodePath PathPlayerInventory;
+    [Export] private NodePath PathPlayerMoneyTexture;
+    [Export] private NodePath PathPlayerMoneyLabel;
+    [Export] private NodePath PathPlayerMoneyPopLabel;
 
 
 
@@ -45,12 +51,18 @@ public partial class DefaultHUD : Control
     private Label _PlayerStatsEnergyLabel;
     private Control _PlayerInventory;
 
+    private Control _PlayerMoneyTexture;
+    private Label _PlayerMoneyLabel;
+    private Label _PlayerMoneyPopLabel;
+
 
     private Color COLOUR_TRANSPARENT = Color.FromString("#FFFFFF00", Colors.White);
     private Color COLOUR_VISIBLE = Colors.White;
     private Tween _PromptTween;
 
     private int _PreviousSelectSlot = 0;
+    private int _LastKnownPlayerMoney = 0;
+
     public override void _Ready()
     {
         this.GetNode(PathLabelSubtitle, out _LblSubtitle);
@@ -65,6 +77,9 @@ public partial class DefaultHUD : Control
         this.GetSafe(PathPlayerStatsEnergyBar, out _PlayerStatsEnergyBar);
         this.GetSafe(PathPlayerStatsEnergyLabel, out _PlayerStatsEnergyLabel);
         this.GetSafe(PathPlayerInventory, out _PlayerInventory);
+        this.GetSafe(PathPlayerMoneyTexture, out _PlayerMoneyTexture);
+        this.GetSafe(PathPlayerMoneyLabel, out _PlayerMoneyLabel);
+        this.GetSafe(PathPlayerMoneyPopLabel, out _PlayerMoneyPopLabel);
 
         _LblSubtitle.Text = "";
         _LblAlert.Text = "";
@@ -75,6 +90,13 @@ public partial class DefaultHUD : Control
 
         _Reticle.Scale = Vector2.One * Access.Instance.ReticleHiddenScale;
         _InteractionPrompt.Text = "";
+
+        _PlayerMoneyLabel.Text = "";
+        _PlayerMoneyPopLabel.Text = "";
+        _PlayerMoneyPopLabel.Position = _PlayerMoneyLabel.Position;
+        _PlayerMoneyPopLabel.Scale = new Vector2(1.5f, 1.5f);
+        _PlayerMoneyPopLabel.Visible = false;
+
 
 
         Events.GUI.RequestSubtitle += ShowSubtitle;
@@ -87,6 +109,7 @@ public partial class DefaultHUD : Control
         Events.GUI.UpdatePlayerInventoryDisplay += OnInventorySlotUpdate;
         Events.GUI.PlayerInventorySelectIndex += OnInventorySelect;
         Events.GUI.PlayerInventorySizeChange += EnsureInventorySlots;
+        Events.Gameplay.PlayerMoneyChanged += OnPlayerMoneyChange;
     }
 
     public override void _ExitTree()
@@ -102,6 +125,8 @@ public partial class DefaultHUD : Control
         Events.GUI.UpdatePlayerInventoryDisplay -= OnInventorySlotUpdate;
         Events.GUI.PlayerInventorySelectIndex -= OnInventorySelect;
         Events.GUI.PlayerInventorySizeChange -= EnsureInventorySlots;
+        Events.Gameplay.PlayerMoneyChanged -= OnPlayerMoneyChange;
+
     }
 
     public void ShowSubtitle(string text)
@@ -188,6 +213,35 @@ public partial class DefaultHUD : Control
             _PlayerInventory.AddChild(slot);
         }
     }
+
+    private Tween _CurMoneyPopLabelTween;
+    private const string _MoneyFormatString = "N0";
+    private void OnPlayerMoneyChange(int new_total)
+    {
+        var delta = new_total - _LastKnownPlayerMoney;
+        _LastKnownPlayerMoney = new_total;
+        _PlayerMoneyLabel.Text = new_total.ToString(_MoneyFormatString);
+        _PlayerMoneyPopLabel.Text = delta.ToString(_MoneyFormatString);
+        _PlayerMoneyPopLabel.GlobalPosition = _PlayerMoneyLabel.GlobalPosition;
+        _PlayerMoneyPopLabel.Scale = new Vector2(1.5f, 1.5f);
+        _PlayerMoneyPopLabel.Visible = true;
+        _PlayerMoneyPopLabel.Modulate = delta >= 0 ? PlayerMoneyIncreaseCol : PlayerMoneyDecreaseCol;
+
+        _CurMoneyPopLabelTween?.Kill();
+        _CurMoneyPopLabelTween = _PlayerMoneyTexture.CreateTween().SetTrans(Tween.TransitionType.Cubic).SetEase(Tween.EaseType.InOut);
+        _CurMoneyPopLabelTween.TweenProperty(_PlayerMoneyPopLabel, "position:y", _PlayerMoneyPopLabel.Position.Y - 64.0f, 0.5f);
+        _CurMoneyPopLabelTween.Parallel().TweenProperty(_PlayerMoneyPopLabel, "modulate:a", 0.0f, 0.7f);
+        _CurMoneyPopLabelTween.Parallel().TweenProperty(_PlayerMoneyPopLabel, "scale", Vector2.One, 0.7f);
+        _CurMoneyPopLabelTween.TweenCallback(Callable.From(() =>
+        {
+            // cleanup
+            _PlayerMoneyPopLabel.Text = "";
+            _PlayerMoneyPopLabel.Position = _PlayerMoneyLabel.Position;
+            _PlayerMoneyPopLabel.Scale = new Vector2(1.5f, 1.5f);
+            _PlayerMoneyPopLabel.Visible = true;
+        }));
+    }
+
 
     public override void _Input(InputEvent e)
     {

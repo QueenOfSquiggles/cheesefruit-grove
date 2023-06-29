@@ -19,3 +19,4 @@ ID = "items.cheese_fruit"
 CanCollect = true
 InventoryIcon = ExtResource("6_anatc")
 WorldScene = ExtResource("7_iqwa6")
+MarketValue = 15

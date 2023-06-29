@@ -1,6 +1,8 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using Godot;
+using queen.data;
 using queen.error;
 using queen.events;
 using queen.extension;
@@ -18,7 +20,7 @@ public partial class FarmPlot : PlotInterface
 
     private Node3D _CropRoot;
     private PopupMenu _ModifyPopup;
-    private ItemStoragePillar _ItemStorage;
+    private ItemStorage _ItemStorage;
 
     public override void _Ready()
     {
@@ -116,6 +118,8 @@ public partial class FarmPlot : PlotInterface
         {
             case 0: // Remove Crops
                 _ItemStorage.SetCurrentItem("", 0);
+                _Crop = null;
+                UpdateDisplayModels();
                 break;
             case 1: // Harvest
                 if (_Stage == _Crop.GrowthStages.Length - 1)
@@ -132,5 +136,21 @@ public partial class FarmPlot : PlotInterface
         Events.Gameplay.TriggerRequestPlayerAbleToMove(true);
         Input.MouseMode = Input.MouseModeEnum.Captured;
     }
+
+    public override void SavePlotData(ref SaveDataBuilder data)
+    {
+        if (data is null) return;
+        data.PutString("_Crop", _Crop is null ? "" : _Crop.ID);
+        data.PutInt("_Stage", _Stage);
+        data.PutFloat("_StageTimer", _StageTimer);
+    }
+    public override void LoadPlotData(SaveDataBuilder data)
+    {
+        if (data.GetString("_Crop", out string crop) && crop != "") _ItemStorage.SetCurrentItem(crop, 1);
+        if (data.GetInt("_Stage", out int stage)) _Stage = stage;
+        if (data.GetFloat("_StageTimer", out float timer)) _StageTimer = timer;
+        UpdateDisplayModels();
+    }
+
 
 }
