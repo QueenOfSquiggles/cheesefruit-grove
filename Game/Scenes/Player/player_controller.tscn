@@ -1,0 +1,86 @@
+[gd_scene load_steps=11 format=3 uid="uid://nty6v4v5aav"]
+
+[ext_resource type="Script" path="res://Game/Scenes/Player/PlayerController.cs" id="1_0sf8w"]
+[ext_resource type="Script" path="res://Core/Modules/FSM/FiniteStateMachine.cs" id="1_svxc2"]
+[ext_resource type="Script" path="res://Game/Scenes/Player/StateMoving.cs" id="3_0e075"]
+[ext_resource type="Script" path="res://Core/Modules/Camera/VirtualCamera.cs" id="3_2t18o"]
+[ext_resource type="Script" path="res://Game/Scenes/Player/StateCutscene.cs" id="4_htu2v"]
+[ext_resource type="Script" path="res://Core/Modules/CharStats/CharStatManager.cs" id="6_jp2i6"]
+[ext_resource type="Script" path="res://Core/Modules/CharStats/CharStatFloat.cs" id="7_ej2jg"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_wep32"]
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_t4xyo"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_0drak"]
+size = Vector3(0.75, 0.5, 0.3)
+
+[node name="PlayerController" type="CharacterBody3D" node_paths=PackedStringArray("_fsm", "_stateMoving", "_stateCutscene")]
+script = ExtResource("1_0sf8w")
+_fsm = NodePath("FiniteStateMachine")
+_stateMoving = NodePath("FiniteStateMachine/StateMoving")
+_stateCutscene = NodePath("FiniteStateMachine/StateCutscene")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+shape = SubResource("CapsuleShape3D_wep32")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+mesh = SubResource("CapsuleMesh_t4xyo")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="MeshInstance3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.458792, -0.380412)
+mesh = SubResource("BoxMesh_0drak")
+
+[node name="FiniteStateMachine" type="Node" parent="." node_paths=PackedStringArray("_initialState")]
+script = ExtResource("1_svxc2")
+_initialState = NodePath("StateMoving")
+
+[node name="StateMoving" type="Node" parent="FiniteStateMachine" node_paths=PackedStringArray("_actor", "_stats", "_cam", "_camArm")]
+script = ExtResource("3_0e075")
+_actor = NodePath("../..")
+_stats = NodePath("../../CharStatManager")
+_cam = NodePath("../../CameraRot/SpringArm3D/VirtualCamera")
+_camArm = NodePath("../../CameraRot")
+
+[node name="StateCutscene" type="Node" parent="FiniteStateMachine"]
+script = ExtResource("4_htu2v")
+
+[node name="CameraRot" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.520608, 0)
+
+[node name="SpringArm3D" type="SpringArm3D" parent="CameraRot"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.5, 0, 0)
+spring_length = 4.0
+
+[node name="VirtualCamera" type="Marker3D" parent="CameraRot/SpringArm3D"]
+script = ExtResource("3_2t18o")
+_pushCamOnReady = true
+_allowVCamChildren = true
+
+[node name="CharStatManager" type="Node" parent="."]
+script = ExtResource("6_jp2i6")
+
+[node name="Speed" type="Node" parent="CharStatManager"]
+script = ExtResource("7_ej2jg")
+StoredValue = 7.0
+
+[node name="SprintSpeedFactor" type="Node" parent="CharStatManager"]
+script = ExtResource("7_ej2jg")
+StoredValue = 2.0
+
+[node name="Acceleration" type="Node" parent="CharStatManager"]
+script = ExtResource("7_ej2jg")
+StoredValue = 10.0
+
+[node name="JumpStrength" type="Node" parent="CharStatManager"]
+script = ExtResource("7_ej2jg")
+StoredValue = 14.0
+
+[node name="JumpCount" type="Node" parent="CharStatManager"]
+script = ExtResource("7_ej2jg")
+StoredValue = 1.0
+
+[node name="JumpFloatFactor" type="Node" parent="CharStatManager"]
+editor_description = "By default, this value produces a near negligible result. But maybe modifications to the stat could cut down to 0.5, which can basically double the maximum jump height"
+script = ExtResource("7_ej2jg")
+StoredValue = 0.99

@@ -1,7 +1,7 @@
 [gd_scene load_steps=8 format=3 uid="uid://bihebl8tck8tx"]
 
 [ext_resource type="Script" path="res://Core/Scenes/Utility/Autoload/SceneTransitions.cs" id="1_6fupi"]
-[ext_resource type="Texture2D" uid="uid://b0kmgsqo4syyl" path="res://icon.png" id="2_21v8b"]
+[ext_resource type="Texture2D" uid="uid://dg4dlinjntkaf" path="res://icon.png" id="2_21v8b"]
 [ext_resource type="Material" uid="uid://btilfacdh1yjd" path="res://Core/Assets/Materials/ScreenFX/DiamondTransitionMaterial.tres" id="2_yhfbd"]
 
 [sub_resource type="Animation" id="Animation_mipqk"]
@@ -92,11 +92,13 @@ _data = {
 "RESET": SubResource("Animation_dxwn1")
 }
 
-[node name="Scenes" type="Node" node_paths=PackedStringArray("_anim", "_transitionTexture")]
+[node name="Scenes" type="Node" node_paths=PackedStringArray("_anim", "_transitionTexture", "_progress", "_progressPanel")]
 process_mode = 3
 script = ExtResource("1_6fupi")
 _anim = NodePath("AnimationPlayer")
 _transitionTexture = NodePath("CanvasLayer/ColorRect")
+_progress = NodePath("CanvasLayer/LoadingBar/MarginContainer/VBoxContainer/ProgressBar")
+_progressPanel = NodePath("CanvasLayer/LoadingBar")
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 autoplay = "FadeIn"
@@ -116,3 +118,35 @@ grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
 texture = ExtResource("2_21v8b")
+
+[node name="LoadingBar" type="PanelContainer" parent="CanvasLayer"]
+custom_minimum_size = Vector2(420, 0)
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -20.0
+offset_top = -138.0
+offset_right = 20.0
+offset_bottom = -98.0
+grow_horizontal = 2
+grow_vertical = 0
+
+[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/LoadingBar"]
+layout_mode = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/LoadingBar/MarginContainer"]
+layout_mode = 2
+alignment = 1
+
+[node name="Label" type="Label" parent="CanvasLayer/LoadingBar/MarginContainer/VBoxContainer"]
+layout_mode = 2
+text = "Loading..."
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="ProgressBar" type="ProgressBar" parent="CanvasLayer/LoadingBar/MarginContainer/VBoxContainer"]
+layout_mode = 2
+max_value = 1.0
+step = 0.1

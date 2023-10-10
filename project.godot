@@ -24,6 +24,7 @@ ResourceScriptDirectories=["res://"]
 [application]
 
 config/name="Cheesefruit Grove"
+run/main_scene="res://Core/sc4x_entry.tscn"
 config/features=PackedStringArray("4.1", "C#", "Forward Plus")
 config/icon="res://icon.png"
 
@@ -60,7 +61,6 @@ glossary/default_case_sensitive=true
 
 window/size/viewport_width=1920
 window/size/viewport_height=1080
-mouse_cursor/custom_image="res://Assets/Krita/custom_cursor/custom_staff_cursor.png"
 mouse_cursor/custom_image_hotspot=Vector2(4, 4)
 
 [dotnet]
@@ -84,8 +84,8 @@ import/fbx/enabled=false
 
 [gui]
 
-theme/custom="res://Assets/Theme/default_theme.tres"
-theme/custom_font="res://Assets/Fonts/DelaGothicOne-Regular.ttf"
+theme/custom="res://Core/Assets/Theme/default_theme.tres"
+theme/custom_font="res://Core/Assets/Fonts/DelaGothicOne-Regular.ttf"
 theme/default_font_multichannel_signed_distance_field=true
 
 [input]
@@ -233,7 +233,7 @@ item_select_previous={
 [internationalization]
 
 locale/translation_remaps={}
-locale/translations=PackedStringArray("res://Assets/Translation/translations_sheet.en.translation")
+locale/translations=PackedStringArray("res://Core/Assets/Translation/translations_sheet.en.translation")
 
 [layer_names]
 

@@ -93,6 +93,7 @@ public partial class PauseMenu : Control {
   private void OnBtnReloadLastSave() {
     EventBus.Data.TriggerReload();
     var _ = Name; // force access instance data
+    GetTree().ReloadCurrentScene();
   }
 
   private void CreateNewSlidingScene(PackedScene packed) {
