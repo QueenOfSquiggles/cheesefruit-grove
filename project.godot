@@ -75,7 +75,7 @@ naming/default_signal_callback_name="_on_{signal_name}"
 
 [editor_plugins]
 
-enabled=PackedStringArray("res://addons/squiggles_core_autoloads/plugin.cfg")
+enabled=PackedStringArray("res://addons/squiggles_core_autoloads/plugin.cfg", "res://addons/terrain_3d/plugin.cfg")
 
 [filesystem]
 
@@ -240,6 +240,10 @@ locale/translations=PackedStringArray("res://Assets/Translation/translations_she
 3d_physics/layer_1="world_physics"
 3d_physics/layer_2="items_gravity"
 3d_physics/layer_3="player_interactions"
+
+[physics]
+
+3d/physics_engine="JoltPhysics3D"
 
 [rendering]
 
