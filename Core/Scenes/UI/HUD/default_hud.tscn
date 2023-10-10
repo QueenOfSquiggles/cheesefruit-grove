@@ -1,0 +1,76 @@
+[gd_scene load_steps=12 format=3 uid="uid://clvfklayqmfnw"]
+
+[ext_resource type="Theme" uid="uid://b6m4xd68fa5um" path="res://Core/Assets/Theme/default_theme.tres" id="1_ftm8j"]
+[ext_resource type="Script" path="res://Core/Scenes/UI/HUD/DefaultHUD.cs" id="2_lohhk"]
+[ext_resource type="PackedScene" uid="uid://cehxnein641v" path="res://Core/Scenes/UI/HUD/Inventory/item_slot_display.tscn" id="4_0ig7p"]
+[ext_resource type="PackedScene" uid="uid://cu8lcuyc6iins" path="res://Core/Scenes/UI/HUD/hud_components/reticle.tscn" id="4_yumwi"]
+[ext_resource type="PackedScene" uid="uid://174fj511x6da" path="res://Core/Scenes/UI/HUD/hud_components/interaction_prompt.tscn" id="5_jmiy2"]
+[ext_resource type="PackedScene" uid="uid://fkc7m2ki73ew" path="res://Core/Scenes/UI/HUD/hud_components/player_inventory_slots.tscn" id="6_qkdrv"]
+[ext_resource type="PackedScene" uid="uid://bqm15kscl7aw1" path="res://Core/Scenes/UI/HUD/hud_components/alert_panel.tscn" id="7_ashqc"]
+[ext_resource type="PackedScene" uid="uid://btffth3dw2uom" path="res://Core/Scenes/UI/HUD/hud_components/player_health.tscn" id="8_lor57"]
+[ext_resource type="PackedScene" uid="uid://dch3uo5y6oled" path="res://Core/Scenes/UI/HUD/hud_components/player_energy.tscn" id="9_rnwx1"]
+[ext_resource type="PackedScene" uid="uid://ok1il3g42obf" path="res://Core/Scenes/UI/HUD/hud_components/player_money_display.tscn" id="10_dt1cj"]
+[ext_resource type="PackedScene" uid="uid://davldsm6ogh24" path="res://Core/Scenes/UI/HUD/hud_components/subtitle_panel.tscn" id="11_7yaxq"]
+
+[node name="DefaultHUD" type="Control" node_paths=PackedStringArray("_genericGUIRoot")]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme = ExtResource("1_ftm8j")
+script = ExtResource("2_lohhk")
+_inventorySlotPacked = ExtResource("4_0ig7p")
+_genericGUIRoot = NodePath("GenericUIContainer")
+
+[node name="Reticle" parent="." instance=ExtResource("4_yumwi")]
+layout_mode = 1
+offset_left = -64.0
+offset_top = -64.0
+offset_right = 64.0
+offset_bottom = 64.0
+
+[node name="InteractionPrompt" parent="." instance=ExtResource("5_jmiy2")]
+layout_mode = 1
+offset_top = 67.0
+offset_bottom = 100.0
+
+[node name="PlayerInventorySlots" parent="." instance=ExtResource("6_qkdrv")]
+layout_mode = 1
+offset_top = -132.0
+
+[node name="AlertPanel" parent="." instance=ExtResource("7_ashqc")]
+layout_mode = 1
+offset_left = -274.0
+offset_top = 285.0
+offset_bottom = 366.0
+
+[node name="Stats Bars" type="VBoxContainer" parent="."]
+layout_mode = 1
+offset_right = 185.0
+offset_bottom = 260.0
+
+[node name="PlayerHealth" parent="Stats Bars" instance=ExtResource("8_lor57")]
+layout_mode = 2
+
+[node name="PlayerEnergy" parent="Stats Bars" instance=ExtResource("9_rnwx1")]
+layout_mode = 2
+
+[node name="DisplayMoney" parent="." instance=ExtResource("10_dt1cj")]
+layout_mode = 1
+
+[node name="SubtitlePanel" parent="." instance=ExtResource("11_7yaxq")]
+layout_mode = 1
+offset_top = -193.0
+offset_bottom = -138.0
+
+[node name="GenericUIContainer" type="Control" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 1

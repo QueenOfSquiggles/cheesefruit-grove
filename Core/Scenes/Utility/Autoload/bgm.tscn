@@ -1,0 +1,16 @@
+[gd_scene load_steps=2 format=3 uid="uid://cnuj7brfkwgmk"]
+
+[ext_resource type="Script" path="res://Core/Scenes/Utility/Autoload/BGM.cs" id="1_1qcmy"]
+
+[node name="BGM" type="Node" node_paths=PackedStringArray("_busA", "_busB")]
+script = ExtResource("1_1qcmy")
+_busA = NodePath("BusA")
+_busB = NodePath("BusB")
+
+[node name="BusA" type="AudioStreamPlayer" parent="."]
+volume_db = -20.0
+bus = &"Music"
+
+[node name="BusB" type="AudioStreamPlayer" parent="."]
+volume_db = -20.0
+bus = &"Music"

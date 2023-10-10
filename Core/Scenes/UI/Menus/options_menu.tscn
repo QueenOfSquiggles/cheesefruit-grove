@@ -1,0 +1,84 @@
+[gd_scene load_steps=9 format=3 uid="uid://qaoatrq0ufkr"]
+
+[ext_resource type="Script" path="res://Core/Scenes/UI/Menus/OptionsMenu.cs" id="1_hipj7"]
+[ext_resource type="Script" path="res://Core/Modules/GUI/SlidingPanelComponent.cs" id="2_q803b"]
+[ext_resource type="PackedScene" uid="uid://bnij6xar2kbpg" path="res://Core/Scenes/UI/Menus/OptionsTabs/gameplay_tab.tscn" id="2_sevgq"]
+[ext_resource type="PackedScene" uid="uid://ceeiivirtbxx6" path="res://Core/Scenes/UI/Menus/OptionsTabs/graphics_tab.tscn" id="3_b41b8"]
+[ext_resource type="PackedScene" uid="uid://5lm2kfqmwx7b" path="res://Core/Scenes/UI/Menus/OptionsTabs/accessibility_tab.tscn" id="4_hf4rs"]
+[ext_resource type="PackedScene" uid="uid://btd2j8upuoh1b" path="res://Core/Scenes/UI/Menus/OptionsTabs/controls_tab.tscn" id="5_vj7gf"]
+[ext_resource type="PackedScene" uid="uid://dbfdlcj7agxhj" path="res://Core/Scenes/UI/Menus/OptionsTabs/audio_tab.tscn" id="6_cn4dv"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_cmblw"]
+font_size = 32
+
+[node name="OptionsMenu" type="PanelContainer" node_paths=PackedStringArray("_slidingSceneRoot")]
+anchors_preset = 9
+anchor_bottom = 1.0
+offset_right = 221.0
+grow_vertical = 2
+script = ExtResource("1_hipj7")
+_slidingSceneRoot = NodePath("SlidingRoot")
+_pathPanelGameplay = ExtResource("2_sevgq")
+_pathPanelGraphics = ExtResource("3_b41b8")
+_pathPanelAccess = ExtResource("4_hf4rs")
+_pathPanelControls = ExtResource("5_vj7gf")
+_pathPanelAudio = ExtResource("6_cn4dv")
+
+[node name="SlidingRoot" type="Control" parent="."]
+layout_mode = 2
+mouse_filter = 1
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_constants/margin_left = 20
+theme_override_constants/margin_top = 20
+theme_override_constants/margin_right = 20
+theme_override_constants/margin_bottom = 20
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+text = "Options Menu"
+label_settings = SubResource("LabelSettings_cmblw")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="HSeparator" type="HSeparator" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/separation = 64
+
+[node name="BtnGameplay" type="Button" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+text = "Gameplay"
+
+[node name="BtnGraphics" type="Button" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+text = "Graphics
+"
+
+[node name="BtnAccessibility" type="Button" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+text = "Accessibility
+"
+
+[node name="BtnControls" type="Button" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+text = "Controls"
+
+[node name="BtnAudio" type="Button" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+text = "Audio
+"
+
+[node name="SlidingPanelComponent" type="Node" parent="." node_paths=PackedStringArray("_target")]
+script = ExtResource("2_q803b")
+_target = NodePath("..")
+
+[connection signal="pressed" from="MarginContainer/VBoxContainer/BtnGameplay" to="." method="OnBtnGameplay"]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/BtnGraphics" to="." method="OnBtnGraphics"]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/BtnAccessibility" to="." method="OnBtnAccess"]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/BtnControls" to="." method="OnBtnControls"]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/BtnAudio" to="." method="OnBtnAudio"]

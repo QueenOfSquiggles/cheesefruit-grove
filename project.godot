@@ -23,18 +23,14 @@ ResourceScriptDirectories=["res://"]
 
 [application]
 
-config/name="Cute Magical Farming Sim"
-run/main_scene="res://Scenes/UI/LaunchSequence/launch_sequence.tscn"
+config/name="Cheesefruit Grove"
 config/features=PackedStringArray("4.1", "C#", "Forward Plus")
 config/icon="res://icon.png"
 
 [autoload]
 
-ModLoadingStep="*res://Scenes/Modification/mod_loading_step.tscn"
-DynamicContentManager="*res://addons/dynamic-web-content/autoload/dynamic_content_manager.gd"
-BGM="*res://Scenes/Utility/Autoload/bgm.tscn"
-Scenes="*res://Scenes/Utility/Autoload/scenes.tscn"
-RegistrationManager="*res://Scenes/RegistrationManager/RegistrationManager.cs"
+Scenes="*res://Core/Scenes/Utility/Autoload/scenes.tscn"
+BGM="*res://Core/Scenes/Utility/Autoload/bgm.tscn"
 
 [dialogic]
 
@@ -69,7 +65,7 @@ mouse_cursor/custom_image_hotspot=Vector2(4, 4)
 
 [dotnet]
 
-project/assembly_name="SquiggleZone Game Base"
+project/assembly_name="CheesefruitGroves"
 
 [editor]
 
@@ -79,7 +75,7 @@ naming/default_signal_callback_name="_on_{signal_name}"
 
 [editor_plugins]
 
-enabled=PackedStringArray("res://addons/dynamic-web-content/plugin.cfg")
+enabled=PackedStringArray("res://addons/squiggles_core_autoloads/plugin.cfg")
 
 [filesystem]
 

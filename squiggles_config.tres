@@ -1,0 +1,66 @@
+[gd_resource type="Resource" script_class="SquigglesCoreConfigFile" load_steps=14 format=3 uid="uid://dnn8xbghw8se3"]
+
+[ext_resource type="Texture2D" uid="uid://dg4dlinjntkaf" path="res://icon.png" id="1_ahn6y"]
+[ext_resource type="Script" path="res://Core/MetaConfig/SquigglesCoreConfigFile.cs" id="1_nhggj"]
+[ext_resource type="Script" path="res://Core/Scenes/UI/Menus/OptionsTabs/GameplayTabResources/OptionBool.cs" id="2_f7vhd"]
+[ext_resource type="Script" path="res://Core/Scenes/UI/Menus/OptionsTabs/GameplayTabResources/GameplayOptionsSettings.cs" id="3_hs1ds"]
+[ext_resource type="Script" path="res://Core/MetaConfig/SlotInfoProviderResource.cs" id="4_h315q"]
+[ext_resource type="Script" path="res://Core/MetaConfig/SaveSlotSettings.cs" id="5_4s8ei"]
+
+[sub_resource type="PhysicalSkyMaterial" id="PhysicalSkyMaterial_krsi1"]
+
+[sub_resource type="Sky" id="Sky_8xhuc"]
+sky_material = SubResource("PhysicalSkyMaterial_krsi1")
+
+[sub_resource type="Environment" id="Environment_crhbw"]
+background_mode = 2
+sky = SubResource("Sky_8xhuc")
+ambient_light_source = 3
+ambient_light_color = Color(0.670588, 0.670588, 0.670588, 1)
+reflected_light_source = 2
+tonemap_mode = 3
+ssr_enabled = true
+ssao_enabled = true
+ssil_enabled = true
+sdfgi_enabled = true
+glow_enabled = true
+glow_normalized = true
+
+[sub_resource type="Resource" id="Resource_u3xr5"]
+script = ExtResource("2_f7vhd")
+Value = true
+InMenuName = "Temp"
+InternalName = "temp"
+
+[sub_resource type="Resource" id="Resource_m5emn"]
+script = ExtResource("3_hs1ds")
+GameplayMouseMode = 2
+OptionsArray = Array[Object]([SubResource("Resource_u3xr5")])
+
+[sub_resource type="Resource" id="Resource_4oqol"]
+script = ExtResource("4_h315q")
+
+[sub_resource type="Resource" id="Resource_04kak"]
+script = ExtResource("5_4s8ei")
+SlotOptions = 2
+_slotInfoProvider = SubResource("Resource_4oqol")
+AllowPlayersToReloadLastSave = true
+
+[resource]
+script = ExtResource("1_nhggj")
+PlayScene = ""
+GameLogo = ExtResource("1_ahn6y")
+EnableReticle = true
+EnableColourCorrection = true
+DefaultEnvironment = SubResource("Environment_crhbw")
+RemapControlsNames = PackedStringArray()
+HideUIMappings = true
+GameplayConfig = SubResource("Resource_m5emn")
+RegistryPathPattern = "res://Game/Registries/%s/"
+RegistryTypes = PackedStringArray()
+AuthorName = "Queen Of Squiggles"
+AuthorGamesURL = ""
+SaveSlotHandlingSettings = SubResource("Resource_04kak")
+LaunchSceneOverride = ""
+MainMenuOverride = ""
+CreditsLines = PackedStringArray()
