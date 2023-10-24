@@ -1,0 +1,11 @@
+[gd_scene load_steps=2 format=3 uid="uid://bou3ucy60k7r5"]
+
+[ext_resource type="Script" path="res://Game/Level/AutoSaveTrigger.cs" id="1_a1k0y"]
+
+[node name="AutoSaveTrigger" type="Node"]
+script = ExtResource("1_a1k0y")
+
+[node name="Timer" type="Timer" parent="."]
+wait_time = 30.0
+
+[connection signal="timeout" from="Timer" to="." method="DoSave"]

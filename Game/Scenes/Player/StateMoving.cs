@@ -5,13 +5,14 @@ using Squiggles.Core.Data;
 using Squiggles.Core.Events;
 using Squiggles.Core.Extension;
 using Squiggles.Core.FSM;
+using Squiggles.Core.Interaction;
 using Squiggles.Core.Scenes.Utility.Camera;
 
 public partial class StateMoving : State {
 
   [Export] private CharacterBody3D _actor;
-
   [Export] private CharStatManager _stats;
+  [Export] private InteractionProvider _interactions;
 
   [Export] private VirtualCamera _cam;
   [Export] private Node3D _camArm;
@@ -19,30 +20,43 @@ public partial class StateMoving : State {
   [Export] private float _camAngleMin = -70f;
   [Export] private float _gravityPower = 25.0f;
 
-  private Vector3 _camAngleMaxRad;
-  private Vector3 _camAngleMinRad;
   private Vector2 _lookVector;
+  private float _camAngleMaxRad;
+  private float _camAngleMinRad;
 
   private float _gravity;
   private int _jumps;
 
   public override void EnterState() {
     SetPhysicsProcess(true);
-    _camAngleMaxRad = new(Mathf.DegToRad(_camAngleMax), 0, 0);
-    _camAngleMinRad = new(Mathf.DegToRad(_camAngleMin), 0, 0);
     EventBus.Gameplay.RequestPlayerAbleToMove += HandleDontMove;
     Input.MouseMode = Input.MouseModeEnum.Captured;
+    _interactions.OnInteractionChange += HandleInteractionChange;
+    _interactions.Active = true;
+    _camAngleMaxRad = Mathf.DegToRad(_camAngleMax);
+    _camAngleMinRad = Mathf.DegToRad(_camAngleMin);
   }
 
   private void HandleDontMove(bool canMove) {
     if (!canMove) {
-      EmitSignal(nameof(OnStateFinished));
+      EmitSignal(StateMoving.SignalName.OnStateFinished);
+    }
+  }
+
+  private void HandleInteractionChange(Node3D current) {
+    if (current is IInteractable inter) {
+      EventBus.GUI.TriggerAbleToInteract(inter.GetActiveName());
+    }
+    else {
+      EventBus.GUI.TriggerUnableToInteract();
     }
   }
 
   public override void ExitState() {
     SetPhysicsProcess(false);
     EventBus.Gameplay.RequestPlayerAbleToMove -= HandleDontMove;
+    _interactions.Active = false;
+    _interactions.OnInteractionChange -= HandleInteractionChange;
   }
 
   public override void _PhysicsProcess(double delta) {
@@ -78,7 +92,8 @@ public partial class StateMoving : State {
 
   private void DoVertical(float delta, ref Vector3 velocity) {
     var jumpMax = (int)_stats.GetStat("JumpCount");
-    if (Input.IsActionJustPressed("jump") && _jumps < jumpMax) {
+    if ((Input.IsActionJustPressed("jump") || (_actor.IsOnFloor() && Input.IsActionPressed("jump"))) && _jumps < jumpMax) {
+      // auto jump if player on floor. Else require a second press
       _gravity = -_stats.GetStat("JumpStrength");
       _jumps++;
     }
@@ -96,10 +111,25 @@ public partial class StateMoving : State {
     _lookVector += Input.GetVector("gamepad_look_left", "gamepad_look_right", "gamepad_look_down", "gamepad_look_up") * Controls.ControllerLookSensitivity;
     _lookVector *= delta;
 
-    _actor.RotateY(_lookVector.X);
-    _camArm.RotateX(_lookVector.Y);
-    _camArm.Rotation = _camArm.Rotation.Clamp(_camAngleMinRad, _camAngleMaxRad);
+    if (_actor.Velocity.LengthSquared() < 0.1f) {
+      _camArm.RotateY(_lookVector.X);
+    }
+    else {
+      _actor.RotateY(_lookVector.X);
+      if (Mathf.Abs(_camArm.Rotation.Y) > 0.001f) {
+        var temp = _actor.Rotation;
+        temp.Y += _camArm.Rotation.Y;
+        _actor.Rotation = temp;
+        _camArm.Rotation *= new Vector3(1, 0, 1); // clear y
+      }
+      _actor.GlobalTransform = _actor.GlobalTransform.Orthonormalized();
+    }
+    var xrot = _camArm.Rotation;
+    xrot.X = Mathf.Clamp(xrot.X + _lookVector.Y, _camAngleMinRad, _camAngleMaxRad);
+    _camArm.Rotation = xrot;
+    // Fucking hell can we just get a way to manipulate the vectors on a single axis????
 
+    _camArm.GlobalTransform = _camArm.GlobalTransform.Orthonormalized();
     _lookVector = new();
   }
 
@@ -110,6 +140,11 @@ public partial class StateMoving : State {
     // handle input events
     if (@event is InputEventMouseMotion iemm) {
       _lookVector += iemm.Relative * Controls.MouseLookSensivity / GetViewport().GetWindow().Size.X * -1f;
+      this.HandleInput();
+    }
+
+    if (@event.IsActionPressed("interact") && IsInstanceValid(_interactions.Current as Node3D)) {
+      _interactions.Current.Interact();
       this.HandleInput();
     }
   }

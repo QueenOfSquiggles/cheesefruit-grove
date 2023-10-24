@@ -1,0 +1,24 @@
+[gd_resource type="ShaderMaterial" load_steps=5 format=3 uid="uid://bsq165wwc2dsj"]
+
+[ext_resource type="Shader" path="res://Assets/Materials/VFX/suction_spell_vfx/suction_spell_vfx_material.gdshader" id="1_mp5h4"]
+
+[sub_resource type="Gradient" id="Gradient_8cc4f"]
+offsets = PackedFloat32Array(0, 0.597458, 1)
+colors = PackedColorArray(0, 0, 0, 1, 0.666569, 0.666569, 0.666569, 1, 1, 1, 1, 1)
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_26xuq"]
+fractal_type = 3
+domain_warp_enabled = true
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_efija"]
+color_ramp = SubResource("Gradient_8cc4f")
+noise = SubResource("FastNoiseLite_26xuq")
+
+[resource]
+render_priority = 0
+shader = ExtResource("1_mp5h4")
+shader_parameter/discard_min = 0.7
+shader_parameter/vfx_alpha = 0.26
+shader_parameter/length_shown = 1.0
+shader_parameter/scroll_velocity = Vector2(0.16, 0.2)
+shader_parameter/noise_tex = SubResource("NoiseTexture2D_efija")

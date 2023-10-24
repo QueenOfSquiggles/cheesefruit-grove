@@ -1,0 +1,46 @@
+[gd_scene load_steps=3 format=3 uid="uid://b1cut14yq4x0j"]
+
+[ext_resource type="Script" path="res://Game/Scenes/Plots/Types/FarmPlotGUI.cs" id="1_6kco8"]
+[ext_resource type="Script" path="res://Core/Scenes/UI/Menus/TabContainerGamepadSupport.cs" id="1_oqwqg"]
+
+[node name="farm_plot_gui" type="PanelContainer" node_paths=PackedStringArray("_plantableCropsRoot")]
+custom_minimum_size = Vector2(480, 360)
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+script = ExtResource("1_6kco8")
+_plantableCropsRoot = NodePath("MarginContainer/PanelView/Plant Crop/MarginContainer/VBoxContainer")
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+layout_mode = 2
+
+[node name="PanelView" type="TabContainer" parent="MarginContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+tab_alignment = 1
+script = ExtResource("1_oqwqg")
+
+[node name="Plant Crop" type="PanelContainer" parent="MarginContainer/PanelView"]
+layout_mode = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/PanelView/Plant Crop"]
+layout_mode = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/PanelView/Plant Crop/MarginContainer"]
+layout_mode = 2
+
+[node name="Purchase Upgrades" type="PanelContainer" parent="MarginContainer/PanelView"]
+visible = false
+layout_mode = 2
+
+[node name="Clear Crops" type="PanelContainer" parent="MarginContainer/PanelView"]
+visible = false
+layout_mode = 2
+
+[node name="Clear Plot" type="PanelContainer" parent="MarginContainer/PanelView"]
+visible = false
+layout_mode = 2

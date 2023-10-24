@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="PlotType" load_steps=3 format=3 uid="uid://w568lu6ryehw"]
+
+[ext_resource type="Script" path="res://Game/ResourceTypes/PlotType.cs" id="1_016bw"]
+[ext_resource type="PackedScene" uid="uid://lsinummjij7m" path="res://Game/Scenes/Plots/Types/farm_plot.tscn" id="1_nfev6"]
+
+[resource]
+script = ExtResource("1_016bw")
+PlotName = "Farm"
+Cost = 100
+Upgrades = []
+PlotScene = ExtResource("1_nfev6")

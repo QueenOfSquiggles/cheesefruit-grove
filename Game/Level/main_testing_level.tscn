@@ -1,19 +1,42 @@
-[gd_scene load_steps=8 format=3 uid="uid://dlsdu7f83xno"]
+[gd_scene load_steps=17 format=3 uid="uid://dlsdu7f83xno"]
 
+[ext_resource type="Script" path="res://Game/Level/MainTestingLevel.cs" id="1_5aadj"]
 [ext_resource type="Terrain3DStorage" uid="uid://b7wobsmx7w876" path="res://Game/Level/main_testing_level_terrain_storage.tres" id="1_206gg"]
 [ext_resource type="Terrain3DTextureList" uid="uid://6ylt270ccxt2" path="res://Game/Level/main_testing_level_terrain_textures.tres" id="2_8eghs"]
 [ext_resource type="Environment" uid="uid://dwa1c1bfypdnf" path="res://default_environment.tres" id="7_rrpuy"]
 [ext_resource type="Script" path="res://Core/Modules/Data/WorldEnvSettingsCompliant.cs" id="8_vuyks"]
+[ext_resource type="PackedScene" uid="uid://davldsm6ogh24" path="res://Core/Scenes/UI/HUD/hud_components/subtitle_panel.tscn" id="9_4m4fg"]
 [ext_resource type="PackedScene" uid="uid://nty6v4v5aav" path="res://Game/Scenes/Player/player_controller.tscn" id="9_62f3w"]
 [ext_resource type="Script" path="res://Core/Modules/Camera/CameraBrain.cs" id="9_j7dfr"]
+[ext_resource type="PackedScene" uid="uid://bqm15kscl7aw1" path="res://Core/Scenes/UI/HUD/hud_components/alert_panel.tscn" id="10_836pi"]
 [ext_resource type="Script" path="res://Core/Scenes/UI/Menus/pause_menu_controller.gd" id="11_at0cl"]
+[ext_resource type="PackedScene" uid="uid://174fj511x6da" path="res://Core/Scenes/UI/HUD/hud_components/interaction_prompt.tscn" id="11_mhsxq"]
+[ext_resource type="PackedScene" uid="uid://cu8lcuyc6iins" path="res://Core/Scenes/UI/HUD/hud_components/reticle.tscn" id="12_bexke"]
+[ext_resource type="PackedScene" uid="uid://bou3ucy60k7r5" path="res://Game/Scenes/Data/auto_save_trigger.tscn" id="12_gjow7"]
+[ext_resource type="Script" path="res://Game/Level/GenericGUIHandler.cs" id="13_0p50j"]
+[ext_resource type="PackedScene" uid="uid://cyc0q3kdxv1rq" path="res://Game/Scenes/Plots/empty_plot.tscn" id="16_tq1ew"]
+
+[sub_resource type="VoxelGIData" id="VoxelGIData_i4mr1"]
+_data = {
+"bounds": AABB(-88.818, -10, -106.143, 177.636, 20, 212.285),
+"level_counts": PackedInt32Array(1, 0, 0, 0, 0, 0, 0, 0),
+"octree_cells": PackedByteArray(255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255),
+"octree_data": PackedByteArray(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0),
+"octree_df_png": PackedByteArray(137, 80, 78, 71, 13, 10, 26, 10, 0, 0, 0, 13, 73, 72, 68, 82, 0, 0, 8, 0, 0, 0, 0, 128, 8, 0, 0, 0, 0, 186, 147, 214, 83, 0, 0, 0, 1, 115, 82, 71, 66, 0, 174, 206, 28, 233, 0, 0, 2, 44, 73, 68, 65, 84, 120, 156, 237, 214, 49, 1, 0, 32, 12, 192, 48, 192, 191, 231, 225, 2, 142, 38, 10, 122, 118, 207, 2, 0, 106, 206, 239, 0, 0, 224, 61, 3, 0, 0, 65, 6, 0, 0, 130, 12, 0, 0, 4, 25, 0, 0, 8, 50, 0, 0, 16, 100, 0, 0, 32, 200, 0, 0, 64, 144, 1, 0, 128, 32, 3, 0, 0, 65, 6, 0, 0, 130, 12, 0, 0, 4, 25, 0, 0, 8, 50, 0, 0, 16, 100, 0, 0, 32, 200, 0, 0, 64, 144, 1, 0, 128, 32, 3, 0, 0, 65, 6, 0, 0, 130, 12, 0, 0, 4, 25, 0, 0, 8, 50, 0, 0, 16, 100, 0, 0, 32, 200, 0, 0, 64, 144, 1, 0, 128, 32, 3, 0, 0, 65, 6, 0, 0, 130, 12, 0, 0, 4, 25, 0, 0, 8, 50, 0, 0, 16, 100, 0, 0, 32, 200, 0, 0, 64, 144, 1, 0, 128, 32, 3, 0, 0, 65, 6, 0, 0, 130, 12, 0, 0, 4, 25, 0, 0, 8, 50, 0, 0, 16, 100, 0, 0, 32, 200, 0, 0, 64, 144, 1, 0, 128, 32, 3, 0, 0, 65, 6, 0, 0, 130, 12, 0, 0, 4, 25, 0, 0, 8, 50, 0, 0, 16, 100, 0, 0, 32, 200, 0, 0, 64, 144, 1, 0, 128, 32, 3, 0, 0, 65, 6, 0, 0, 130, 12, 0, 0, 4, 25, 0, 0, 8, 50, 0, 0, 16, 100, 0, 0, 32, 200, 0, 0, 64, 144, 1, 0, 128, 32, 3, 0, 0, 65, 6, 0, 0, 130, 12, 0, 0, 4, 25, 0, 0, 8, 50, 0, 0, 16, 100, 0, 0, 32, 200, 0, 0, 64, 144, 1, 0, 128, 32, 3, 0, 0, 65, 6, 0, 0, 130, 12, 0, 0, 4, 25, 0, 0, 8, 50, 0, 0, 16, 100, 0, 0, 32, 200, 0, 0, 64, 144, 1, 0, 128, 32, 3, 0, 0, 65, 6, 0, 0, 130, 12, 0, 0, 4, 25, 0, 0, 8, 50, 0, 0, 16, 100, 0, 0, 32, 200, 0, 0, 64, 144, 1, 0, 128, 32, 3, 0, 0, 65, 6, 0, 0, 130, 12, 0, 0, 4, 25, 0, 0, 8, 50, 0, 0, 16, 100, 0, 0, 32, 200, 0, 0, 64, 144, 1, 0, 128, 32, 3, 0, 0, 65, 6, 0, 0, 130, 12, 0, 0, 4, 25, 0, 0, 8, 50, 0, 0, 16, 100, 0, 0, 32, 200, 0, 0, 64, 144, 1, 0, 128, 32, 3, 0, 0, 65, 6, 0, 0, 130, 12, 0, 0, 4, 25, 0, 0, 8, 50, 0, 0, 16, 100, 0, 0, 32, 200, 0, 0, 64, 144, 1, 0, 128, 32, 3, 0, 0, 65, 6, 0, 0, 130, 12, 0, 0, 4, 25, 0, 0, 8, 50, 0, 0, 16, 100, 0, 0, 32, 200, 0, 0, 64, 144, 1, 0, 128, 32, 3, 0, 0, 65, 6, 0, 0, 130, 12, 0, 0, 4, 25, 0, 0, 8, 50, 0, 0, 16, 100, 0, 0, 32, 200, 0, 0, 64, 144, 1, 0, 128, 32, 3, 0, 0, 65, 6, 0, 0, 130, 12, 0, 0, 4, 25, 0, 0, 8, 50, 0, 0, 16, 100, 0, 0, 32, 232, 2, 25, 16, 1, 255, 75, 231, 76, 140, 0, 0, 0, 0, 73, 69, 78, 68, 174, 66, 96, 130),
+"octree_size": Vector3(128, 16, 128),
+"to_cell_xform": Transform3D(0.602963, 0, 0, 0, 0.602963, 0, 0, 0, 0.602963, 53.554, 6.02963, 64)
+}
 
 [node name="MainTestingLevel" type="Node3D"]
+script = ExtResource("1_5aadj")
+
+[node name="AutoSaveTrigger" parent="." instance=ExtResource("12_gjow7")]
 
 [node name="Terrain3D" type="Terrain3D" parent="."]
 storage = ExtResource("1_206gg")
 texture_list = ExtResource("2_8eghs")
 clipmap_levels = 4
+metadata/_edit_lock_ = true
 
 [node name="WorldEnvSettingsCompliant" type="WorldEnvironment" parent="Terrain3D"]
 environment = ExtResource("7_rrpuy")
@@ -23,13 +46,78 @@ script = ExtResource("8_vuyks")
 transform = Transform3D(0.302402, -0.524678, 0.79578, 0, 0.834868, 0.55045, -0.95318, -0.166457, 0.252466, 513.752, 9.41842, -497.512)
 script = ExtResource("9_j7dfr")
 
-[node name="PlayerController" parent="Terrain3D" instance=ExtResource("9_62f3w")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 501.737, 1.60631, -500)
-
-[node name="PauseMenuController" type="Node" parent="Terrain3D"]
-script = ExtResource("11_at0cl")
-
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="Terrain3D"]
 transform = Transform3D(-0.866025, -0.433013, 0.25, 0, 0.5, 0.866025, -0.5, 0.75, -0.433013, 0, 0, 0)
 shadow_enabled = true
 directional_shadow_blend_splits = true
+
+[node name="VoxelGI" type="VoxelGI" parent="Terrain3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 509.288, 6.01962, -507.243)
+size = Vector3(177.636, 20, 212.285)
+data = SubResource("VoxelGIData_i4mr1")
+
+[node name="PlayerController" parent="." instance=ExtResource("9_62f3w")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 501.737, 1.60631, -500)
+
+[node name="HUD" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+mouse_filter = 2
+
+[node name="SubtitlePanel" parent="HUD" instance=ExtResource("9_4m4fg")]
+layout_mode = 1
+offset_top = -194.0
+offset_bottom = -117.0
+
+[node name="AlertPanel" parent="HUD" instance=ExtResource("10_836pi")]
+layout_mode = 1
+anchors_preset = 6
+anchor_top = 0.5
+anchor_bottom = 0.5
+offset_left = -274.0
+offset_top = -40.5
+offset_bottom = 40.5
+grow_vertical = 2
+
+[node name="InteractionPrompt" parent="HUD" instance=ExtResource("11_mhsxq")]
+layout_mode = 1
+anchors_preset = 10
+anchor_top = 0.0
+anchor_bottom = 0.0
+offset_top = 29.0
+offset_bottom = 62.0
+grow_vertical = 1
+
+[node name="Reticle" parent="HUD" instance=ExtResource("12_bexke")]
+layout_mode = 1
+offset_left = -64.0
+offset_top = -64.0
+offset_right = 64.0
+offset_bottom = 64.0
+
+[node name="GenericGUIHandler" type="CenterContainer" parent="HUD"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("13_0p50j")
+
+[node name="PauseMenuController" type="Node" parent="."]
+script = ExtResource("11_at0cl")
+
+[node name="Plot" parent="." instance=ExtResource("16_tq1ew")]
+transform = Transform3D(-0.258819, 0, -0.965926, 0, 1, 0, 0.965926, 0, -0.258819, 516.459, 0.632971, -503.6)
+
+[node name="Plot_2" parent="." instance=ExtResource("16_tq1ew")]
+transform = Transform3D(0.5, 0, -0.866025, 0, 1, 0, 0.866025, 0, 0.5, 514.13, 0.524294, -522.129)
+
+[node name="Plot_3" parent="." instance=ExtResource("16_tq1ew")]
+transform = Transform3D(-0.5, 0, -0.866025, 0, 1, 0, 0.866025, 0, -0.5, 524.011, 0.680931, -512.377)

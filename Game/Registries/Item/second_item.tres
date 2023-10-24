@@ -1,0 +1,21 @@
+[gd_resource type="Resource" script_class="Item" load_steps=5 format=3 uid="uid://kx3dlk0qy20y"]
+
+[ext_resource type="Texture2D" uid="uid://dg4dlinjntkaf" path="res://icon.png" id="1_vejyw"]
+[ext_resource type="Script" path="res://Game/ResourceTypes/Item.cs" id="2_ladlv"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_u5y5s"]
+albedo_color = Color(0.0627451, 1, 0.227451, 1)
+
+[sub_resource type="PrismMesh" id="PrismMesh_vsv34"]
+material = SubResource("StandardMaterial3D_u5y5s")
+
+[resource]
+script = ExtResource("2_ladlv")
+ItemName = "Second Item"
+Icon = ExtResource("1_vejyw")
+ItemMesh = SubResource("PrismMesh_vsv34")
+Value = 1
+ValueVariance = 0.0
+MaxStackSize = 999
+ItemCategory = 5
+Description = "What a lovely description box!"

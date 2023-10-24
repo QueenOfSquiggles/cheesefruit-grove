@@ -23,7 +23,7 @@ ResourceScriptDirectories=["res://"]
 
 [application]
 
-config/name="Cheesefruit Grove"
+config/name="Cheesefruit Groves"
 run/main_scene="res://Core/sc4x_entry.tscn"
 config/features=PackedStringArray("4.1", "C#", "Forward Plus")
 config/icon="res://icon.png"
@@ -61,6 +61,7 @@ glossary/default_case_sensitive=true
 
 window/size/viewport_width=1920
 window/size/viewport_height=1080
+mouse_cursor/custom_image="res://Game/Assets/Krita/custom_cursor/custom_staff_cursor.png"
 mouse_cursor/custom_image_hotspot=Vector2(4, 4)
 
 [dotnet]
@@ -237,19 +238,22 @@ locale/translations=PackedStringArray("res://Core/Assets/Translation/translation
 
 [layer_names]
 
-3d_physics/layer_1="world_physics"
-3d_physics/layer_2="items_gravity"
-3d_physics/layer_3="player_interactions"
+3d_physics/layer_1="world"
+3d_physics/layer_2="interactions"
 
 [physics]
 
 3d/physics_engine="JoltPhysics3D"
+jolt_3d/sleep/enabled=false
+jolt_3d/collisions/areas_detect_static_bodies=true
 
 [rendering]
 
 global_illumination/gi/use_half_resolution=true
+camera/depth_of_field/depth_of_field_use_jitter=true
+anti_aliasing/screen_space_roughness_limiter/enabled=false
 anti_aliasing/quality/msaa_3d=1
-anti_aliasing/quality/use_taa=true
+mesh_lod/lod_change/threshold_pixels=3.0
 
 [shader_globals]
 

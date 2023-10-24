@@ -1,0 +1,25 @@
+[gd_resource type="Resource" script_class="Item" load_steps=5 format=3 uid="uid://cukidph74j6u4"]
+
+[ext_resource type="Texture2D" uid="uid://dg4dlinjntkaf" path="res://icon.png" id="1_d0l3f"]
+[ext_resource type="Script" path="res://Game/ResourceTypes/Item.cs" id="1_owgwo"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_q0nif"]
+albedo_color = Color(0.737255, 0, 1, 1)
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_a0ne1"]
+material = SubResource("StandardMaterial3D_q0nif")
+radius = 0.3
+height = 0.9
+radial_segments = 16
+rings = 3
+
+[resource]
+script = ExtResource("1_owgwo")
+ItemName = "Test Item"
+Icon = ExtResource("1_d0l3f")
+ItemMesh = SubResource("CapsuleMesh_a0ne1")
+Value = 1
+ValueVariance = 0.0
+MaxStackSize = 999
+ItemCategory = 0
+Description = "What a lovely description box!"

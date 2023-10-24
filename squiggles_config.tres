@@ -3,21 +3,26 @@
 [ext_resource type="Texture2D" uid="uid://dg4dlinjntkaf" path="res://icon.png" id="1_ahn6y"]
 [ext_resource type="Environment" uid="uid://dwa1c1bfypdnf" path="res://default_environment.tres" id="1_n30xf"]
 [ext_resource type="Script" path="res://Core/MetaConfig/SquigglesCoreConfigFile.cs" id="1_nhggj"]
-[ext_resource type="Script" path="res://Core/Scenes/UI/Menus/OptionsTabs/GameplayTabResources/OptionBool.cs" id="2_f7vhd"]
 [ext_resource type="Script" path="res://Core/Scenes/UI/Menus/OptionsTabs/GameplayTabResources/GameplayOptionsSettings.cs" id="3_hs1ds"]
+[ext_resource type="Script" path="res://Core/Scenes/UI/Menus/OptionsTabs/GameplayTabResources/OptionSlider.cs" id="3_nk58q"]
 [ext_resource type="Script" path="res://Core/MetaConfig/SlotInfoProviderResource.cs" id="4_h315q"]
 [ext_resource type="Script" path="res://Core/MetaConfig/SaveSlotSettings.cs" id="5_4s8ei"]
 
-[sub_resource type="Resource" id="Resource_u3xr5"]
-script = ExtResource("2_f7vhd")
-Value = true
-InMenuName = "Temp"
-InternalName = "temp"
+[sub_resource type="Resource" id="Resource_ojfvn"]
+script = ExtResource("3_nk58q")
+DefaultValue = 30.0
+MinValue = 10.0
+MaxValue = 480.0
+StepValue = 10.0
+AllowLesser = false
+AllowGreater = false
+InMenuName = "Auto Save Interval (seconds)"
+InternalName = "auto_save_interval"
 
 [sub_resource type="Resource" id="Resource_m5emn"]
 script = ExtResource("3_hs1ds")
 GameplayMouseMode = 2
-OptionsArray = Array[Object]([SubResource("Resource_u3xr5")])
+OptionsArray = Array[Object]([SubResource("Resource_ojfvn")])
 
 [sub_resource type="Resource" id="Resource_4oqol"]
 script = ExtResource("4_h315q")
@@ -26,7 +31,7 @@ script = ExtResource("4_h315q")
 script = ExtResource("5_4s8ei")
 SlotOptions = 2
 _slotInfoProvider = SubResource("Resource_4oqol")
-AllowPlayersToReloadLastSave = true
+AllowPlayersToReloadLastSave = false
 
 [resource]
 script = ExtResource("1_nhggj")
@@ -39,7 +44,7 @@ RemapControlsNames = PackedStringArray()
 HideUIMappings = true
 GameplayConfig = SubResource("Resource_m5emn")
 RegistryPathPattern = "res://Game/Registries/%s/"
-RegistryTypes = PackedStringArray()
+RegistryTypes = PackedStringArray("Item", "PlotType", "PlotUpgrade")
 AuthorName = "Queen Of Squiggles"
 AuthorGamesURL = ""
 SaveSlotHandlingSettings = SubResource("Resource_04kak")

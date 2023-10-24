@@ -1,0 +1,144 @@
+[gd_scene load_steps=15 format=3 uid="uid://lsinummjij7m"]
+
+[ext_resource type="PackedScene" uid="uid://bwg1atgrupr0j" path="res://Game/Assets/Blender/plots/farm_plot.glb" id="1_guqd1"]
+[ext_resource type="Script" path="res://Game/Scenes/Plots/Types/FarmPlot.cs" id="1_pya2w"]
+[ext_resource type="PackedScene" uid="uid://b1cut14yq4x0j" path="res://Game/Scenes/Plots/Types/farm_plot_gui.tscn" id="2_r1mpp"]
+[ext_resource type="Script" path="res://Core/Modules/CharStats/CharStatManager.cs" id="5_8ngu1"]
+[ext_resource type="Script" path="res://Core/Modules/CharStats/CharStatFloat.cs" id="6_yoj25"]
+
+[sub_resource type="Gradient" id="Gradient_a6cqo"]
+offsets = PackedFloat32Array(0, 0.527933, 1)
+colors = PackedColorArray(0.382812, 0.382812, 0.382812, 1, 0.708646, 0.708646, 0.708646, 1, 1, 1, 1, 1)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_jitau"]
+gradient = SubResource("Gradient_a6cqo")
+
+[sub_resource type="Gradient" id="Gradient_v5agw"]
+offsets = PackedFloat32Array(0, 0.075419, 0.905028, 0.99162)
+colors = PackedColorArray(1, 1, 1, 1, 0, 1, 0.0815828, 1, 0.100618, 0.382812, 0.123641, 1, 0, 0, 0, 0)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_1iwqm"]
+gradient = SubResource("Gradient_v5agw")
+
+[sub_resource type="Curve" id="Curve_atpkp"]
+_data = [Vector2(0, 0), 0.0, 15.5093, 0, 0, Vector2(0.186667, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), -4.16666, 0.0, 0, 0]
+point_count = 3
+
+[sub_resource type="CurveTexture" id="CurveTexture_gss4j"]
+curve = SubResource("Curve_atpkp")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_gnxdg"]
+emission_shape = 3
+emission_box_extents = Vector3(2, 0.1, 2)
+direction = Vector3(0, 1, 0)
+gravity = Vector3(0, 0.5, 0)
+initial_velocity_min = 0.3
+initial_velocity_max = 1.0
+damping_min = 0.2
+damping_max = 0.2
+scale_min = 0.6
+scale_max = 1.4
+scale_curve = SubResource("CurveTexture_gss4j")
+color_ramp = SubResource("GradientTexture1D_1iwqm")
+color_initial_ramp = SubResource("GradientTexture1D_jitau")
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_rllcb"]
+diffuse_mode = 3
+specular_mode = 1
+vertex_color_use_as_albedo = true
+roughness = 0.0
+rim_enabled = true
+
+[sub_resource type="SphereMesh" id="SphereMesh_ou8lt"]
+material = SubResource("StandardMaterial3D_rllcb")
+radius = 0.1
+height = 0.2
+
+[node name="farm_plot" type="Node3D" node_paths=PackedStringArray("_stats", "_cropMeshes", "_growthParticles")]
+script = ExtResource("1_pya2w")
+_stats = NodePath("Stats")
+_guiScene = ExtResource("2_r1mpp")
+_cropMeshes = [NodePath("Crops/CropPos"), NodePath("Crops/CropPos_2"), NodePath("Crops/CropPos_3"), NodePath("Crops/CropPos_4"), NodePath("Crops/CropPos_5"), NodePath("Crops/CropPos_6"), NodePath("Crops/CropPos_7"), NodePath("Crops/CropPos_8"), NodePath("Crops/CropPos_9"), NodePath("Crops/CropPos_10"), NodePath("Crops/CropPos_11"), NodePath("Crops/CropPos_12"), NodePath("Crops/CropPos_13")]
+_growthParticles = NodePath("GrowthParticles")
+
+[node name="farm_plot" parent="." instance=ExtResource("1_guqd1")]
+metadata/_edit_lock_ = true
+
+[node name="Stats" type="Node" parent="."]
+script = ExtResource("5_8ngu1")
+
+[node name="CropCount" type="Node" parent="Stats"]
+script = ExtResource("6_yoj25")
+StoredValue = 5.0
+
+[node name="GrowthFactor" type="Node" parent="Stats"]
+script = ExtResource("6_yoj25")
+StoredValue = 1.0
+
+[node name="YieldFactor" type="Node" parent="Stats"]
+script = ExtResource("6_yoj25")
+StoredValue = 1.0
+
+[node name="Crops" type="Node3D" parent="."]
+
+[node name="CropPos_4" type="MeshInstance3D" parent="Crops"]
+transform = Transform3D(0.38386, 0, -0.923391, 0, 1, 0, 0.923391, 0, 0.38386, 1.30012, 0.456164, 1.06344)
+skeleton = NodePath("../..")
+
+[node name="CropPos_6" type="MeshInstance3D" parent="Crops"]
+transform = Transform3D(-0.627052, 0, -0.778977, 0, 1, 0, 0.778977, 0, -0.627052, -1.62852, 0.366961, 1.71694)
+skeleton = NodePath("../..")
+
+[node name="CropPos" type="MeshInstance3D" parent="Crops"]
+transform = Transform3D(0.490083, 0, -0.871676, 0, 1, 0, 0.871676, 0, 0.490083, -1.4833, 0.346459, -1.59896)
+skeleton = NodePath("../..")
+
+[node name="CropPos_11" type="MeshInstance3D" parent="Crops"]
+transform = Transform3D(-0.248132, 0, 0.968726, 0, 1, 0, -0.968726, 0, -0.248132, 0.791426, 0.474535, 0.434567)
+skeleton = NodePath("../..")
+
+[node name="CropPos_7" type="MeshInstance3D" parent="Crops"]
+transform = Transform3D(0.48183, 0, -0.876265, 0, 1, 0, 0.876265, 0, 0.48183, -1.67693, 0.390489, -0.37264)
+skeleton = NodePath("../..")
+
+[node name="CropPos_2" type="MeshInstance3D" parent="Crops"]
+transform = Transform3D(0.880816, 0, 0.473458, 0, 1, 0, -0.473458, 0, 0.880816, -0.232778, 0.397188, -1.58282)
+skeleton = NodePath("../..")
+
+[node name="CropPos_12" type="MeshInstance3D" parent="Crops"]
+transform = Transform3D(0.930865, 0, -0.365364, 0, 1, 0, 0.365364, 0, 0.930865, 1.94513, 0.328866, 0.61206)
+skeleton = NodePath("../..")
+
+[node name="CropPos_3" type="MeshInstance3D" parent="Crops"]
+transform = Transform3D(0.994706, 0, 0.102758, 0, 1, 0, -0.102758, 0, 0.994706, 1.18717, 0.474535, -0.655016)
+skeleton = NodePath("../..")
+
+[node name="CropPos_13" type="MeshInstance3D" parent="Crops"]
+transform = Transform3D(0.561924, 0, 0.827188, 0, 1, 0, -0.827188, 0, 0.561924, 1.67889, 0.275621, 1.82224)
+skeleton = NodePath("../..")
+
+[node name="CropPos_8" type="MeshInstance3D" parent="Crops"]
+transform = Transform3D(-0.842659, 0, -0.538447, 0, 1, 0, 0.538447, 0, -0.842659, 1.71965, 0.3565, -1.62316)
+skeleton = NodePath("../..")
+
+[node name="CropPos_9" type="MeshInstance3D" parent="Crops"]
+transform = Transform3D(0.659254, 0, -0.75192, 0, 1, 0, 0.75192, 0, 0.659254, -0.055284, 0.474535, -0.493659)
+skeleton = NodePath("../..")
+
+[node name="CropPos_5" type="MeshInstance3D" parent="Crops"]
+transform = Transform3D(-0.406561, 0, 0.913623, 0, 1, 0, -0.913623, 0, -0.406561, -0.442543, 0.474535, 0.385742)
+skeleton = NodePath("../..")
+
+[node name="CropPos_10" type="MeshInstance3D" parent="Crops"]
+transform = Transform3D(0.785749, 0, -0.618545, 0, 1, 0, 0.618545, 0, 0.785749, -0.055284, 0.389718, 1.70888)
+skeleton = NodePath("../..")
+
+[node name="GrowthParticles" type="GPUParticles3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.2, 0)
+emitting = false
+amount = 64
+one_shot = true
+explosiveness = 1.0
+visibility_aabb = AABB(-2, -3, -2, 4, 6, 4)
+process_material = SubResource("ParticleProcessMaterial_gnxdg")
+draw_pass_1 = SubResource("SphereMesh_ou8lt")

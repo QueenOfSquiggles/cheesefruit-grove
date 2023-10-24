@@ -93,6 +93,15 @@ layout_mode = 1
 
 [node name="UISounds" parent="ControlButtons/MarginContainer/VBoxContainer/CenterContainer/VBoxContainer/BtnPlay" instance=ExtResource("4_geber")]
 
+[node name="BtnContinue" type="Button" parent="ControlButtons/MarginContainer/VBoxContainer/CenterContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+text = "main_menu.continue"
+
+[node name="UISounds" parent="ControlButtons/MarginContainer/VBoxContainer/CenterContainer/VBoxContainer/BtnContinue" node_paths=PackedStringArray("_sfxSelect", "_sfxClick") instance=ExtResource("4_geber")]
+_sfxSelect = NodePath("../../BtnOptions/UISounds/Select")
+_sfxClick = NodePath("../../BtnOptions/UISounds/Click")
+
 [node name="BtnOptions" type="Button" parent="ControlButtons/MarginContainer/VBoxContainer/CenterContainer/VBoxContainer"]
 layout_mode = 2
 size_flags_vertical = 3
@@ -142,6 +151,7 @@ script = ExtResource("7_1dicm")
 script = ExtResource("8_4ubeu")
 
 [connection signal="pressed" from="ControlButtons/MarginContainer/VBoxContainer/CenterContainer/VBoxContainer/BtnPlay" to="." method="OnBtnPlay"]
+[connection signal="pressed" from="ControlButtons/MarginContainer/VBoxContainer/CenterContainer/VBoxContainer/BtnContinue" to="." method="OnBtnContinue"]
 [connection signal="pressed" from="ControlButtons/MarginContainer/VBoxContainer/CenterContainer/VBoxContainer/BtnOptions" to="." method="OnBtnOptions"]
 [connection signal="pressed" from="ControlButtons/MarginContainer/VBoxContainer/CenterContainer/VBoxContainer/BtnCredits" to="." method="OnBtnCredits"]
 [connection signal="pressed" from="ControlButtons/MarginContainer/VBoxContainer/CenterContainer/VBoxContainer/BtnQuit" to="." method="OnBtnQuit"]

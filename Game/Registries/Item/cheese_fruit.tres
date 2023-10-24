@@ -1,0 +1,24 @@
+[gd_resource type="Resource" script_class="ItemCrop" load_steps=9 format=3 uid="uid://cg6a0i1s8l50k"]
+
+[ext_resource type="ArrayMesh" uid="uid://cbbiesk8deom5" path="res://Game/Assets/Blender/crops/cheese_fruit_meshes/cheese_fruit_crop_Stage0.res" id="1_rgh15"]
+[ext_resource type="Texture2D" uid="uid://dcqhu5nm1q7xu" path="res://Game/Assets/Blender/items/cheese_fruit_icon.png" id="1_u46ac"]
+[ext_resource type="ArrayMesh" uid="uid://en2rw4mdbo3l" path="res://Game/Assets/Blender/crops/cheese_fruit_meshes/cheese_fruit_crop_Stage1.res" id="2_3exlo"]
+[ext_resource type="ArrayMesh" uid="uid://b63318d2psggg" path="res://Game/Assets/Blender/items/cheesefruit_wedge.res" id="2_ymtgo"]
+[ext_resource type="ArrayMesh" uid="uid://j402musxngbt" path="res://Game/Assets/Blender/crops/cheese_fruit_meshes/cheese_fruit_crop_Stage2.res" id="3_dvs3f"]
+[ext_resource type="ArrayMesh" uid="uid://x13ajevnk2lh" path="res://Game/Assets/Blender/crops/cheese_fruit_meshes/cheese_fruit_crop_Stage3.res" id="4_ijj3e"]
+[ext_resource type="ArrayMesh" uid="uid://bksn4fbu573qh" path="res://Game/Assets/Blender/crops/cheese_fruit_meshes/cheese_fruit_crop_Stage4.res" id="5_ewpgk"]
+[ext_resource type="Script" path="res://Game/ResourceTypes/ItemCrop.cs" id="8_pdi0n"]
+
+[resource]
+script = ExtResource("8_pdi0n")
+BaseYield = 1
+CropStageDurations = PackedFloat32Array(60, 120, 240, 240, 360)
+CropStageMeshes = Array[Mesh]([ExtResource("1_rgh15"), ExtResource("2_3exlo"), ExtResource("3_dvs3f"), ExtResource("4_ijj3e"), ExtResource("5_ewpgk")])
+ItemName = "Cheese Fruit"
+Icon = ExtResource("1_u46ac")
+ItemMesh = ExtResource("2_ymtgo")
+Value = 5
+ValueVariance = 0.0
+MaxStackSize = 999
+ItemCategory = 2
+Description = "A cheese fruit!"
